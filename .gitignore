@@ -1,0 +1,48 @@
+# 依赖目录
+node_modules/
+.pnp/
+.pnp.js
+
+# 生产构建
+build/
+dist/
+out/
+
+# 环境变量文件
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 日志文件
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 编辑器缓存
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Mac系统文件
+.DS_Store
+
+# 超大文件/非代码文件（直接屏蔽所有安装包、视频、压缩包）
+*.dmg
+*.pkg
+*.exe
+*.zip
+*.rar
+*.7z
+*.mov
+*.mp4
+*.avi
+*.flv
+*.wmv
+*.tar.gz
+
+# 其他
+*.log
