@@ -1,0 +1,395 @@
+- generic [ref=f1e1]:
+  - link "跳到主内容" [ref=f1e2]:
+    - /url: "#mainContent"
+  - generic [ref=f1e3]:
+    - complementary "侧栏导航" [ref=f1e4]:
+      - generic [ref=f1e5]:
+        - button "收起左侧菜单" [expanded] [ref=f1e7] [cursor=pointer]:
+          - generic [ref=f1e8]: 
+        - generic [ref=f1e9]:
+          - generic [ref=f1e10]: HR
+          - generic [ref=f1e11]:
+            - generic [ref=f1e12]: 人力资源管理平台
+            - generic [ref=f1e13]: Human Resource Management
+        - navigation "二级导航" [ref=f1e14]:
+          - generic [ref=f1e15]:
+            - generic [ref=f1e16]: 工作台
+            - button "首页" [ref=f1e17] [cursor=pointer]:
+              - generic [ref=f1e18]: 
+            - button "工作台" [ref=f1e20] [cursor=pointer]:
+              - generic [ref=f1e21]: 
+    - generic [ref=f1e23]:
+      - banner "顶栏" [ref=f1e24]:
+        - navigation "全局一级导航" [ref=f1e25]:
+          - button "工作台" [ref=f1e26] [cursor=pointer]:
+            - generic [ref=f1e27]: 
+          - button "人事" [ref=f1e29] [cursor=pointer]:
+            - generic [ref=f1e30]: 
+          - button "组织" [ref=f1e32] [cursor=pointer]:
+            - generic [ref=f1e33]: 
+          - button "考勤假期" [ref=f1e35] [cursor=pointer]:
+            - generic [ref=f1e36]: 
+          - button "薪酬" [ref=f1e38] [cursor=pointer]:
+            - generic [ref=f1e39]: 
+          - button "项目" [ref=f1e41] [cursor=pointer]:
+            - generic [ref=f1e42]: 
+          - button "AI用工助手" [ref=f1e44] [cursor=pointer]:
+            - generic [ref=f1e45]: 
+          - button "更多" [ref=f1e47] [cursor=pointer]:
+            - generic [ref=f1e48]: 
+        - generic [ref=f1e50]:
+          - generic [ref=f1e51]:
+            - generic [ref=f1e52]: A
+            - generic [ref=f1e53]:
+              - generic [ref=f1e54]: admin
+              - generic [ref=f1e55]: 客户管理员
+          - button "联系客服" [ref=f1e56] [cursor=pointer]
+          - button "登出" [ref=f1e57] [cursor=pointer]
+      - main [active] [ref=f1e58]:
+        - generic [ref=f1e60]:
+          - navigation "面包屑导航" [ref=f1e61]:
+            - list [ref=f1e62]:
+              - listitem [ref=f1e63]:
+                - generic [ref=f1e64]: 平台
+              - listitem [ref=f1e65]: /
+              - listitem [ref=f1e66]:
+                - generic [ref=f1e67]: 工作台
+              - listitem [ref=f1e68]: /
+              - listitem [ref=f1e69]:
+                - heading "首页" [level=1] [ref=f1e70]
+          - paragraph [ref=f1e71]: 欢迎回来，admin
+        - generic [ref=f1e72]:
+          - generic "页面加载中" [ref=f1e73]
+          - generic:
+            - generic:
+              - article:
+                - heading "工作台工单" [level=3]
+                - paragraph: —
+                - paragraph: 当前筛选范围内全部工单
+              - article:
+                - heading "待处理审批" [level=3]
+                - paragraph: —
+                - paragraph: 状态为「已提交」的审批单
+              - article:
+                - heading "在职员工" [level=3]
+                - paragraph: —
+                - paragraph: 员工名册中「在职」人数
+              - article:
+                - heading "已开票" [level=3]
+                - paragraph: —
+                - paragraph: 发票模块中已开票数量
+            - generic:
+              - article:
+                - generic:
+                  - heading "工作日历" [level=3]
+                  - generic:
+                    - generic: 2026 年 7 月
+                    - group "月份切换":
+                      - button "上个月"
+                      - button "本月"
+                      - button "下个月"
+                - generic:
+                  - generic: 一
+                  - generic: 二
+                  - generic: 三
+                  - generic: 四
+                  - generic: 五
+                  - generic: 六
+                  - generic: 日
+                - grid "日历日期":
+                  - button "2026-06-29": "29"
+                  - button "2026-06-30": "30"
+                  - button "2026-07-01": "1"
+                  - button "2026-07-02": "2"
+                  - button "2026-07-03": "3"
+                  - button "2026-07-04": "4"
+                  - button "2026-07-05": "5"
+                  - button "2026-07-06": "6"
+                  - button "2026-07-07": "7"
+                  - button "2026-07-08": "8"
+                  - button "2026-07-09": "9"
+                  - button "2026-07-10": "10"
+                  - button "2026-07-11": "11"
+                  - button "2026-07-12": "12"
+                  - button "2026-07-13": "13"
+                  - button "2026-07-14": "14"
+                  - button "2026-07-15": "15"
+                  - button "2026-07-16": "16"
+                  - button "2026-07-17": "17"
+                  - button "2026-07-18": "18"
+                  - button "2026-07-19": "19"
+                  - button "2026-07-20": "20"
+                  - button "2026-07-21": "21"
+                  - button "2026-07-22": "22"
+                  - button "2026-07-23": "23"
+                  - button "2026-07-24": "24"
+                  - button "2026-07-25": "25"
+                  - button "2026-07-26": "26"
+                  - button "2026-07-27": "27"
+                  - button "2026-07-28": "28"
+                  - button "2026-07-29": "29"
+                  - button "2026-07-30": "30"
+                  - button "2026-07-31": "31"
+                  - button "2026-08-01": "1"
+                  - button "2026-08-02": "2"
+                  - button "2026-08-03": "3"
+                  - button "2026-08-04": "4"
+                  - button "2026-08-05": "5"
+                  - button "2026-08-06": "6"
+                  - button "2026-08-07": "7"
+                  - button "2026-08-08": "8"
+                  - button "2026-08-09": "9"
+                - generic "当月日程": 当前月份暂无示例日程（后续可对接接口按 YYYY-MM 拉取）
+              - generic:
+                - article:
+                  - heading "快捷入口" [level=3]
+                  - generic:
+                    - button "增减员工单"
+                    - button "员工花名册"
+                    - button "考勤社保"
+                    - button "薪资上传"
+                - article:
+                  - heading "今日待办" [level=3]
+                  - table:
+                    - rowgroup:
+                      - row "事项 数量 入口":
+                        - columnheader "事项"
+                        - columnheader "数量"
+                        - columnheader "入口"
+                    - rowgroup:
+                      - row "待确认增减员 6 去处理":
+                        - cell "待确认增减员"
+                        - cell "6"
+                        - cell "去处理":
+                          - button "去处理"
+                      - row "待审批单据 12 去处理":
+                        - cell "待审批单据"
+                        - cell "12"
+                        - cell "去处理":
+                          - button "去处理"
+                      - row "待签劳动合同 4 去处理":
+                        - cell "待签劳动合同"
+                        - cell "4"
+                        - cell "去处理":
+                          - button "去处理"
+                      - row "薪资待校验文件 2 去处理":
+                        - cell "薪资待校验文件"
+                        - cell "2"
+                        - cell "去处理":
+                          - button "去处理"
+                - article:
+                  - heading "核心人事统计" [level=3]
+                  - generic:
+                    - generic:
+                      - generic: 试用期
+                      - strong: —
+                    - generic:
+                      - generic: 待离职
+                      - strong: —
+                    - generic:
+                      - generic: 全职人数
+                      - strong: —
+                  - generic:
+                    - generic:
+                      - generic: 灵活用工
+                      - strong: —
+                    - generic:
+                      - generic: 30天到期合同
+                      - strong: —
+                    - generic:
+                      - generic: 待处理审批
+                      - strong: —
+          - text:                                         
+  - dialog [ref=f1e93]:
+    - generic [ref=f1e94]:
+      - heading [level=3] [ref=f1e95]: 新增项目
+      - button [ref=f1e96] [cursor=pointer]: 关闭
+    - generic [ref=f1e97]:
+      - generic [ref=f1e98]:
+        - text: 项目名称
+        - textbox [ref=f1e99]:
+          - /placeholder: 项目名称
+      - generic [ref=f1e100]:
+        - text: 项目编码
+        - textbox [ref=f1e101]:
+          - /placeholder: 如 PRJ-2026-003
+      - generic [ref=f1e102]:
+        - text: 签约企业
+        - textbox [ref=f1e103]:
+          - /placeholder: 签约企业
+      - generic [ref=f1e104]:
+        - text: 项目负责人
+        - textbox [ref=f1e105]:
+          - /placeholder: 项目负责人
+      - generic [ref=f1e106]:
+        - text: 项目状态
+        - combobox [ref=f1e107]
+      - generic [ref=f1e108]:
+        - text: 开始日期
+        - textbox [ref=f1e109]
+      - generic [ref=f1e110]:
+        - text: 结束日期
+        - textbox [ref=f1e111]
+      - generic [ref=f1e112]:
+        - button [ref=f1e113] [cursor=pointer]: 取消
+        - button [ref=f1e114] [cursor=pointer]: 保存项目
+  - dialog [ref=f1e115]:
+    - generic [ref=f1e116]:
+      - heading [level=3] [ref=f1e117]: 新增企业
+      - button [ref=f1e118] [cursor=pointer]: 关闭
+    - generic [ref=f1e119]:
+      - generic [ref=f1e120]:
+        - text: 企业名称
+        - textbox [ref=f1e121]:
+          - /placeholder: 企业名称
+      - generic [ref=f1e122]:
+        - text: 客户编号
+        - textbox [ref=f1e123]:
+          - /placeholder: 客户编号
+      - generic [ref=f1e124]:
+        - text: 所在城市
+        - textbox [ref=f1e125]:
+          - /placeholder: 所在城市
+      - generic [ref=f1e126]:
+        - text: 服务类型
+        - textbox [ref=f1e127]:
+          - /placeholder: 服务类型
+      - generic [ref=f1e128]:
+        - text: 合作状态
+        - combobox [ref=f1e129]
+      - generic [ref=f1e130]:
+        - button [ref=f1e131] [cursor=pointer]: 取消
+        - button [ref=f1e132] [cursor=pointer]: 保存企业
+  - dialog [ref=f1e133]:
+    - generic [ref=f1e134]:
+      - heading [level=3] [ref=f1e135]: 新增发票
+      - button [ref=f1e136] [cursor=pointer]: 关闭
+    - generic [ref=f1e137]:
+      - generic [ref=f1e138]:
+        - text: 发票编号
+        - textbox [ref=f1e139]:
+          - /placeholder: 发票编号
+      - generic [ref=f1e140]:
+        - text: 客户名称
+        - textbox [ref=f1e141]:
+          - /placeholder: 客户名称
+      - generic [ref=f1e142]:
+        - text: 金额
+        - textbox [ref=f1e143]:
+          - /placeholder: 金额
+      - generic [ref=f1e144]:
+        - text: 月份
+        - textbox [ref=f1e145]
+      - generic [ref=f1e146]:
+        - text: 发票状态
+        - combobox [ref=f1e147]
+      - generic [ref=f1e148]:
+        - button [ref=f1e149] [cursor=pointer]: 取消
+        - button [ref=f1e150] [cursor=pointer]: 保存发票
+  - dialog [ref=f1e151]:
+    - generic [ref=f1e152]:
+      - heading [level=3] [ref=f1e153]: 新增员工
+      - button [ref=f1e154] [cursor=pointer]: 关闭
+    - generic [ref=f1e155]:
+      - generic [ref=f1e156]:
+        - text: 姓名
+        - textbox [ref=f1e157]:
+          - /placeholder: 姓名
+      - generic [ref=f1e158]:
+        - text: 证件号码
+        - textbox [ref=f1e159]:
+          - /placeholder: 证件号码
+      - generic [ref=f1e160]:
+        - text: 手机
+        - textbox [ref=f1e161]:
+          - /placeholder: 手机
+      - generic [ref=f1e162]:
+        - text: 性别
+        - combobox [ref=f1e163]
+      - generic [ref=f1e164]:
+        - text: 员工状态
+        - combobox [ref=f1e165]
+      - generic [ref=f1e166]:
+        - text: 用工类型
+        - combobox [ref=f1e167]
+      - generic [ref=f1e168]:
+        - text: 试用期结束
+        - textbox [ref=f1e169]
+      - generic [ref=f1e170]:
+        - text: 入职日期
+        - textbox [ref=f1e171]
+      - generic [ref=f1e172]:
+        - text: 工作地
+        - textbox [ref=f1e173]:
+          - /placeholder: 工作地
+      - generic [ref=f1e174]:
+        - text: 社保城市
+        - textbox [ref=f1e175]:
+          - /placeholder: 社保城市
+      - generic [ref=f1e176]:
+        - button [ref=f1e177] [cursor=pointer]: 取消
+        - button [ref=f1e178] [cursor=pointer]: 保存员工
+  - dialog [ref=f1e179]:
+    - generic [ref=f1e180]:
+      - heading [level=3] [ref=f1e181]: 新增合同记录
+      - button [ref=f1e182] [cursor=pointer]: 关闭
+    - generic [ref=f1e183]:
+      - generic [ref=f1e184]:
+        - text: 用章对象
+        - combobox [ref=f1e185]
+      - generic [ref=f1e186]:
+        - text: 印章类型
+        - combobox [ref=f1e187]
+      - generic [ref=f1e188]:
+        - text: 用章类型 / 材料性质
+        - combobox [ref=f1e189]
+      - generic [ref=f1e190]:
+        - text: 签章材料名称
+        - combobox [ref=f1e191]
+      - generic [ref=f1e192]:
+        - text: 员工姓名
+        - textbox [ref=f1e193]:
+          - /placeholder: 员工姓名
+      - generic [ref=f1e194]:
+        - text: 证件号
+        - textbox [ref=f1e195]:
+          - /placeholder: 证件号
+      - generic [ref=f1e196]:
+        - text: 入离职状态
+        - combobox [ref=f1e197]
+      - generic [ref=f1e198]:
+        - text: 电子签状态
+        - combobox [ref=f1e199]
+      - generic [ref=f1e200]:
+        - text: 办结日期
+        - textbox [ref=f1e201]
+      - generic [ref=f1e202]:
+        - text: 合同到期日
+        - textbox [ref=f1e203]
+      - generic [ref=f1e204]:
+        - button [ref=f1e205] [cursor=pointer]: 取消
+        - button [ref=f1e206] [cursor=pointer]: 保存记录
+  - dialog [ref=f1e207]:
+    - generic [ref=f1e208]:
+      - heading [level=3] [ref=f1e209]: 员工详情
+      - button [ref=f1e210] [cursor=pointer]: 关闭
+    - generic [ref=f1e211]:
+      - generic [ref=f1e212]:
+        - generic [ref=f1e213]: 姓名
+        - strong [ref=f1e214]: 胡寿文
+      - generic [ref=f1e215]:
+        - generic [ref=f1e216]: 证件号码
+        - strong [ref=f1e217]: "360102198908093212"
+      - generic [ref=f1e218]:
+        - generic [ref=f1e219]: 员工状态
+        - strong [ref=f1e220]: 在职
+      - generic [ref=f1e221]:
+        - generic [ref=f1e222]: 入职日期
+        - strong [ref=f1e223]: 2024-09-01
+      - generic [ref=f1e224]:
+        - generic [ref=f1e225]: 社保缴费城市
+        - strong [ref=f1e226]: 南昌市
+      - generic [ref=f1e227]:
+        - generic [ref=f1e228]: 公积金缴费城市
+        - strong [ref=f1e229]: 南昌市
+  - status [ref=f1e230]

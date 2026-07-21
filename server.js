@@ -1,3 +1,9 @@
+try {
+  require("dotenv").config();
+} catch {
+  /* dotenv optional */
+}
+
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
@@ -5,11 +11,15 @@ const crypto = require("crypto");
 const path = require("path");
 const fs = require("fs");
 const sqlite3 = require("sqlite3").verbose();
+const { seedTalentPool } = require("./lib/talentSeed");
+const { registerStaffingRoutes } = require("./lib/staffingRoutes");
+const { registerAiRoutes } = require("./lib/aiRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || "eos-hr-demo-secret-change-in-prod";
-const db = new sqlite3.Database(path.join(__dirname, "eos_hr.db"));
+const DB_PATH = process.env.DB_PATH || path.join(__dirname, "eos_hr.db");
+const db = new sqlite3.Database(DB_PATH);
 
 const loginAttempts = new Map();
 const MAX_LOGIN = 12;
@@ -68,6 +78,18 @@ function all(sql, params = []) {
       resolve(rows);
     });
   });
+}
+
+async function withTransaction(fn) {
+  await run("BEGIN IMMEDIATE");
+  try {
+    const result = await fn();
+    await run("COMMIT");
+    return result;
+  } catch (error) {
+    await run("ROLLBACK");
+    throw error;
+  }
 }
 
 async function ensureColumn(table, column, definition) {
@@ -265,6 +287,103 @@ async function initDb() {
   await ensureColumn("employees", "offboard_date", "TEXT");
   await ensureColumn("employees", "current_company_id", "INTEGER");
   await ensureColumn("employees", "current_project_id", "INTEGER");
+  await ensureColumn("employees", "job_title", "TEXT");
+  await ensureColumn("employees", "skills", "TEXT");
+  await ensureColumn("employees", "years_experience", "REAL");
+  await ensureColumn("employees", "certificates", "TEXT");
+  await ensureColumn("employees", "available_date", "TEXT");
+  await ensureColumn("employees", "availability_status", "TEXT");
+  await ensureColumn("employees", "preferred_city", "TEXT");
+  await ensureColumn("employees", "salary_range", "TEXT");
+  await ensureColumn("employees", "project_experience", "TEXT");
+  await ensureColumn("employees", "is_talent_pool", "INTEGER DEFAULT 0");
+  await ensureColumn("users", "company_id", "INTEGER");
+  await ensureColumn("users", "company_name", "TEXT");
+
+  await run(`
+    CREATE TABLE IF NOT EXISTS staffing_requirements (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      requirement_no TEXT NOT NULL UNIQUE,
+      company_id INTEGER,
+      company_name TEXT,
+      raw_query TEXT NOT NULL,
+      job_title TEXT,
+      city TEXT,
+      headcount INTEGER DEFAULT 1,
+      min_experience REAL DEFAULT 0,
+      required_skills TEXT,
+      required_certificates TEXT,
+      available_before TEXT,
+      employment_type TEXT,
+      budget_range TEXT,
+      status TEXT NOT NULL DEFAULT '草稿',
+      parsed_json TEXT,
+      selected_candidate_ids TEXT,
+      created_by TEXT,
+      created_at TEXT DEFAULT (datetime('now','localtime')),
+      updated_at TEXT DEFAULT (datetime('now','localtime'))
+    )
+  `);
+  await run(`
+    CREATE TABLE IF NOT EXISTS staffing_requirement_candidates (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      requirement_id INTEGER NOT NULL,
+      employee_id INTEGER NOT NULL,
+      match_score REAL,
+      match_reason TEXT,
+      unmet_conditions TEXT,
+      is_selected INTEGER DEFAULT 0,
+      created_at TEXT DEFAULT (datetime('now','localtime'))
+    )
+  `);
+  await run(`
+    CREATE TABLE IF NOT EXISTS staffing_requirement_events (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      requirement_id INTEGER NOT NULL,
+      event_type TEXT NOT NULL,
+      detail TEXT,
+      created_by TEXT,
+      created_at TEXT DEFAULT (datetime('now','localtime'))
+    )
+  `);
+  await ensureColumn("staffing_requirements", "converted_project_id", "INTEGER");
+  await ensureColumn("staffing_requirements", "converted_approval_id", "INTEGER");
+  await run(
+    "CREATE UNIQUE INDEX IF NOT EXISTS idx_staffing_req_candidate ON staffing_requirement_candidates(requirement_id, employee_id)"
+  );
+  await run(
+    "CREATE UNIQUE INDEX IF NOT EXISTS idx_project_assignment_unique ON project_assignments(project_id, employee_id)"
+  );
+  await run("CREATE UNIQUE INDEX IF NOT EXISTS idx_approvals_no ON approvals(no)");
+
+  let demoCompany = await get("SELECT id, name FROM companies WHERE code = 'DEMO-ENT'");
+  if (!demoCompany) {
+    await run(
+      "INSERT INTO companies (name, code, city, service_type, status) VALUES (?, ?, ?, ?, ?)",
+      ["演示企业客户", "DEMO-ENT", "上海市", "灵活用工", "合作中"]
+    );
+    demoCompany = await get("SELECT id, name FROM companies WHERE code = 'DEMO-ENT'");
+  }
+  let otherCompany = await get("SELECT id FROM companies WHERE code = 'OTHER-ENT'");
+  if (!otherCompany) {
+    await run(
+      "INSERT INTO companies (name, code, city, service_type, status) VALUES (?, ?, ?, ?, ?)",
+      ["其他演示企业", "OTHER-ENT", "北京市", "灵活用工", "合作中"]
+    );
+  }
+
+  await seedTalentPool({ get, run });
+  await run("UPDATE users SET company_id = ?, company_name = ? WHERE username = 'enterprise'", [
+    demoCompany.id,
+    demoCompany.name
+  ]);
+  await run("UPDATE staffing_requirements SET company_id = ? WHERE company_id IS NULL AND created_by = 'enterprise'", [
+    demoCompany.id
+  ]);
+  await run("UPDATE staffing_requirements SET company_name = ? WHERE company_id = ? AND (company_name IS NULL OR company_name = '')", [
+    demoCompany.name,
+    demoCompany.id
+  ]);
 
   const userCount = await get("SELECT COUNT(*) AS c FROM users");
   if (userCount.c === 0) {
@@ -464,19 +583,46 @@ app.post("/api/auth/login", loginGuard, async (req, res) => {
     return res.status(401).json({ message: "用户名或密码错误" });
   }
   req._loginRec.count = 0;
-  const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, JWT_SECRET, { expiresIn: "12h" });
+  const token = jwt.sign(
+    {
+      id: user.id,
+      username: user.username,
+      role: user.role,
+      companyId: user.company_id || null,
+      companyName: user.company_name || null
+    },
+    JWT_SECRET,
+    { expiresIn: "12h" }
+  );
   await audit({ id: user.id, username: user.username }, "login", `role=${user.role}`);
   return res.json({
     token,
-    user: { username: user.username, role: user.role }
+    user: {
+      username: user.username,
+      role: user.role,
+      companyId: user.company_id || null,
+      companyName: user.company_name || null
+    }
   });
 });
 
-app.get("/api/me", auth(), (req, res) => {
+app.get("/api/me", auth(), async (req, res) => {
+  if (req.user.role === "enterprise") {
+    const row = await get("SELECT company_id AS companyId, company_name AS companyName FROM users WHERE id = ?", [
+      req.user.id
+    ]);
+    return res.json({
+      user: {
+        ...req.user,
+        companyId: row?.companyId ?? req.user.companyId ?? null,
+        companyName: row?.companyName ?? req.user.companyName ?? null
+      }
+    });
+  }
   res.json({ user: req.user });
 });
 
-app.get("/api/dashboard", auth(), async (req, res) => {
+app.get("/api/dashboard", auth("admin"), async (req, res) => {
   const w = await get(
     "SELECT COUNT(*) AS total, SUM(CASE WHEN status='已提交' THEN 1 ELSE 0 END) AS submitted, SUM(CASE WHEN status='已确认' THEN 1 ELSE 0 END) AS confirmed, SUM(CASE WHEN status='已受理' THEN 1 ELSE 0 END) AS accepted FROM workspace_items"
   );
@@ -527,7 +673,7 @@ app.get("/api/reports/summary", auth("admin"), async (req, res) => {
   });
 });
 
-app.get("/api/workspace", auth(), async (req, res) => {
+app.get("/api/workspace", auth("admin"), async (req, res) => {
   const keyword = clampStr(req.query.keyword || "", 80);
   const status = clampStr(req.query.status || "", 40);
   const service = clampStr(req.query.service || "", 40);
@@ -581,7 +727,7 @@ app.patch("/api/workspace/:id/status", auth("admin"), async (req, res) => {
   return res.json({ row });
 });
 
-app.get("/api/employees", auth(), async (req, res) => {
+app.get("/api/employees", auth("admin"), async (req, res) => {
   const q = clampStr(req.query.q || "", 80);
   const status = clampStr(req.query.status || "", 20);
   const sortBy = clampStr(req.query.sortBy || "id", 20);
@@ -698,7 +844,7 @@ app.delete("/api/employees/:id", auth("admin"), async (req, res) => {
   res.json({ ok: true });
 });
 
-app.get("/api/contracts", auth(), async (req, res) => {
+app.get("/api/contracts", auth("admin"), async (req, res) => {
   const rows = await all(
     "SELECT id, target, type, material, name, id_no AS idNo, employment_status AS employmentStatus, sign_status AS signStatus, done_time AS doneTime, contract_end AS contractEnd FROM contracts ORDER BY id DESC"
   );
@@ -761,7 +907,7 @@ app.delete("/api/contracts/:id", auth("admin"), async (req, res) => {
   res.json({ ok: true });
 });
 
-app.get("/api/invoices", auth(), async (req, res) => {
+app.get("/api/invoices", auth("admin"), async (req, res) => {
   const rows = await all(
     "SELECT id, no, customer_name AS customerName, amount, month, status, action FROM invoices ORDER BY id DESC"
   );
@@ -809,7 +955,7 @@ app.delete("/api/invoices/:id", auth("admin"), async (req, res) => {
   res.json({ ok: true });
 });
 
-app.get("/api/companies", auth(), async (req, res) => {
+app.get("/api/companies", auth("admin"), async (req, res) => {
   const rows = await all(
     "SELECT id, name, code, city, service_type AS serviceType, status FROM companies ORDER BY id ASC"
   );
@@ -1159,7 +1305,7 @@ app.get("/api/employee-events", auth("admin"), async (req, res) => {
   res.json({ rows });
 });
 
-app.get("/api/projects", auth(), async (req, res) => {
+app.get("/api/projects", auth("admin"), async (req, res) => {
   const rows = await all(
     `SELECT p.id, p.name, p.code, p.client_company AS clientCompany, p.manager, p.status, p.start_date AS startDate, p.end_date AS endDate, p.remark,
             COUNT(pa.id) AS teamSize
@@ -1233,18 +1379,8 @@ app.get("/api/audit-logs", auth("admin"), async (req, res) => {
   res.json({ rows });
 });
 
-app.post("/api/ai/match", auth(), (req, res) => {
-  const query = clampStr(req.body?.query || "", 500);
-  if (!query) return res.status(400).json({ message: "请输入需求描述" });
-  return res.json({
-    summary: `已解析需求：${query}`,
-    rows: [
-      ["赵文杰", "上海市", "保安队长", "5年", "2天内", "92%"],
-      ["李德凯", "上海市", "商场安保", "4年", "立即", "89%"],
-      ["陈超", "苏州市", "安保巡检", "6年", "3天内", "84%"]
-    ]
-  });
-});
+registerStaffingRoutes(app, { run, get, all, audit, clampStr, auth, safeJsonParse, withTransaction });
+registerAiRoutes(app, { auth, clampStr });
 
 const staticDir = __dirname;
 app.use(
@@ -1268,7 +1404,7 @@ app.use((req, res) => {
 initDb()
   .then(() => {
     app.listen(PORT, () => {
-      process.stdout.write(`Server running at http://localhost:${PORT}\n`);
+      process.stdout.write(`Server running at http://localhost:${PORT} (db: ${DB_PATH})\n`);
     });
   })
   .catch((error) => {

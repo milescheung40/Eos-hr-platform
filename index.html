@@ -5,32 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>人力资源管理平台 | Admin</title>
   <link rel="stylesheet" href="./styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
+  <a class="skip-link" href="#mainContent">跳到主内容</a>
   <section class="login-screen" id="loginScreen">
     <article class="login-card">
       <h2>人力资源管理平台</h2>
       <p class="muted">看得见的服务 / What we do is what you see</p>
-      <div class="toolbar">
-        <select id="loginRole">
+      <form class="login-toolbar toolbar" id="loginForm" autocomplete="on">
+        <select id="loginRole" name="role" aria-label="登录角色">
           <option value="admin">客户管理员</option>
           <option value="enterprise">企业用户</option>
         </select>
-        <input id="loginUsername" placeholder="用户名（示例：admin）">
-        <input id="loginPassword" type="password" placeholder="密码（示例：admin123）">
-        <button id="loginBtn">登 录</button>
-      </div>
+        <input id="loginUsername" name="username" placeholder="用户名（示例：admin）" autocomplete="username" autofocus>
+        <input id="loginPassword" name="password" type="password" placeholder="密码（示例：admin123）" autocomplete="current-password">
+        <button type="submit" id="loginBtn">登 录</button>
+      </form>
       <p class="muted" id="loginTips">管理员演示账号：admin / admin123；企业账号：enterprise / enterprise123</p>
     </article>
   </section>
 
-  <div class="app-shell">
+  <div class="app-shell" id="appShell" hidden>
     <aside class="sidebar" aria-label="侧栏导航">
       <div class="sidebar-inner">
         <div class="sidebar-toolbar">
           <button type="button" class="sidebar-toggle-btn" id="sidebarToggle" title="收起/展开左侧菜单" aria-expanded="true">
-            <i class="fa fa-bars" aria-hidden="true"></i>
+            <i class="fa-solid fa-bars" aria-hidden="true"></i>
           </button>
         </div>
         <div class="sidebar-brand">
@@ -46,58 +47,98 @@
 
     <div class="app-main-column">
       <header class="app-topbar" aria-label="顶栏">
-        <div class="app-topbar-brand" aria-hidden="false">
-          <span class="app-topbar-brand-mark">HR</span>
-          <span class="app-topbar-brand-name">人力资源管理平台</span>
-        </div>
         <nav class="app-topbar-nav" aria-label="全局一级导航">
           <button type="button" class="biz-top-item is-active" data-top-nav-target="workspace">
-            <i class="fa fa-th-large biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">工作台</span>
+            <i class="fa-solid fa-grip biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">工作台</span>
           </button>
           <button type="button" class="biz-top-item" data-top-nav-target="employee">
-            <i class="fa fa-users biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">人事</span>
+            <i class="fa-solid fa-users biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">人事</span>
           </button>
           <button type="button" class="biz-top-item" data-top-nav-target="organization">
-            <i class="fa fa-sitemap biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">组织</span>
-          </button>
-          <button type="button" class="biz-top-item" data-top-nav-target="project">
-            <i class="fa fa-briefcase biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">项目</span>
-          </button>
-          <button type="button" class="biz-top-item" data-top-nav-target="approval">
-            <i class="fa fa-user-plus biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">招聘</span>
+            <i class="fa-solid fa-sitemap biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">组织</span>
           </button>
           <button type="button" class="biz-top-item" data-top-nav-target="social">
-            <i class="fa fa-calendar biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">考勤假期</span>
+            <i class="fa-solid fa-calendar biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">考勤假期</span>
           </button>
           <button type="button" class="biz-top-item" data-top-nav-target="import">
-            <i class="fa fa-money biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">薪酬</span>
+            <i class="fa-solid fa-coins biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">薪酬</span>
           </button>
-          <button type="button" class="biz-top-item" data-top-nav-target="approval">
-            <i class="fa fa-check-square-o biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">审批</span>
+          <button type="button" class="biz-top-item" data-top-nav-target="project">
+            <i class="fa-solid fa-briefcase biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">项目</span>
+          </button>
+          <button type="button" class="biz-top-item" data-top-nav-target="enterprise">
+            <i class="fa-solid fa-building-user biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">企业</span>
+          </button>
+          <button type="button" class="biz-top-item" data-top-nav-target="ai">
+            <i class="fa-solid fa-wand-magic-sparkles biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">AI用工助手</span>
           </button>
           <button type="button" class="biz-top-item" data-top-nav-target="reports">
-            <i class="fa fa-ellipsis-h biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">更多</span>
+            <i class="fa-solid fa-ellipsis biz-top-icon" aria-hidden="true"></i><span class="biz-top-label">更多</span>
           </button>
         </nav>
         <div class="app-topbar-user">
-          <button type="button" class="btn btn-secondary btn-sm">联系客服</button>
-          <button type="button" class="btn btn-danger btn-sm danger-btn">登出</button>
+          <div class="user-chip" id="topbarUser" hidden>
+            <span class="user-avatar" id="topbarUserAvatar" aria-hidden="true">管</span>
+            <span class="user-meta">
+              <span class="user-name" id="topbarUserName">—</span>
+              <span class="user-role" id="topbarUserRole">—</span>
+            </span>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" id="contactSupportBtn">联系客服</button>
+          <button type="button" class="btn btn-danger btn-sm danger-btn" id="logoutBtn">登出</button>
         </div>
       </header>
 
-      <main class="main">
+      <main class="main" id="mainContent" tabindex="-1">
         <header class="page-header-strip">
           <div class="page-header-strip-inner">
-            <div class="page-header-titles">
-              <h1 class="page-title" id="pageTitle">首页</h1>
-              <p class="welcome-line text-muted" id="welcomeText">你好，客户管理员！ 欢迎登录</p>
-            </div>
+            <nav class="page-breadcrumb" id="pageBreadcrumb" aria-label="面包屑导航">
+              <ol class="breadcrumb-list">
+                <li><span class="breadcrumb-muted">平台</span></li>
+                <li aria-hidden="true" class="breadcrumb-sep">/</li>
+                <li><span class="breadcrumb-parent" id="breadcrumbTop">工作台</span></li>
+                <li aria-hidden="true" class="breadcrumb-sep breadcrumb-sep-mid" id="breadcrumbMidSep" hidden>/</li>
+                <li id="breadcrumbSectionWrap" hidden><span class="breadcrumb-section" id="breadcrumbSection"></span></li>
+                <li aria-hidden="true" class="breadcrumb-sep" id="breadcrumbTitleSep">/</li>
+                <li><h1 class="page-title" id="pageTitle">运营概览</h1></li>
+              </ol>
+            </nav>
+            <p class="welcome-line text-muted" id="welcomeText">你好，客户管理员！欢迎登录</p>
           </div>
         </header>
 
         <div class="content-area route-panels">
+          <div class="panel-skeleton" id="panelSkeleton" hidden aria-hidden="true" aria-label="页面加载中">
+            <div class="skeleton-cards">
+              <div class="skeleton-card"><span class="skeleton-line skeleton-w-50"></span><span class="skeleton-line skeleton-w-30"></span></div>
+              <div class="skeleton-card"><span class="skeleton-line skeleton-w-50"></span><span class="skeleton-line skeleton-w-30"></span></div>
+              <div class="skeleton-card"><span class="skeleton-line skeleton-w-50"></span><span class="skeleton-line skeleton-w-30"></span></div>
+              <div class="skeleton-card"><span class="skeleton-line skeleton-w-50"></span><span class="skeleton-line skeleton-w-30"></span></div>
+            </div>
+            <div class="skeleton-table-block">
+              <span class="skeleton-line skeleton-w-20"></span>
+              <span class="skeleton-line"></span>
+              <span class="skeleton-line"></span>
+              <span class="skeleton-line skeleton-w-80"></span>
+              <span class="skeleton-line skeleton-w-60"></span>
+            </div>
+          </div>
+          <div class="workspace-domain-chrome" id="workspaceDomainChrome" hidden>
+            <nav class="ezwb-tabstrip" aria-label="工作台域页签">
+              <div class="ezwb-tabs-inner">
+                <ul class="nav nav-pills ezwb-fixed-tabs">
+                  <li class="nav-item">
+                    <button type="button" class="ezwb-tab-pill is-active" data-workbench-tab="home" id="ezwbTabHome">运营概览</button>
+                  </li>
+                  <li class="nav-item">
+                    <button type="button" class="ezwb-tab-pill" data-workbench-tab="workbench" id="ezwbTabWorkbench">工单操作</button>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
       <!-- Layout optimization note: aligned with 2号人事部 admin information density and control spacing; business logic unchanged (dashboard) -->
-      <section class="panel is-active" id="dashboard">
+      <section class="panel is-active page-shell page-shell-dashboard" id="dashboard">
         <div class="cards">
           <article class="card">
             <h3>工作台工单</h3>
@@ -144,8 +185,8 @@
               <h3>快捷入口</h3>
               <div class="quick-grid quick-grid-core">
                 <button class="quick-btn" data-jump="workspace">增减员工单</button>
-                <button class="quick-btn" data-jump="employee">员工花名册</button>
-                <button class="quick-btn" data-jump="social">考勤社保</button>
+                <button class="quick-btn" data-jump="employee">员工名册</button>
+                <button class="quick-btn" data-jump="social">考勤管理</button>
                 <button class="quick-btn" data-jump="import">薪资上传</button>
               </div>
             </article>
@@ -180,130 +221,69 @@
         </div>
       </section>
 
-      <section class="panel" id="project">
+      <section class="panel page-shell-module" id="project">
         <article class="card">
           <h3>项目中心（灵活用工主业务）</h3>
-          <div class="toolbar admin-only">
-            <input id="projName" placeholder="项目名称">
-            <input id="projCode" placeholder="项目编码，如 PRJ-2026-003">
-            <input id="projClient" placeholder="签约企业">
-            <input id="projManager" placeholder="项目负责人">
-            <select id="projStatus"><option>筹备中</option><option>执行中</option><option>已完结</option></select>
-            <input id="projStart" type="date">
-            <input id="projEnd" type="date">
-            <button id="projectAdd">新增项目</button>
+          <div class="module-page-header module-page-header--toolbar">
+            <div class="module-page-header__text" data-module-header-text></div>
+            <div class="module-page-header__actions admin-only">
+              <button type="button" id="openProjectDrawer">新增项目</button>
+            </div>
           </div>
+          <div class="toolbar">
+            <div class="search-field">
+              <input id="projectKeyword" placeholder="项目名称 / 编码 / 负责人">
+              <button type="button" class="search-field-clear" aria-label="清空搜索" hidden>×</button>
+            </div>
+            <select id="projectStatusFilter">
+              <option value="">项目状态：全部</option>
+              <option value="执行中">执行中</option>
+              <option value="筹备中">筹备中</option>
+              <option value="已结项">已结项</option>
+            </select>
+            <button type="button" class="filter-query-btn" id="projectQuery">查询</button>
+          </div>
+          <p class="query-result-hint muted" id="projectQueryHint" aria-live="polite"></p>
+          <div class="table-scroll-wrap">
+          <div class="table-shell">
+            <div class="empty-block" role="status" aria-live="polite">
+              <i class="fa-solid fa-briefcase empty-block-icon" aria-hidden="true"></i>
+              <p class="empty-block-title">暂无项目数据</p>
+              <p class="empty-block-desc">可使用页面上方「新增项目」，或点击下方快捷创建</p>
+              <button type="button" class="empty-block-action admin-only" id="projectAddFromEmpty">新增项目</button>
+            </div>
           <table>
             <thead><tr><th>项目名称</th><th>项目编码</th><th>签约企业</th><th>负责人</th><th>状态</th><th>起止日期</th><th>团队人数</th></tr></thead>
             <tbody id="projectRows"></tbody>
           </table>
+          </div>
+          </div>
         </article>
       </section>
 
       
       <!-- Layout optimization note: aligned with 2号人事部 admin information density and control spacing; business logic unchanged (workspace) -->
-      <section class="panel" id="workspace">
+      <section class="panel page-shell page-shell-workbench" id="workspace">
         <div class="ezwb-workbench-root">
-          <nav class="ezwb-tabstrip" aria-label="页签">
-            <div class="ezwb-tabs-inner">
-              <ul class="nav nav-pills ezwb-fixed-tabs">
-                <li class="nav-item">
-                  <button type="button" class="ezwb-tab-pill is-active" data-workbench-tab="home" id="ezwbTabHome">首页</button>
-                </li>
-                <li class="nav-item">
-                  <button type="button" class="ezwb-tab-pill" data-workbench-tab="workbench" id="ezwbTabWorkbench">工作台</button>
-                </li>
-              </ul>
-              <div class="ezwb-scroll-tabs" aria-hidden="true">
-                <button type="button" class="ezwb-scroll-btn" disabled aria-hidden="true"><i class="fa fa-chevron-left"></i></button>
-                <div class="ezwb-scroll-tabs-track"></div>
-                <button type="button" class="ezwb-scroll-btn" disabled aria-hidden="true"><i class="fa fa-chevron-right"></i></button>
-              </div>
-            </div>
-          </nav>
-
           <div class="ezwb-page-body">
           <aside id="side-menu" class="ezwb-side-menu">
             <div class="panel panel-default ezwb-panel">
+              <div class="workbench-quick-intro">
+                <p class="workbench-quick-label">最近使用</p>
+                <p class="workbench-quick-desc muted">记录你近期访问的模块，搜索可查找全部功能入口</p>
+              </div>
               <div class="workbench-search">
-                <input type="text" id="workbenchMenuSearch" class="workbench-input" placeholder="搜索菜单" autocomplete="off">
-                <button type="button" class="workbench-button" id="workbenchMenuSearchBtn">搜索</button>
+                <div class="workbench-search-field">
+                  <input type="text" id="workbenchMenuSearch" class="workbench-input" placeholder="搜索菜单" autocomplete="off">
+                  <button type="button" class="workbench-search-clear" id="workbenchMenuSearchClear" hidden aria-label="清空搜索">×</button>
+                </div>
+                <button type="button" class="btn btn-secondary" id="workbenchMenuSearchBtn">搜索</button>
               </div>
+              <p class="workbench-menu-empty muted" id="workbenchMenuEmpty" hidden role="status" aria-live="polite">未找到匹配的菜单项</p>
 
-              <div class="page-header page-header-wb"><h3 class="pL10">我的员工</h3></div>
-              <div class="panel-body panel-body-wb">
-                <ul class="list-inline row workbench-tiles">
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="employee" data-label="委托易才员工"><i class="fa fa-address-book-o" aria-hidden="true"></i>委托易才员工</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="contract" data-label="劳动合同"><i class="fa fa-address-book-o" aria-hidden="true"></i>劳动合同</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="social" data-label="社保公积金账号"><i class="fa fa-address-book-o" aria-hidden="true"></i>社保/公积金账号</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="employee" data-label="员工档案"><i class="fa fa-address-book-o" aria-hidden="true"></i>员工档案</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="contract" data-label="电子签章"><i class="fa fa-address-book-o" aria-hidden="true"></i>电子签章</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="retire" data-label="退休办理查询"><i class="fa fa-address-book-o" aria-hidden="true"></i>退休办理查询</button></li>
-                </ul>
-              </div>
-
-              <div class="page-header page-header-wb"><h3 class="pL10">我的订单</h3></div>
-              <div class="panel-body panel-body-wb">
-                <ul class="list-inline row workbench-tiles">
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="workspace" data-scroll-target="workspaceOrdersPanel" data-label="增减员管理"><i class="fa fa-file-text-o" aria-hidden="true"></i>增减员管理</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="social" data-label="收集调基数据"><i class="fa fa-file-text-o" aria-hidden="true"></i>收集调基数据</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="import" data-label="导出收集名单"><i class="fa fa-file-text-o" aria-hidden="true"></i>导出收集名单</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="retire" data-label="退休办理"><i class="fa fa-file-text-o" aria-hidden="true"></i>退休办理</button></li>
-                </ul>
-              </div>
-
-              <div class="page-header page-header-wb"><h3 class="pL10">薪资管理</h3></div>
-              <div class="panel-body panel-body-wb">
-                <ul class="list-inline row workbench-tiles">
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="employee" data-label="员工薪资查询"><i class="fa fa-television" aria-hidden="true"></i>员工薪资查询</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="import" data-label="人员信息及薪资数据(标准)"><i class="fa fa-television" aria-hidden="true"></i>人员信息及薪资数据(标准)</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="import" data-label="薪资数据确认查询"><i class="fa fa-television" aria-hidden="true"></i>薪资数据确认查询</button></li>
-                </ul>
-              </div>
-
-              <div class="page-header page-header-wb"><h3 class="pL10">我的账单</h3></div>
-              <div class="panel-body panel-body-wb">
-                <ul class="list-inline row workbench-tiles">
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="invoice" data-label="发票查询"><i class="fa fa-wpforms" aria-hidden="true"></i>发票查询</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="invoice" data-label="账单查询"><i class="fa fa-wpforms" aria-hidden="true"></i>账单查询</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="invoice" data-label="账单打印"><i class="fa fa-wpforms" aria-hidden="true"></i>账单打印</button></li>
-                </ul>
-              </div>
-
-              <div class="page-header page-header-wb"><h3 class="pL10">信息公开</h3></div>
-              <div class="panel-body panel-body-wb">
-                <ul class="list-inline row workbench-tiles">
-                  <li><button type="button" class="btn btn-default workbenchBtn" id="openCalculatorFromWb" data-label="残保金方案测算"><i class="fa fa-envelope-o" aria-hidden="true"></i>残保金方案测算</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="policy" data-label="社保公积金政策一览"><i class="fa fa-envelope-o" aria-hidden="true"></i>社保公积金政策一览</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="policy" data-label="政策大全"><i class="fa fa-envelope-o" aria-hidden="true"></i>政策大全</button></li>
-                </ul>
-              </div>
-
-              <div class="page-header page-header-wb"><h3 class="pL10">员工背调</h3></div>
-              <div class="panel-body panel-body-wb">
-                <ul class="list-inline row workbench-tiles">
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="ai-assistant" data-label="员工背调"><i class="fa fa-id-card-o" aria-hidden="true"></i>员工背调</button></li>
-                </ul>
-              </div>
-
-              <div class="page-header page-header-wb"><h3 class="pL10">大数据分析菜单</h3></div>
-              <div class="panel-body panel-body-wb">
-                <ul class="list-inline row workbench-tiles">
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="reports" data-label="人员属性分析"><i class="fa fa-envelope" aria-hidden="true"></i>人员属性分析</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="reports" data-label="人员异动分析"><i class="fa fa-envelope" aria-hidden="true"></i>人员异动分析</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="reports" data-label="人员成本分析"><i class="fa fa-envelope" aria-hidden="true"></i>人员成本分析</button></li>
-                </ul>
-              </div>
-
-              <div class="page-header page-header-wb"><h3 class="pL10">设置</h3></div>
+              <div class="page-header page-header-wb"><h3 class="pL10">最近使用</h3></div>
               <div class="panel-body panel-body-wb panel-body-wb-last">
-                <ul class="list-inline row workbench-tiles">
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="organization" data-label="组织架构"><i class="fa fa-cog" aria-hidden="true"></i>组织架构</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="settings" data-label="菜单模板"><i class="fa fa-cog" aria-hidden="true"></i>菜单模板</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="settings" data-label="修改密码"><i class="fa fa-cog" aria-hidden="true"></i>修改密码</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="settings" data-label="管理者账号"><i class="fa fa-cog" aria-hidden="true"></i>管理者账号</button></li>
-                  <li><button type="button" class="btn btn-default workbenchBtn" data-jump="settings" data-label="自定义权限配置"><i class="fa fa-cog" aria-hidden="true"></i>自定义权限配置</button></li>
-                </ul>
+                <ul id="workbenchTiles" class="list-inline row workbench-tiles"></ul>
               </div>
             </div>
           </aside>
@@ -311,9 +291,11 @@
           <div id="workspaceOrdersPanel" class="panel panel-default ezwb-panel workspace-orders-panel">
             <div class="page-header page-header-wb"><h3 class="pL10">增减员管理</h3></div>
             <div class="panel-body panel-body-wb panel-body-order">
-              <p class="muted ezwb-order-note">快照内工作台仅含上方菜单；增减员工单放在下方第二块面板，样式与易智汇 <code>panel-default</code> 一致。</p>
               <div class="toolbar workspace-toolbar">
-                <input id="workspaceKeyword" placeholder="填写姓名/证件号码进行查询">
+                <div class="search-field">
+                  <input id="workspaceKeyword" placeholder="填写姓名/证件号码进行查询">
+                  <button type="button" class="search-field-clear" aria-label="清空搜索" hidden>×</button>
+                </div>
                 <select id="workspaceStatus">
                   <option value="">提交状态：全部</option>
                   <option value="已提交">已提交</option>
@@ -326,16 +308,24 @@
                   <option value="代理">代理</option>
                   <option value="员工">员工</option>
                 </select>
-                <button type="button" class="ezwb-btn-search" id="queryWorkspace">查询</button>
-                <button type="button" class="ezwb-btn-ghost" id="exportWorkspace">导出</button>
+                <button type="button" class="filter-query-btn" id="queryWorkspace">查询</button>
+                <button type="button" class="ghost-btn" id="exportWorkspace">导出</button>
               </div>
-              <div class="workspace-table-wrap">
+              <p class="query-result-hint muted" id="workspaceQueryHint" aria-live="polite"></p>
+              <div class="table-scroll-wrap workspace-table-scroll">
+                <div class="table-shell">
+                  <div class="empty-block workspace-empty-block" role="status" aria-live="polite">
+                    <i class="fa-solid fa-right-left empty-block-icon" aria-hidden="true"></i>
+                    <p class="empty-block-title">暂无增减员工单</p>
+                    <p class="empty-block-desc">调整筛选条件后重新查询</p>
+                  </div>
                 <table>
                   <thead>
                     <tr><th>序号</th><th>姓名</th><th>证件号码</th><th>城市</th><th>提交状态</th><th>服务类型</th><th>备注</th></tr>
                   </thead>
                   <tbody id="workspaceRows"></tbody>
                 </table>
+                </div>
               </div>
               <div class="table-footer workspace-table-footer">
                 <span class="muted">每页显示
@@ -347,9 +337,9 @@
                   条记录
                 </span>
                 <div class="pager">
-                  <button type="button" class="ezwb-btn-ghost" id="workspacePrev">上一页</button>
+                  <button type="button" class="ghost-btn" id="workspacePrev">上一页</button>
                   <span id="workspacePageInfo">1 / 1</span>
-                  <button type="button" class="ezwb-btn-ghost" id="workspaceNext">下一页</button>
+                  <button type="button" class="ghost-btn" id="workspaceNext">下一页</button>
                 </div>
               </div>
             </div>
@@ -360,22 +350,28 @@
 
       
       <!-- Layout optimization note: aligned with 2号人事部 admin information density and control spacing; business logic unchanged (employee) -->
-      <section class="panel" id="employee">
+      <section class="panel page-shell-module" id="employee">
         <article class="card">
           <h3>员工名册</h3>
-          <div class="employee-shell">
-            <aside class="employee-subnav">
-              <div class="module-tabs employee-module-tabs" aria-label="员工模块子导航" data-module-scope="employee">
-                <button type="button" class="module-tab is-active" data-module="roster">员工花名册</button>
-                <button type="button" class="module-tab" data-module="archive">员工档案库</button>
-                <button type="button" class="module-tab" data-module="work-exp">工作经历</button>
-                <button type="button" class="module-tab" data-module="edu-exp">教育经历</button>
-              </div>
-            </aside>
-            <div class="employee-main">
+          <div class="module-page-header module-page-header--toolbar">
+            <div class="module-page-header__text" data-module-header-text></div>
+            <div class="module-page-header__actions admin-only" data-show-on-module="roster">
+              <button type="button" id="openEmployeeDrawer">新增员工</button>
+            </div>
+          </div>
+          <div class="module-tabs" aria-label="员工模块子导航" data-module-scope="employee">
+            <button type="button" class="module-tab is-active" data-module="roster">员工名册</button>
+            <button type="button" class="module-tab" data-module="archive">员工档案库</button>
+            <button type="button" class="module-tab" data-module="work-exp">工作经历</button>
+            <button type="button" class="module-tab" data-module="edu-exp">教育经历</button>
+          </div>
+
               <div class="module-view is-active" data-module-view="roster">
             <div class="toolbar">
-              <input id="employeeKeyword" placeholder="姓名 / 证件号码">
+              <div class="search-field">
+                <input id="employeeKeyword" placeholder="姓名 / 证件号码">
+                <button type="button" class="search-field-clear" aria-label="清空搜索" hidden>×</button>
+              </div>
               <select id="employeeStatusFilter">
                 <option value="">员工状态：全部</option>
                 <option value="待入职">待入职</option>
@@ -385,28 +381,17 @@
                 <option value="已离职">已离职</option>
                 <option value="异动中">异动中</option>
               </select>
-              <button id="employeeQuery">查询</button>
+              <button id="employeeQuery" class="filter-query-btn">查询</button>
               <button class="ghost-btn" id="employeeExport">导出 CSV</button>
             </div>
-            <div class="form-inline admin-only" id="employeeAddBar">
-              <input id="empName" placeholder="姓名">
-              <input id="empIdNo" placeholder="证件号码">
-              <input id="empMobile" placeholder="手机">
-              <select id="empGender"><option>男</option><option>女</option></select>
-              <select id="empStatus"><option>待入职</option><option>试用期</option><option>在职</option><option>待离职</option><option>已离职</option><option>异动中</option></select>
-              <select id="empEmploymentType"><option>灵活用工</option><option>全职</option><option>兼职</option></select>
-              <input id="empProbationEnd" type="date" title="试用期结束">
-              <input id="empHire" type="date">
-              <input id="empCity" placeholder="工作地">
-              <input id="empSocialCity" placeholder="社保城市">
-              <button id="employeeAdd">新增员工</button>
-            </div>
+            <p class="query-result-hint muted" id="employeeQueryHint" aria-live="polite"></p>
+            <div class="table-scroll-wrap">
             <div class="table-shell">
               <div class="empty-block" role="status" aria-live="polite">
-                <i class="fa fa-users empty-block-icon" aria-hidden="true"></i>
+                <i class="fa-solid fa-users empty-block-icon" aria-hidden="true"></i>
                 <p class="empty-block-title">暂无员工数据</p>
-                <p class="empty-block-desc">调整筛选条件或点击下方按钮新增员工</p>
-                <button type="button" class="btn btn-secondary" id="employeeAddFromEmpty">新增员工</button>
+                <p class="empty-block-desc">调整筛选条件，或使用页面上方「新增员工」、点击下方快捷创建</p>
+                <button type="button" class="empty-block-action admin-only" id="employeeAddFromEmpty">新增员工</button>
               </div>
             <table>
               <thead>
@@ -415,73 +400,98 @@
               <tbody id="employeeRows"></tbody>
             </table>
             </div>
+            </div>
             <div class="table-footer">
-              <span class="muted">没有找到匹配的记录时显示空状态</span>
-              <button class="ghost-btn" id="openDetailDrawer">查看员工详情样例</button>
+              <span class="muted">在列表中选中员工后可查看详情与办理手续</span>
+              <button type="button" class="ghost-btn admin-only" id="openDetailDrawer">打开详情抽屉（演示）</button>
             </div>
               </div>
 
               <div class="module-view" data-module-view="archive">
+            <div class="toolbar">
+              <input placeholder="搜索员工姓名 / 证件号码">
+              <select><option>档案状态：全部</option><option>完整</option><option>待补充</option></select>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
+            </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
             <div class="metric-strip">
               <div class="metric-chip"><span>档案完整率</span><strong>92%</strong></div>
               <div class="metric-chip"><span>待补充档案</span><strong>11</strong></div>
               <div class="metric-chip"><span>本周更新</span><strong>27</strong></div>
             </div>
+            <div class="table-scroll-wrap">
+            <div class="table-shell" data-demo-static>
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-folder-open empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无档案记录</p>
+                <p class="empty-block-desc">调整筛选条件后重新查询</p>
+              </div>
             <table>
               <thead>
                 <tr><th>姓名</th><th>证件号码</th><th>档案状态</th><th>学历</th><th>联系方式</th><th>紧急联系人</th><th>更新时间</th></tr>
               </thead>
-              <tbody>
-                <tr><td>胡寿文</td><td>360102198908093212</td><td><span class="status status-success">完整</span></td><td>本科</td><td>13812340001</td><td>胡建华</td><td>2026-04-21</td></tr>
-                <tr><td>吴振辉</td><td>310101199511213456</td><td><span class="status status-pending">待补充</span></td><td>大专</td><td>13912340002</td><td>吴艳</td><td>2026-04-20</td></tr>
-                <tr><td>李娜</td><td>440105199408084785</td><td><span class="status status-success">完整</span></td><td>本科</td><td>13712340003</td><td>李海</td><td>2026-04-18</td></tr>
-              </tbody>
+              <tbody data-demo-table="archive"></tbody>
             </table>
+            </div>
+            </div>
               </div>
 
               <div class="module-view" data-module-view="work-exp">
             <div class="toolbar">
               <input placeholder="搜索员工姓名/公司">
               <select><option>在职状态：全部</option><option>在职</option><option>离职</option></select>
-              <button>查询</button>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
             </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
+            <div class="table-scroll-wrap">
+            <div class="table-shell" data-demo-static>
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-briefcase empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无工作经历</p>
+                <p class="empty-block-desc">调整筛选条件后重新查询</p>
+              </div>
             <table>
               <thead>
                 <tr><th>姓名</th><th>公司名称</th><th>岗位</th><th>开始时间</th><th>结束时间</th><th>工作年限</th><th>证明材料</th></tr>
               </thead>
-              <tbody>
-                <tr><td>胡寿文</td><td>上海智辰科技</td><td>HRBP</td><td>2021-03</td><td>2024-08</td><td>3年5个月</td><td>已上传</td></tr>
-                <tr><td>吴振辉</td><td>沪上服务外包</td><td>人事专员</td><td>2019-07</td><td>2023-02</td><td>3年7个月</td><td>已上传</td></tr>
-              </tbody>
+              <tbody data-demo-table="work-exp"></tbody>
             </table>
+            </div>
+            </div>
               </div>
 
               <div class="module-view" data-module-view="edu-exp">
             <div class="toolbar">
               <input placeholder="搜索员工姓名/学校">
               <select><option>学历层级：全部</option><option>专科</option><option>本科</option><option>硕士</option></select>
-              <button>查询</button>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
             </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
+            <div class="table-scroll-wrap">
+            <div class="table-shell" data-demo-static>
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-graduation-cap empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无教育经历</p>
+                <p class="empty-block-desc">调整筛选条件后重新查询</p>
+              </div>
             <table>
               <thead>
                 <tr><th>姓名</th><th>学校</th><th>专业</th><th>学历</th><th>入学时间</th><th>毕业时间</th><th>认证状态</th></tr>
               </thead>
-              <tbody>
-                <tr><td>胡寿文</td><td>华东理工大学</td><td>工商管理</td><td>本科</td><td>2013-09</td><td>2017-06</td><td><span class="status status-success">已认证</span></td></tr>
-                <tr><td>吴振辉</td><td>上海开放大学</td><td>人力资源管理</td><td>专科</td><td>2014-09</td><td>2017-06</td><td><span class="status status-pending">待复核</span></td></tr>
-              </tbody>
+              <tbody data-demo-table="edu-exp"></tbody>
             </table>
-              </div>
             </div>
-          </div>
+            </div>
+              </div>
         </article>
       </section>
 
       
       <!-- Layout optimization note: aligned with 2号人事部 admin information density and control spacing; business logic unchanged (organization) -->
-      <section class="panel" id="organization">
+      <section class="panel page-shell-module" id="organization">
         <article class="card">
           <h3>组织架构</h3>
+          <div class="module-page-header"><div class="module-page-header__text" data-module-header-text></div></div>
           <div class="module-tabs" aria-label="组织模块子导航" data-module-scope="organization">
             <button type="button" class="module-tab is-active" data-module="org-tree">组织管理</button>
             <button type="button" class="module-tab" data-module="org-post">岗位管理</button>
@@ -490,6 +500,13 @@
           </div>
 
           <div class="module-view is-active" data-module-view="org-tree">
+            <div class="toolbar">
+              <input placeholder="搜索组织 / 部门">
+              <select><option>组织层级：全部</option><option>集团总部</option><option>华东大区</option><option>华南大区</option><option>共享服务中心</option></select>
+              <select><option>状态：全部</option><option>启用</option><option>停用</option></select>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
+            </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
             <div class="policy-grid">
               <div><span>集团总部</span><strong>人力资源部 / 财务部 / 法务部</strong></div>
               <div><span>华东大区</span><strong>上海、杭州、苏州交付团队</strong></div>
@@ -499,86 +516,172 @@
           </div>
 
           <div class="module-view" data-module-view="org-post">
+            <div class="toolbar">
+              <input placeholder="搜索岗位 / 部门">
+              <select><option>编制状态：全部</option><option>招聘中</option><option>已满编</option></select>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
+            </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
+            <div class="table-scroll-wrap">
+            <div class="table-shell" data-demo-static>
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-briefcase empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无岗位数据</p>
+                <p class="empty-block-desc">岗位编制信息将显示在此处</p>
+              </div>
             <table>
               <thead><tr><th>岗位名称</th><th>所属部门</th><th>编制数</th><th>在岗人数</th><th>缺口</th><th>状态</th></tr></thead>
-              <tbody>
-                <tr><td>人事专员</td><td>人力资源部</td><td>8</td><td>6</td><td>2</td><td><span class="status status-pending">招聘中</span></td></tr>
-                <tr><td>薪酬专员</td><td>共享服务中心</td><td>4</td><td>4</td><td>0</td><td><span class="status status-success">已满编</span></td></tr>
-                <tr><td>社保运营</td><td>共享服务中心</td><td>5</td><td>4</td><td>1</td><td><span class="status status-pending">招聘中</span></td></tr>
-              </tbody>
+              <tbody data-demo-table="org-post"></tbody>
             </table>
+            </div>
+            </div>
           </div>
 
           <div class="module-view" data-module-view="org-duty">
+            <div class="toolbar">
+              <input placeholder="搜索职务名称">
+              <select><option>职务序列：全部</option><option>人力管理</option><option>薪酬福利</option><option>人才招聘</option></select>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
+            </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
+            <div class="table-scroll-wrap">
+            <div class="table-shell" data-demo-static>
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-id-badge empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无职务数据</p>
+                <p class="empty-block-desc">职务序列信息将显示在此处</p>
+              </div>
             <table>
               <thead><tr><th>职务名称</th><th>职务序列</th><th>职务层级</th><th>任职人数</th><th>说明</th></tr></thead>
-              <tbody>
-                <tr><td>HR主管</td><td>人力管理</td><td>M2</td><td>3</td><td>负责区域人事运营</td></tr>
-                <tr><td>薪酬经理</td><td>薪酬福利</td><td>M3</td><td>1</td><td>负责薪酬核算与发放</td></tr>
-                <tr><td>招聘经理</td><td>人才招聘</td><td>M3</td><td>1</td><td>负责招聘策略与执行</td></tr>
-              </tbody>
+              <tbody data-demo-table="org-duty"></tbody>
             </table>
+            </div>
+            </div>
           </div>
 
           <div class="module-view" data-module-view="org-rank">
+            <div class="toolbar">
+              <input placeholder="搜索职级 / 名称">
+              <select><option>职级类型：全部</option><option>P 序列</option><option>M 序列</option></select>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
+            </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
+            <div class="table-scroll-wrap">
+            <div class="table-shell" data-demo-static>
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-layer-group empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无职级数据</p>
+                <p class="empty-block-desc">职级带宽信息将显示在此处</p>
+              </div>
             <table>
               <thead><tr><th>职级</th><th>职级名称</th><th>人数</th><th>薪资带宽</th><th>晋升条件</th></tr></thead>
-              <tbody>
-                <tr><td>P4</td><td>资深专员</td><td>16</td><td>12k-18k</td><td>连续两期绩效A</td></tr>
-                <tr><td>P5</td><td>专家</td><td>8</td><td>18k-28k</td><td>关键项目负责人</td></tr>
-                <tr><td>M2</td><td>主管</td><td>5</td><td>20k-32k</td><td>带团队且达成目标</td></tr>
-              </tbody>
+              <tbody data-demo-table="org-rank"></tbody>
             </table>
+            </div>
+            </div>
           </div>
         </article>
       </section>
 
       
       <!-- Layout optimization note: aligned with 2号人事部 admin information density and control spacing; business logic unchanged (company) -->
-      <section class="panel" id="company">
+      <section class="panel page-shell-module" id="company">
         <article class="card">
           <h3>企业管理</h3>
+          <div class="module-page-header module-page-header--toolbar">
+            <div class="module-page-header__text" data-module-header-text></div>
+            <div class="module-page-header__actions admin-only">
+              <button type="button" id="openCompanyDrawer">新增企业</button>
+            </div>
+          </div>
           <div class="metric-strip">
             <div class="metric-chip"><span>合作中企业</span><strong>26</strong></div>
             <div class="metric-chip"><span>本月续签</span><strong>4</strong></div>
             <div class="metric-chip"><span>待跟进</span><strong>3</strong></div>
           </div>
-          <div class="toolbar admin-only" id="companyAddBar">
-            <input id="coName" placeholder="企业名称">
-            <input id="coCode" placeholder="客户编号">
-            <input id="coCity" placeholder="所在城市">
-            <input id="coService" placeholder="服务类型">
-            <select id="coStatus"><option>合作中</option><option>待续签</option><option>已终止</option></select>
-            <button id="companyAdd">新增企业</button>
+          <div class="toolbar">
+            <div class="search-field">
+              <input id="companyKeyword" placeholder="企业名称 / 客户编号 / 城市">
+              <button type="button" class="search-field-clear" aria-label="清空搜索" hidden>×</button>
+            </div>
+            <select id="companyStatusFilter">
+              <option value="">合作状态：全部</option>
+              <option value="合作中">合作中</option>
+              <option value="暂停合作">暂停合作</option>
+              <option value="已终止">已终止</option>
+            </select>
+            <button type="button" class="filter-query-btn" id="companyQuery">查询</button>
           </div>
+          <p class="query-result-hint muted" id="companyQueryHint" aria-live="polite"></p>
+          <div class="table-scroll-wrap">
+          <div class="table-shell">
+            <div class="empty-block" role="status" aria-live="polite">
+              <i class="fa-solid fa-building empty-block-icon" aria-hidden="true"></i>
+              <p class="empty-block-title">暂无企业数据</p>
+              <p class="empty-block-desc">可使用页面上方「新增企业」，或点击下方快捷创建</p>
+              <button type="button" class="empty-block-action admin-only" id="companyAddFromEmpty">新增企业</button>
+            </div>
           <table>
             <thead>
               <tr><th>企业名称</th><th>客户编号</th><th>所在城市</th><th>服务类型</th><th>合作状态</th><th class="admin-only">操作</th></tr>
             </thead>
             <tbody id="companyRows"></tbody>
           </table>
+          </div>
+          </div>
         </article>
       </section>
 
       
       <!-- Layout optimization note: aligned with 2号人事部 admin information density and control spacing; business logic unchanged (social) -->
-      <section class="panel" id="social">
+      <section class="panel page-shell-module" id="social">
         <article class="card">
-          <h3>社保 / 公积金办理</h3>
-          <div class="module-tabs" aria-label="考勤社保模块子导航" data-module-scope="social">
+          <h3>考勤管理</h3>
+          <div class="module-page-header"><div class="module-page-header__text" data-module-header-text></div></div>
+          <div class="module-tabs" aria-label="考勤模块子导航" data-module-scope="social">
             <button type="button" class="module-tab is-active" data-module="daily-attend">每日考勤</button>
             <button type="button" class="module-tab" data-module="monthly-attend">月考勤汇总</button>
             <button type="button" class="module-tab" data-module="attend-report">考勤报表</button>
             <button type="button" class="module-tab" data-module="attend-setting">考勤设置</button>
+            <button type="button" class="module-tab" data-module="social-insurance">社保办理</button>
           </div>
 
           <div class="module-view is-active" data-module-view="daily-attend">
             <div class="toolbar">
+              <input type="date" value="2026-04-21">
+              <select><option>考勤组：全部</option><option>标准班</option><option>弹性班</option></select>
+              <select><option>打卡状态：全部</option><option>正常</option><option>迟到</option><option>缺卡</option></select>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
+            </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
+            <div class="metric-strip">
+              <div class="metric-chip"><span>今日应出勤</span><strong>128</strong></div>
+              <div class="metric-chip"><span>今日实出勤</span><strong>124</strong></div>
+              <div class="metric-chip"><span>异常待处理</span><strong>7</strong></div>
+            </div>
+            <div class="table-scroll-wrap">
+            <div class="table-shell" data-demo-static>
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-calendar-check empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无考勤记录</p>
+                <p class="empty-block-desc">调整筛选条件后重新查询</p>
+              </div>
+            <table>
+              <thead><tr><th>姓名</th><th>部门</th><th>上班打卡</th><th>下班打卡</th><th>工时</th><th>状态</th></tr></thead>
+              <tbody data-demo-table="daily-attend"></tbody>
+            </table>
+            </div>
+            </div>
+          </div>
+
+          <div class="module-view" data-module-view="social-insurance">
+            <div class="toolbar">
               <select><option>所属年份：2026</option><option>2025</option></select>
               <select id="socialCity"><option>上海市</option><option>重庆市</option><option>广州市</option></select>
               <select><option>生效状态：全部</option><option>生效</option><option>未生效</option></select>
-              <button>查询</button>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
             </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
             <div class="metric-strip">
               <div class="metric-chip"><span>当月应缴人数</span><strong>128</strong></div>
               <div class="metric-chip"><span>异常待处理</span><strong>7</strong></div>
@@ -592,33 +695,63 @@
           </div>
 
           <div class="module-view" data-module-view="monthly-attend">
+            <div class="toolbar">
+              <input type="month" value="2026-04">
+              <select><option>考勤组：全部</option><option>标准班</option><option>弹性班</option></select>
+              <select><option>部门：全部</option><option>共享服务中心</option><option>华东交付</option><option>招聘中心</option></select>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
+            </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
+            <div class="table-scroll-wrap">
+            <div class="table-shell" data-demo-static>
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-calendar-check empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无月考勤汇总</p>
+                <p class="empty-block-desc">选择月份后查询汇总数据</p>
+              </div>
             <table>
               <thead><tr><th>姓名</th><th>应出勤</th><th>实出勤</th><th>迟到</th><th>早退</th><th>请假</th><th>加班</th></tr></thead>
-              <tbody>
-                <tr><td>胡寿文</td><td>22</td><td>22</td><td>0</td><td>0</td><td>0</td><td>6h</td></tr>
-                <tr><td>吴振辉</td><td>22</td><td>21</td><td>1</td><td>0</td><td>0.5</td><td>2h</td></tr>
-                <tr><td>李娜</td><td>22</td><td>20</td><td>0</td><td>1</td><td>1.5</td><td>0h</td></tr>
-              </tbody>
+              <tbody data-demo-table="monthly-attend"></tbody>
             </table>
+            </div>
+            </div>
           </div>
 
           <div class="module-view" data-module-view="attend-report">
+            <div class="toolbar">
+              <input type="month" value="2026-04">
+              <select><option>报表维度：按部门</option><option>按考勤组</option><option>按职级</option></select>
+              <select><option>部门：全部</option><option>共享服务中心</option><option>招聘中心</option><option>华东交付</option></select>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
+            </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
             <div class="metric-strip">
               <div class="metric-chip"><span>出勤率</span><strong>97.1%</strong></div>
               <div class="metric-chip"><span>迟到率</span><strong>1.8%</strong></div>
               <div class="metric-chip"><span>缺勤率</span><strong>1.1%</strong></div>
             </div>
+            <div class="table-scroll-wrap">
+            <div class="table-shell" data-demo-static>
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-chart-column empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无考勤报表数据</p>
+                <p class="empty-block-desc">调整筛选条件后重新查询</p>
+              </div>
             <table>
               <thead><tr><th>部门</th><th>人数</th><th>出勤率</th><th>迟到次数</th><th>请假天数</th></tr></thead>
-              <tbody>
-                <tr><td>共享服务中心</td><td>34</td><td>98.2%</td><td>4</td><td>5.5</td></tr>
-                <tr><td>招聘中心</td><td>18</td><td>96.8%</td><td>6</td><td>3.0</td></tr>
-                <tr><td>华东交付</td><td>27</td><td>95.9%</td><td>8</td><td>7.0</td></tr>
-              </tbody>
+              <tbody data-demo-table="attend-report"></tbody>
             </table>
+            </div>
+            </div>
           </div>
 
           <div class="module-view" data-module-view="attend-setting">
+            <div class="toolbar">
+              <select><option>考勤组：全部</option><option>标准班</option><option>弹性班</option><option>综合工时</option></select>
+              <select><option>规则状态：全部</option><option>生效中</option><option>待生效</option></select>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
+            </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
             <div class="policy-grid">
               <div><span>考勤组管理</span><strong>标准班 / 弹性班 / 综合工时</strong></div>
               <div><span>打卡方式</span><strong>小程序打卡 / GPS / WiFi</strong></div>
@@ -631,149 +764,183 @@
 
       
       <!-- Layout optimization note: aligned with 2号人事部 admin information density and control spacing; business logic unchanged (contract) -->
-      <section class="panel" id="contract">
+      <section class="panel page-shell-module" id="contract">
         <article class="card">
           <h3>劳动合同</h3>
-          <div class="toolbar admin-only contract-form-toolbar">
-            <select id="ctTarget" title="用章主体/印章归属">
-              <option value="">用章对象（选）</option>
-              <option>用工企业</option>
-              <option>派遣单位</option>
-              <option>人力资源公司</option>
-              <option>集团总部</option>
-            </select>
-            <select id="ctSeal" title="实体印章类型（常见 HR 平台选项）">
-              <option value="">印章类型（选）</option>
-              <option>公章</option>
-              <option>合同专用章</option>
-              <option>财务专用章</option>
-              <option>人事专用章</option>
-              <option>法人章</option>
-              <option>发票专用章</option>
-              <option>电子印章（CA）</option>
-            </select>
-            <select id="ctType">
-              <option value="">用章类型 / 材料性质（选）</option>
-              <option>劳动合同</option>
-              <option>保密协议</option>
-              <option>竞业限制协议</option>
-              <option>解除/终止协议</option>
-              <option>入职材料包</option>
-              <option>离职证明</option>
-              <option>其他协议</option>
-            </select>
-            <select id="ctMaterial">
-              <option value="">签章材料名称（选）</option>
-              <option>标准劳动合同（全日制）</option>
-              <option>标准劳动合同（派遣）</option>
-              <option>保密协议模板 V1</option>
-              <option>保密协议模板 V2</option>
-              <option>竞业限制补充协议</option>
-              <option>协商解除劳动合同协议</option>
-            </select>
-            <input id="ctName" placeholder="员工姓名">
-            <input id="ctIdNo" placeholder="证件号">
-            <select id="ctEmpSt">
-              <option value="">入离职状态（选）</option>
-              <option>入职</option>
-              <option>在职</option>
-              <option>转正</option>
-              <option>离职</option>
-            </select>
-            <select id="ctSignSt">
-              <option value="">电子签状态（选）</option>
-              <option>待签署</option>
-              <option>签署中</option>
-              <option>已签署</option>
-              <option>已驳回</option>
-            </select>
-            <input id="ctDone" type="date" title="办结日期">
-            <input id="ctEnd" type="date" title="合同到期日">
-            <button id="contractAdd">新增记录</button>
+          <div class="module-page-header module-page-header--toolbar">
+            <div class="module-page-header__text" data-module-header-text></div>
+            <div class="module-page-header__actions admin-only">
+              <button type="button" id="openContractDrawer">新增记录</button>
+            </div>
           </div>
+          <div class="toolbar">
+            <div class="search-field">
+              <input id="contractKeyword" placeholder="姓名 / 证件号 / 材料名称">
+              <button type="button" class="search-field-clear" aria-label="清空搜索" hidden>×</button>
+            </div>
+            <select id="contractStatusFilter">
+              <option value="">签署状态：全部</option>
+              <option value="已签署">已签署</option>
+              <option value="待签署">待签署</option>
+              <option value="已拒签">已拒签</option>
+            </select>
+            <button type="button" class="filter-query-btn" id="contractQuery">查询</button>
+          </div>
+          <p class="query-result-hint muted" id="contractQueryHint" aria-live="polite"></p>
+          <div class="table-scroll-wrap">
+          <div class="table-shell">
+            <div class="empty-block" role="status" aria-live="polite">
+              <i class="fa-solid fa-file-contract empty-block-icon" aria-hidden="true"></i>
+              <p class="empty-block-title">暂无合同记录</p>
+              <p class="empty-block-desc">可使用页面上方「新增记录」，或点击下方快捷创建</p>
+              <button type="button" class="empty-block-action admin-only" id="contractAddFromEmpty">新增记录</button>
+            </div>
           <table>
             <thead>
               <tr><th>用章对象</th><th>用章类型</th><th>签章材料名称</th><th>姓名</th><th>证件号码</th><th>入离职状态</th><th>电子签签署状态</th><th>办结时间</th><th>合同到期</th><th class="admin-only">操作</th></tr>
             </thead>
             <tbody id="contractRows"></tbody>
           </table>
+          </div>
+          </div>
         </article>
       </section>
 
       
       <!-- Layout optimization note: aligned with 2号人事部 admin information density and control spacing; business logic unchanged (approval) -->
-      <section class="panel" id="approval">
+      <section class="panel page-shell-module" id="approval">
         <article class="card">
-          <h3>审批中心</h3>
-          <div class="module-tabs" aria-label="审批与流程模块子导航" data-module-scope="approval">
-            <button type="button" class="module-tab is-active" data-module="pending-onboard">待入职</button>
+          <h3>人事流程</h3>
+          <div class="module-page-header"><div class="module-page-header__text" data-module-header-text></div></div>
+          <div class="module-tabs" aria-label="人事流程模块子导航" data-module-scope="approval">
+            <button type="button" class="module-tab is-active" data-module="pending-approval">待处理审批</button>
             <button type="button" class="module-tab" data-module="pending-offboard">待离职</button>
             <button type="button" class="module-tab" data-module="care-notice">关怀通知</button>
             <button type="button" class="module-tab" data-module="interview-schedule">面试日程</button>
           </div>
-          <div class="module-view is-active" data-module-view="pending-onboard">
+          <div class="module-view is-active" data-module-view="pending-approval">
             <div class="metric-strip">
               <div class="metric-chip"><span>待处理审批</span><strong>12</strong></div>
               <div class="metric-chip"><span>今日完成</span><strong>9</strong></div>
               <div class="metric-chip"><span>超时单据</span><strong>2</strong></div>
             </div>
+            <div class="toolbar">
+              <select id="approvalTypeFilter">
+                <option value="">审批类型：全部</option>
+                <option value="增员申请">增员申请</option>
+                <option value="合同盖章">合同盖章</option>
+                <option value="离职申请">离职申请</option>
+              </select>
+              <select id="approvalStatusFilter">
+                <option value="">审批状态：全部</option>
+                <option value="已提交">已提交</option>
+                <option value="已确认">已确认</option>
+                <option value="已受理">已受理</option>
+                <option value="已驳回">已驳回</option>
+              </select>
+              <button type="button" class="filter-query-btn" id="approvalQuery">查询</button>
+            </div>
+            <p class="query-result-hint muted" id="approvalQueryHint" aria-live="polite"></p>
+            <div class="table-scroll-wrap">
+            <div class="table-shell">
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-list-check empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无待处理审批</p>
+                <p class="empty-block-desc">当前没有需要处理的审批单据</p>
+              </div>
             <table>
               <thead>
                 <tr><th>审批单号</th><th>类型</th><th>申请人</th><th>提交时间</th><th>状态</th><th>处理人</th><th class="admin-only">操作</th></tr>
               </thead>
               <tbody id="approvalRows"></tbody>
             </table>
+            </div>
+            </div>
           </div>
 
           <div class="module-view" data-module-view="pending-offboard">
+            <div class="toolbar">
+              <input placeholder="搜索姓名 / 部门">
+              <select><option>审批状态：全部</option><option>待审批</option><option>已通过</option><option>已驳回</option></select>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
+            </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
+            <div class="table-scroll-wrap">
+            <div class="table-shell" data-demo-static>
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-user-minus empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无待离职记录</p>
+                <p class="empty-block-desc">当前没有进行中的离职办理单据</p>
+              </div>
             <table>
               <thead><tr><th>姓名</th><th>部门</th><th>申请日期</th><th>离职类型</th><th>交接状态</th><th>审批状态</th></tr></thead>
-              <tbody>
-                <tr><td>周晓梅</td><td>华南交付</td><td>2026-04-20</td><td>主动离职</td><td>进行中</td><td><span class="status status-pending">待审批</span></td></tr>
-                <tr><td>陈建国</td><td>共享服务中心</td><td>2026-04-18</td><td>退休</td><td>已完成</td><td><span class="status status-success">已通过</span></td></tr>
-              </tbody>
+              <tbody data-demo-table="pending-offboard"></tbody>
             </table>
+            </div>
+            </div>
           </div>
 
           <div class="module-view" data-module-view="care-notice">
+            <div class="toolbar">
+              <input placeholder="搜索通知标题">
+              <select><option>发送状态：全部</option><option>已发送</option><option>草稿</option><option>已撤回</option></select>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
+            </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
+            <div class="table-scroll-wrap">
+            <div class="table-shell" data-demo-static>
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-heart empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无关怀通知</p>
+                <p class="empty-block-desc">可在此查看已发送的员工关怀消息</p>
+              </div>
             <table>
               <thead><tr><th>通知标题</th><th>对象范围</th><th>发送时间</th><th>阅读率</th><th>状态</th></tr></thead>
-              <tbody>
-                <tr><td>五一节前关怀提醒</td><td>全员</td><td>2026-04-22 10:00</td><td>86%</td><td><span class="status status-success">已发送</span></td></tr>
-                <tr><td>新员工入职关怀</td><td>近30天入职员工</td><td>2026-04-21 14:30</td><td>72%</td><td><span class="status status-success">已发送</span></td></tr>
-              </tbody>
+              <tbody data-demo-table="care-notice"></tbody>
             </table>
+            </div>
+            </div>
           </div>
 
           <div class="module-view" data-module-view="interview-schedule">
+            <div class="toolbar">
+              <input type="date" value="2026-04-24">
+              <select><option>面试状态：全部</option><option>待面试</option><option>已完成</option><option>已取消</option></select>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
+            </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
+            <div class="table-scroll-wrap">
+            <div class="table-shell" data-demo-static>
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-calendar-day empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无面试日程</p>
+                <p class="empty-block-desc">可在此查看候选人面试安排</p>
+              </div>
             <table>
               <thead><tr><th>候选人</th><th>应聘岗位</th><th>面试轮次</th><th>面试时间</th><th>面试官</th><th>结果</th></tr></thead>
-              <tbody>
-                <tr><td>刘晨</td><td>招聘专员</td><td>二面</td><td>2026-04-24 10:00</td><td>王雯</td><td><span class="status status-pending">待面试</span></td></tr>
-                <tr><td>张敏</td><td>社保运营</td><td>终面</td><td>2026-04-24 15:30</td><td>陈涛</td><td><span class="status status-pending">待面试</span></td></tr>
-              </tbody>
+              <tbody data-demo-table="interview-schedule"></tbody>
             </table>
+            </div>
+            </div>
           </div>
         </article>
       </section>
 
       
       <!-- Layout optimization note: aligned with 2号人事部 admin information density and control spacing; business logic unchanged (invoice) -->
-      <section class="panel" id="invoice">
+      <section class="panel page-shell-module" id="invoice">
         <article class="card">
           <h3>发票查询</h3>
+          <div class="module-page-header module-page-header--toolbar">
+            <div class="module-page-header__text" data-module-header-text></div>
+            <div class="module-page-header__actions admin-only">
+              <button type="button" id="openInvoiceDrawer">新增发票</button>
+            </div>
+          </div>
           <div class="metric-strip">
             <div class="metric-chip"><span>本月开票金额</span><strong>¥ 218,400</strong></div>
             <div class="metric-chip"><span>未开票笔数</span><strong>5</strong></div>
             <div class="metric-chip"><span>待下载</span><strong>8</strong></div>
-          </div>
-          <div class="toolbar admin-only">
-            <input id="invNo" placeholder="发票编号">
-            <input id="invCustomer" placeholder="客户名称">
-            <input id="invAmount" placeholder="金额">
-            <input id="invMonth" type="month">
-            <select id="invStatus"><option>未开票</option><option>已开票</option></select>
-            <button id="invoiceAdd">新增发票</button>
           </div>
           <div class="toolbar">
             <input id="invFilterMonth" type="month">
@@ -782,15 +949,26 @@
               <option value="已开票">已开票</option>
               <option value="未开票">未开票</option>
             </select>
-            <button id="invoiceQuery">查询</button>
+            <button id="invoiceQuery" class="filter-query-btn">查询</button>
             <button class="ghost-btn" id="invoiceExport">导出 CSV</button>
           </div>
+          <p class="query-result-hint muted" id="invoiceQueryHint" aria-live="polite"></p>
+          <div class="table-scroll-wrap">
+          <div class="table-shell">
+            <div class="empty-block" role="status" aria-live="polite">
+              <i class="fa-regular fa-file-lines empty-block-icon" aria-hidden="true"></i>
+              <p class="empty-block-title">暂无发票记录</p>
+              <p class="empty-block-desc">调整筛选条件，或使用页面上方「新增发票」、点击下方快捷创建</p>
+              <button type="button" class="empty-block-action admin-only" id="invoiceAddFromEmpty">新增发票</button>
+            </div>
           <table>
             <thead>
               <tr><th>发票编号</th><th>客户名称</th><th>金额</th><th>月份</th><th>状态</th><th>下载</th><th class="admin-only">操作</th></tr>
             </thead>
             <tbody id="invoiceRows"></tbody>
           </table>
+          </div>
+          </div>
           <div class="table-footer">
             <span class="muted">支持按月份批量导出</span>
           </div>
@@ -799,33 +977,58 @@
 
       
       <!-- Layout optimization note: aligned with 2号人事部 admin information density and control spacing; business logic unchanged (retire) -->
-      <section class="panel" id="retire">
+      <section class="panel page-shell-module" id="retire">
         <article class="card">
           <h3>退休办理</h3>
-          <div class="toolbar">
-            <button class="ghost-btn">下载退休办理模板</button>
-            <button class="ghost-btn">下载退休查询模板</button>
-            <button id="openTaskDialog">新建办理任务</button>
+          <div class="module-page-header module-page-header--toolbar">
+            <div class="module-page-header__text" data-module-header-text></div>
+            <div class="module-page-header__actions">
+              <button id="openTaskDialog">新建办理任务</button>
+            </div>
           </div>
+          <div class="toolbar">
+            <select id="retireStatusFilter">
+              <option value="">办理状态：全部</option>
+              <option value="待提交">待提交</option>
+              <option value="办理中">办理中</option>
+              <option value="已完成">已完成</option>
+            </select>
+            <button type="button" class="filter-query-btn" id="retireQuery">查询</button>
+            <button type="button" class="ghost-btn">下载退休办理模板</button>
+            <button type="button" class="ghost-btn">下载退休查询模板</button>
+          </div>
+          <p class="query-result-hint muted" id="retireQueryHint" aria-live="polite"></p>
+          <div class="table-scroll-wrap">
+          <div class="table-shell">
+            <div class="empty-block" role="status" aria-live="polite">
+              <i class="fa-solid fa-hourglass-half empty-block-icon" aria-hidden="true"></i>
+              <p class="empty-block-title">暂无退休办理记录</p>
+              <p class="empty-block-desc">可使用页面上方「新建办理任务」，或点击下方快捷创建</p>
+              <button type="button" class="empty-block-action" id="retireAddFromEmpty">新建办理任务</button>
+            </div>
           <table>
             <thead>
               <tr><th>姓名</th><th>证件号码</th><th>城市</th><th>办理状态</th><th>提交时间</th><th>备注</th></tr>
             </thead>
             <tbody id="retireRows"></tbody>
           </table>
+          </div>
+          </div>
         </article>
       </section>
 
       
       <!-- Layout optimization note: aligned with 2号人事部 admin information density and control spacing; business logic unchanged (policy) -->
-      <section class="panel" id="policy">
+      <section class="panel page-shell-module" id="policy">
         <article class="card">
           <h3>城市政策</h3>
+          <div class="module-page-header"><div class="module-page-header__text" data-module-header-text></div></div>
           <div class="toolbar">
             <select id="policyCity"><option>上海市</option><option>重庆市</option><option>深圳市</option><option>广州市</option></select>
             <select id="policyCategory"></select>
-            <button>查看</button>
+            <button type="button" class="filter-query-btn" id="policyQuery">查询</button>
           </div>
+          <p class="query-result-hint muted" id="policyQueryHint" aria-live="polite"></p>
           <div class="policy-grid">
             <div><span>社保缴费基数</span><strong id="policyBase">最低基数 / 最高基数 / 其它基数</strong></div>
             <div><span>公积金缴费比例</span><strong id="policyFund">重庆公积金（企业7%，个人7%）</strong></div>
@@ -837,9 +1040,15 @@
 
       
       <!-- Layout optimization note: aligned with 2号人事部 admin information density and control spacing; business logic unchanged (import) -->
-      <section class="panel" id="import">
+      <section class="panel page-shell-module" id="import">
         <article class="card">
           <h3>薪资数据上传</h3>
+          <div class="module-page-header module-page-header--toolbar">
+            <div class="module-page-header__text" data-module-header-text></div>
+            <div class="module-page-header__actions" data-show-on-module="salary-slip" hidden>
+              <button type="button" id="salarySlipBatchSend">批量发放</button>
+            </div>
+          </div>
           <div class="module-tabs" aria-label="薪资模块子导航" data-module-scope="import">
             <button type="button" class="module-tab is-active" data-module="salary-file">薪资档案</button>
             <button type="button" class="module-tab" data-module="salary-slip">发放工资条</button>
@@ -847,44 +1056,67 @@
             <button type="button" class="module-tab" data-module="duty-roster">排班表</button>
           </div>
           <div class="module-view is-active" data-module-view="salary-file">
-            <p class="muted">模板字段：姓名、证件类型、证件号码、手机号码、应发工资、发薪城市、银行卡号等。</p>
+            <p class="module-page-desc muted">模板字段：姓名、证件类型、证件号码、手机号码、应发工资、发薪城市、银行卡号等。</p>
             <div class="metric-strip">
               <div class="metric-chip"><span>待校验文件</span><strong>2</strong></div>
               <div class="metric-chip"><span>本月已发工资条</span><strong>116</strong></div>
               <div class="metric-chip"><span>发放成功率</span><strong>99.2%</strong></div>
             </div>
             <div class="toolbar">
-              <button>下载模板</button>
+              <button type="button" class="ghost-btn" id="salaryTemplateDownload">下载模板</button>
               <input id="salaryUpload" type="file" accept=".xlsx,.xls,.csv">
-              <button id="validateUpload">上传并校验</button>
+              <button type="button" class="filter-query-btn" id="validateUpload">上传并校验</button>
             </div>
             <div class="upload-result" id="uploadResult">
               <span class="muted">尚未选择文件</span>
             </div>
+            <div class="table-scroll-wrap">
+            <div class="table-shell">
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-upload empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无薪资预览数据</p>
+                <p class="empty-block-desc">选择文件并点击「上传并校验」后在此预览</p>
+              </div>
             <table>
               <thead>
                 <tr><th>姓名</th><th>证件类型</th><th>证件号码</th><th>手机号码</th><th>应发工资</th><th>发薪城市</th><th>银行卡号</th></tr>
               </thead>
               <tbody id="importRows"></tbody>
             </table>
+            </div>
+            </div>
           </div>
 
           <div class="module-view" data-module-view="salary-slip">
             <div class="toolbar">
-              <input placeholder="选择发薪月份">
+              <input type="month" value="2026-04">
               <select><option>发送范围：全部在职</option><option>按部门</option><option>按人员</option></select>
-              <button>批量发放</button>
+              <select><option>发放状态：全部</option><option>已发送</option><option>待发送</option></select>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
             </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
+            <div class="table-scroll-wrap">
+            <div class="table-shell" data-demo-static>
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-money-check-dollar empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无工资条记录</p>
+                <p class="empty-block-desc">调整筛选条件后重新查询</p>
+              </div>
             <table>
               <thead><tr><th>姓名</th><th>发薪月份</th><th>应发工资</th><th>实发工资</th><th>发放状态</th><th>发送时间</th></tr></thead>
-              <tbody>
-                <tr><td>胡寿文</td><td>2026-04</td><td>15600</td><td>14892</td><td><span class="status status-success">已发送</span></td><td>2026-04-23 09:20</td></tr>
-                <tr><td>吴振辉</td><td>2026-04</td><td>18800</td><td>17864</td><td><span class="status status-pending">待发送</span></td><td>-</td></tr>
-              </tbody>
+              <tbody data-demo-table="salary-slip"></tbody>
             </table>
+            </div>
+            </div>
           </div>
 
           <div class="module-view" data-module-view="init-attend">
+            <div class="toolbar">
+              <input type="month" value="2026-05">
+              <select><option>初始化范围：全员排班组</option><option>按部门</option><option>按考勤组</option></select>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
+            </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
             <div class="policy-grid">
               <div><span>初始化范围</span><strong>2026-05 全员排班组</strong></div>
               <div><span>初始班次</span><strong>标准工时（09:00-18:00）</strong></div>
@@ -894,28 +1126,55 @@
           </div>
 
           <div class="module-view" data-module-view="duty-roster">
+            <div class="toolbar">
+              <input placeholder="搜索班组 / 负责人">
+              <select><option>排班周期：全部</option><option>周排班</option><option>月排班</option></select>
+              <button type="button" class="filter-query-btn" data-demo-query>查询</button>
+            </div>
+            <p class="query-result-hint muted" aria-live="polite"></p>
+            <div class="table-scroll-wrap">
+            <div class="table-shell" data-demo-static>
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-calendar-days empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无排班数据</p>
+                <p class="empty-block-desc">调整筛选条件后重新查询</p>
+              </div>
             <table>
               <thead><tr><th>班组</th><th>负责人</th><th>周期</th><th>人数</th><th>班次</th><th>状态</th></tr></thead>
-              <tbody>
-                <tr><td>客服班组A</td><td>王倩</td><td>周排班</td><td>12</td><td>早班/晚班</td><td><span class="status status-success">生效中</span></td></tr>
-                <tr><td>交付班组B</td><td>陈超</td><td>月排班</td><td>18</td><td>标准班</td><td><span class="status status-success">生效中</span></td></tr>
-              </tbody>
+              <tbody data-demo-table="duty-roster"></tbody>
             </table>
+            </div>
+            </div>
           </div>
         </article>
       </section>
 
       
       <!-- Layout optimization note: aligned with 2号人事部 admin information density and control spacing; business logic unchanged (reports) -->
-      <section class="panel" id="reports">
+      <section class="panel page-shell-module" id="reports">
         <article class="card">
           <h3>报表中心</h3>
+          <div class="module-page-header module-page-header--toolbar">
+            <div class="module-page-header__text" data-module-header-text></div>
+            <div class="module-page-header__actions">
+              <button type="button" class="ghost-btn" id="reportsExportDemo">导出报表</button>
+            </div>
+          </div>
           <div class="module-tabs" aria-label="报表模块子导航" data-module-scope="reports">
             <button type="button" class="module-tab is-active" data-module="hr-report">人事报表</button>
             <button type="button" class="module-tab" data-module="recruit-report">招聘报表</button>
             <button type="button" class="module-tab" data-module="employee-overview">员工概况</button>
             <button type="button" class="module-tab" data-module="year-analysis">年度分析</button>
           </div>
+          <div class="toolbar">
+            <select id="reportsPeriodFilter">
+              <option value="2026-Q2">统计周期：2026 Q2</option>
+              <option value="2026-Q1">统计周期：2026 Q1</option>
+              <option value="2025">统计周期：2025 全年</option>
+            </select>
+            <button type="button" class="filter-query-btn" id="reportsQuery">查询</button>
+          </div>
+          <p class="query-result-hint muted" id="reportsQueryHint" aria-live="polite"></p>
           <div class="module-view is-active" data-module-view="hr-report">
             <div class="metric-strip">
               <div class="metric-chip"><span>本月离职率</span><strong>2.1%</strong></div>
@@ -930,24 +1189,35 @@
           </div>
 
           <div class="module-view" data-module-view="recruit-report">
+            <div class="table-scroll-wrap">
+            <div class="table-shell" data-demo-static>
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-chart-column empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无招聘报表数据</p>
+                <p class="empty-block-desc">切换报表类型或筛选条件后重新查询</p>
+              </div>
             <table>
               <thead><tr><th>岗位</th><th>需求人数</th><th>到面人数</th><th>录用人数</th><th>转化率</th><th>平均招聘周期</th></tr></thead>
-              <tbody>
-                <tr><td>招聘专员</td><td>6</td><td>18</td><td>4</td><td>22%</td><td>12天</td></tr>
-                <tr><td>社保运营</td><td>4</td><td>9</td><td>3</td><td>33%</td><td>10天</td></tr>
-              </tbody>
+              <tbody data-demo-table="recruit-report"></tbody>
             </table>
+            </div>
+            </div>
           </div>
 
           <div class="module-view" data-module-view="employee-overview">
+            <div class="table-scroll-wrap">
+            <div class="table-shell" data-demo-static>
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-users empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无员工概况数据</p>
+                <p class="empty-block-desc">切换报表类型或筛选条件后重新查询</p>
+              </div>
             <table>
               <thead><tr><th>维度</th><th>当前值</th><th>环比</th><th>备注</th></tr></thead>
-              <tbody>
-                <tr><td>总员工数</td><td>126</td><td>+3.2%</td><td>新入职带来增长</td></tr>
-                <tr><td>在职率</td><td>93.6%</td><td>-0.4%</td><td>离职高峰后趋稳</td></tr>
-                <tr><td>平均司龄</td><td>2.8年</td><td>+0.1年</td><td>结构稳定</td></tr>
-              </tbody>
+              <tbody data-demo-table="employee-overview"></tbody>
             </table>
+            </div>
+            </div>
           </div>
 
           <div class="module-view" data-module-view="year-analysis">
@@ -956,60 +1226,199 @@
               <div class="metric-chip"><span>年度离职</span><strong>19</strong></div>
               <div class="metric-chip"><span>净增长</span><strong>23</strong></div>
             </div>
+            <div class="table-scroll-wrap">
             <table>
               <thead><tr><th>季度</th><th>招聘人数</th><th>离职人数</th><th>净增长</th><th>人力成本</th></tr></thead>
-              <tbody>
-                <tr><td>Q1</td><td>11</td><td>4</td><td>7</td><td>¥ 1,260,000</td></tr>
-                <tr><td>Q2</td><td>13</td><td>5</td><td>8</td><td>¥ 1,340,000</td></tr>
-              </tbody>
+              <tbody data-demo-table="year-analysis"></tbody>
             </table>
+            </div>
           </div>
         </article>
       </section>
 
       
       <!-- Layout optimization note: aligned with 2号人事部 admin information density and control spacing; business logic unchanged (settings) -->
-      <section class="panel" id="settings">
+      <section class="panel page-shell-module" id="settings">
         <article class="card">
           <h3>系统设置</h3>
+          <div class="module-page-header module-page-header--toolbar">
+            <div class="module-page-header__text" data-module-header-text></div>
+            <div class="module-page-header__actions">
+              <button id="settingsSave">保存设置</button>
+            </div>
+          </div>
           <div class="toolbar settings-stack">
             <label class="check-line"><input type="checkbox" id="setMfa"> 启用登录二次验证（预留）</label>
             <label class="check-line"><input type="checkbox" id="setNotify"> 启用审批流通知</label>
             <label class="check-line"><input type="checkbox" id="setPolicySync"> 自动同步社保政策（后续对接）</label>
             <label class="check-line"><input type="checkbox" id="setSocialApi"> 社保系统对接开关（占位）</label>
             <label class="check-line"><input type="checkbox" id="setPaymentApi"> 支付系统对接开关（占位）</label>
-            <button id="settingsSave">保存设置</button>
+            <span class="settings-save-status muted" id="settingsSaveStatus" aria-live="polite"></span>
           </div>
-          <p class="muted">说明：当前为可交付演示版；社保/支付等第三方接口在下一迭代接入。</p>
+          <p class="module-page-desc muted">说明：当前为可交付演示版；社保/支付等第三方接口在下一迭代接入。</p>
           <h4 class="subhead">最近操作审计（最近 100 条）</h4>
-          <div class="audit-wrap">
+          <div class="audit-wrap table-scroll-wrap">
+            <div class="table-shell">
+              <div class="empty-block audit-empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-clipboard-list empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无操作记录</p>
+                <p class="empty-block-desc">系统操作审计日志将显示在此处</p>
+              </div>
             <table class="audit-table">
               <thead><tr><th>时间</th><th>用户</th><th>动作</th><th>详情</th></tr></thead>
               <tbody id="auditRows"></tbody>
             </table>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Enterprise home -->
+      <section class="panel page-shell-module panel-title-in-chrome" id="enterprise-home">
+        <article class="card">
+          <div class="module-page-header"><div class="module-page-header__text" data-module-header-text></div></div>
+          <p class="module-page-desc muted">提交自然语言用工需求，查看匹配进度与候选名单。完整员工隐私数据仅管理员可见。</p>
+          <div class="metric-strip">
+            <div class="metric-chip"><span>进行中需求</span><strong id="entReqActiveCount">—</strong></div>
+            <div class="metric-chip"><span>待确认</span><strong id="entReqPendingCount">—</strong></div>
+            <div class="metric-chip"><span>已转项目</span><strong id="entReqDoneCount">—</strong></div>
+          </div>
+          <div class="quick-grid quick-grid-core ent-quick-actions">
+            <button type="button" class="quick-btn" data-jump="ai-assistant">发起智能用工</button>
+            <button type="button" class="quick-btn" id="entRefreshRequirements">刷新我的需求</button>
+          </div>
+          <div class="table-scroll-wrap">
+            <div class="table-shell" id="entReqTableShell">
+              <div class="empty-block" role="status" aria-live="polite">
+                <i class="fa-solid fa-clipboard-list empty-block-icon" aria-hidden="true"></i>
+                <p class="empty-block-title">暂无用工需求</p>
+                <p class="empty-block-desc">点击「发起智能用工」创建第一条需求</p>
+              </div>
+              <table>
+                <thead><tr><th>需求编号</th><th>岗位</th><th>城市</th><th>人数</th><th>状态</th><th>更新时间</th><th>操作</th></tr></thead>
+                <tbody id="entRequirementRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Admin staffing requirements -->
+      <section class="panel page-shell-module admin-only panel-title-in-chrome" id="staffing-admin">
+        <article class="card">
+          <div class="module-page-header module-page-header--toolbar">
+            <div class="module-page-header__text" data-module-header-text></div>
+          </div>
+          <div class="toolbar">
+            <select id="staffingStatusFilter">
+              <option value="">状态：全部</option>
+              <option value="待确认">待确认</option>
+              <option value="已推荐">已推荐</option>
+              <option value="已确认">已确认</option>
+              <option value="已转项目">已转项目</option>
+            </select>
+            <button type="button" class="filter-query-btn" id="staffingAdminQuery">查询</button>
+          </div>
+          <p class="query-result-hint muted" id="staffingAdminQueryHint" aria-live="polite"></p>
+          <div class="staffing-admin-layout">
+            <div class="table-scroll-wrap staffing-admin-list">
+              <div class="table-shell">
+                <div class="empty-block" role="status" aria-live="polite">
+                  <i class="fa-solid fa-list-check empty-block-icon" aria-hidden="true"></i>
+                  <p class="empty-block-title">暂无用工需求</p>
+                  <p class="empty-block-desc">企业提交后将显示在此</p>
+                </div>
+                <table>
+                  <thead><tr><th>编号</th><th>企业</th><th>岗位</th><th>城市</th><th>人数</th><th>状态</th></tr></thead>
+                  <tbody id="staffingAdminRows"></tbody>
+                </table>
+              </div>
+            </div>
+            <aside class="staffing-admin-detail" id="staffingAdminDetail" hidden>
+              <h4 id="staffingDetailTitle">需求详情</h4>
+              <div class="ai-parsed-tags" id="staffingDetailTags"></div>
+              <p class="muted" id="staffingDetailRaw"></p>
+              <div class="staffing-timeline" id="staffingDetailTimeline"></div>
+              <div class="table-scroll-wrap staffing-detail-candidates">
+                <table>
+                  <thead><tr><th>姓名</th><th>岗位</th><th>分数</th><th>可用</th></tr></thead>
+                  <tbody id="staffingDetailCandidates"></tbody>
+                </table>
+              </div>
+              <div class="staffing-admin-actions">
+                <button type="button" class="ghost-btn" id="staffingDetailRematch">重新匹配</button>
+                <button type="button" class="filter-query-btn" id="staffingDetailConfirm">确认需求</button>
+                <button type="button" class="filter-query-btn" id="staffingDetailConvert">转项目/审批</button>
+              </div>
+            </aside>
           </div>
         </article>
       </section>
 
       
-      <!-- Layout optimization note: aligned with 2号人事部 admin information density and control spacing; business logic unchanged (ai-assistant) -->
-      <section class="panel" id="ai-assistant">
-        <article class="card">
-          <h3>AI 用工助手（第二阶段能力预演）</h3>
-          <p class="muted">企业可用自然语言描述用工需求，系统给出候选人匹配建议。当前为演示版。</p>
-          <div class="toolbar">
-            <input id="aiQueryInput" placeholder="例如：给我找 10 个上海保安，3 年以上经验，能立即上岗">
-            <button id="runAiMatch">智能匹配</button>
+      <!-- AI staffing workbench -->
+      <section class="panel page-shell-module panel-title-in-chrome" id="ai-assistant">
+        <article class="card ai-workbench-card">
+          <div class="module-page-header module-page-header--toolbar">
+            <div class="module-page-header__text" data-module-header-text></div>
+            <div class="module-page-header__actions">
+              <button type="button" class="ghost-btn" id="aiSaveDraft">保存草稿</button>
+              <button type="button" class="filter-query-btn" id="runAiMatch">智能匹配</button>
+            </div>
           </div>
-          <div class="upload-result" id="aiResult">
-            <span class="muted">等待输入需求...</span>
+          <p class="module-page-desc muted">输入自然语言用工需求，系统优先调用大模型解析结构化条件，失败时自动规则兜底；候选人评分仍由规则引擎完成。</p>
+
+          <div class="ai-workbench-grid">
+            <div class="ai-workbench-main">
+              <label class="ai-input-label" for="aiQueryInput">用工需求描述</label>
+              <div class="search-field ai-query-field">
+                <textarea id="aiQueryInput" rows="3" placeholder="例如：找3名北京Java开发，5年以上经验，下周到岗"></textarea>
+              </div>
+              <div class="ai-example-chips" id="aiExampleChips" aria-label="示例需求">
+                <button type="button" class="ghost-btn ai-chip" data-ai-example="找3名北京Java开发，5年以上经验，下周到岗">北京 Java</button>
+                <button type="button" class="ghost-btn ai-chip" data-ai-example="需要10名上海保安，3年以上经验，立即到岗">上海安保</button>
+                <button type="button" class="ghost-btn ai-chip" data-ai-example="招聘5名深圳客服，普通话标准，立即上岗">深圳客服</button>
+                <button type="button" class="ghost-btn ai-chip" data-ai-example="找8名苏州仓储员，有叉车证，灵活用工">仓储物流</button>
+              </div>
+
+              <div class="ai-status-bar" id="aiStatusBar" role="status" aria-live="polite">
+                <span class="muted">等待输入需求…</span>
+              </div>
+
+              <div class="ai-parsed-panel" id="aiParsedPanel" hidden>
+                <div class="ai-parsed-head">
+                  <h4>需求解析</h4>
+                  <span class="ai-parse-source muted" id="aiParseSource" hidden></span>
+                </div>
+                <div class="ai-parsed-tags" id="aiParsedTags"></div>
+              </div>
+
+              <div class="ai-summary-strip" id="aiSummaryStrip" hidden>
+                <div class="metric-chip"><span>目标人数</span><strong id="aiTargetHeadcount">—</strong></div>
+                <div class="metric-chip"><span>已选候选</span><strong id="aiSelectedCount">0</strong></div>
+                <div class="metric-chip"><span>匹配结果</span><strong id="aiMatchCount">0</strong></div>
+              </div>
+
+              <div class="ai-candidate-list" id="aiCandidateList">
+                <div class="empty-block ai-empty-block" id="aiEmptyBlock" role="status">
+                  <i class="fa-solid fa-wand-magic-sparkles empty-block-icon" aria-hidden="true"></i>
+                  <p class="empty-block-title">暂无匹配结果</p>
+                  <p class="empty-block-desc">输入需求后点击「智能匹配」</p>
+                </div>
+              </div>
+            </div>
+
+            <aside class="ai-workbench-side">
+              <h4>候选名单</h4>
+              <p class="muted ai-side-hint">已选 <strong id="aiSideSelected">0</strong> / 目标 <strong id="aiSideTarget">—</strong></p>
+              <ul class="ai-selected-list" id="aiSelectedList"></ul>
+              <div class="ai-side-actions">
+                <button type="button" class="filter-query-btn" id="aiSubmitRequirement">提交用工需求</button>
+                <button type="button" class="ghost-btn admin-only" id="aiGeneratePlan">生成用工方案（演示）</button>
+              </div>
+              <p class="muted ai-side-note">企业提交后进入「待确认」，由管理员确认并转项目。</p>
+            </aside>
           </div>
-          <table>
-            <thead>
-              <tr><th>姓名</th><th>城市</th><th>岗位</th><th>经验</th><th>可到岗时间</th><th>匹配度</th></tr>
-            </thead>
-            <tbody id="aiRows"></tbody>
-          </table>
         </article>
       </section>
         </div>
@@ -1017,15 +1426,30 @@
     </div>
   </div>
 
+  <dialog id="confirmDialog">
+    <div class="dialog-form">
+      <h3 id="confirmDialogTitle">确认操作</h3>
+      <p class="confirm-dialog-message" id="confirmDialogMessage"></p>
+      <label class="dialog-field confirm-dialog-note" id="confirmDialogNoteWrap" hidden>
+        审批备注（可选）
+        <textarea id="confirmDialogNote" rows="3" placeholder="可填写说明"></textarea>
+      </label>
+      <menu>
+        <button type="button" class="ghost-btn" id="confirmDialogCancel">取消</button>
+        <button type="button" id="confirmDialogConfirm">确定</button>
+      </menu>
+    </div>
+  </dialog>
+
   <dialog id="calculatorDialog">
-    <form method="dialog" class="dialog-form">
+    <div class="dialog-form">
       <h3>社保计算器</h3>
       <div class="dialog-grid">
-        <label>城市
-          <select><option>上海市</option><option>重庆市</option><option>广州市</option></select>
+        <label class="dialog-field">城市
+          <select id="calculatorCity"><option>上海市</option><option>重庆市</option><option>广州市</option></select>
         </label>
-        <label>人员类别
-          <select><option>派遣外包员工、单位自有员工</option></select>
+        <label class="dialog-field">人员类别
+          <select id="calculatorCategory"><option>派遣外包员工、单位自有员工</option></select>
         </label>
       </div>
       <div class="policy-grid compact">
@@ -1034,49 +1458,272 @@
         <div><span>补充公积金基数</span><strong>最低基数 / 最高基数 / 其它基数</strong></div>
       </div>
       <menu>
-        <button value="cancel" class="ghost-btn">关闭</button>
-        <button value="default">确定</button>
+        <button type="button" class="ghost-btn" id="calculatorDialogClose">关闭</button>
+        <button type="button" id="calculatorDialogConfirm">确定</button>
       </menu>
-    </form>
+    </div>
   </dialog>
 
   <dialog id="taskDialog">
-    <form method="dialog" class="dialog-form">
+    <form class="dialog-form" id="taskDialogForm">
       <h3>新建退休办理任务</h3>
       <div class="dialog-grid">
-        <label>任务名称<input placeholder="例如：2026年4月退休批次"></label>
-        <label>办理城市
-          <select><option>上海市</option><option>重庆市</option><option>广州市</option></select>
+        <label class="dialog-field">任务名称
+          <input id="taskName" placeholder="例如：2026年4月退休批次">
+        </label>
+        <label class="dialog-field">办理城市
+          <select id="taskCity"><option>上海市</option><option>重庆市</option><option>广州市</option></select>
         </label>
       </div>
       <div class="dialog-grid">
-        <label>负责人<input placeholder="客户管理员"></label>
-        <label>截止日期<input type="date"></label>
+        <label class="dialog-field">负责人
+          <input id="taskOwner" placeholder="客户管理员">
+        </label>
+        <label class="dialog-field">截止日期
+          <input id="taskDue" type="date">
+        </label>
       </div>
       <menu>
-        <button value="cancel" class="ghost-btn">取消</button>
-        <button value="default">创建任务</button>
+        <button type="button" class="ghost-btn" id="taskDialogCancel">取消</button>
+        <button type="submit" id="taskDialogSubmit">创建任务</button>
       </menu>
     </form>
   </dialog>
 
-  <aside class="drawer" id="employeeDrawer">
+  <aside class="drawer drawer-wide" id="projectDrawer" role="dialog" aria-modal="true" aria-labelledby="projectDrawerTitle" aria-hidden="true">
     <div class="drawer-head">
-      <h3>员工详情</h3>
+      <h3 id="projectDrawerTitle">新增项目</h3>
+      <button type="button" class="ghost-btn" id="closeProjectDrawer">关闭</button>
+    </div>
+    <div class="drawer-body drawer-form-body">
+      <label class="drawer-field">项目名称
+        <input id="projName" placeholder="项目名称" required>
+      </label>
+      <label class="drawer-field">项目编码
+        <input id="projCode" placeholder="如 PRJ-2026-003">
+      </label>
+      <label class="drawer-field">签约企业
+        <input id="projClient" placeholder="签约企业">
+      </label>
+      <label class="drawer-field">项目负责人
+        <input id="projManager" placeholder="项目负责人">
+      </label>
+      <label class="drawer-field">项目状态
+        <select id="projStatus"><option>筹备中</option><option>执行中</option><option>已完结</option></select>
+      </label>
+      <label class="drawer-field">开始日期
+        <input id="projStart" type="date">
+      </label>
+      <label class="drawer-field">结束日期
+        <input id="projEnd" type="date">
+      </label>
+      <div class="drawer-actions">
+        <button type="button" class="ghost-btn" id="projectDrawerCancel">取消</button>
+        <button type="button" id="projectAdd">保存项目</button>
+      </div>
+    </div>
+  </aside>
+
+  <aside class="drawer drawer-wide" id="companyDrawer" role="dialog" aria-modal="true" aria-labelledby="companyDrawerTitle" aria-hidden="true">
+    <div class="drawer-head">
+      <h3 id="companyDrawerTitle">新增企业</h3>
+      <button type="button" class="ghost-btn" id="closeCompanyDrawer">关闭</button>
+    </div>
+    <div class="drawer-body drawer-form-body">
+      <label class="drawer-field">企业名称
+        <input id="coName" placeholder="企业名称" required>
+      </label>
+      <label class="drawer-field">客户编号
+        <input id="coCode" placeholder="客户编号">
+      </label>
+      <label class="drawer-field">所在城市
+        <input id="coCity" placeholder="所在城市">
+      </label>
+      <label class="drawer-field">服务类型
+        <input id="coService" placeholder="服务类型">
+      </label>
+      <label class="drawer-field">合作状态
+        <select id="coStatus"><option>合作中</option><option>待续签</option><option>已终止</option></select>
+      </label>
+      <div class="drawer-actions">
+        <button type="button" class="ghost-btn" id="companyDrawerCancel">取消</button>
+        <button type="button" id="companyAdd">保存企业</button>
+      </div>
+    </div>
+  </aside>
+
+  <aside class="drawer drawer-wide" id="invoiceDrawer" role="dialog" aria-modal="true" aria-labelledby="invoiceDrawerTitle" aria-hidden="true">
+    <div class="drawer-head">
+      <h3 id="invoiceDrawerTitle">新增发票</h3>
+      <button type="button" class="ghost-btn" id="closeInvoiceDrawer">关闭</button>
+    </div>
+    <div class="drawer-body drawer-form-body">
+      <label class="drawer-field">发票编号
+        <input id="invNo" placeholder="发票编号">
+      </label>
+      <label class="drawer-field">客户名称
+        <input id="invCustomer" placeholder="客户名称" required>
+      </label>
+      <label class="drawer-field">金额
+        <input id="invAmount" placeholder="金额">
+      </label>
+      <label class="drawer-field">月份
+        <input id="invMonth" type="month">
+      </label>
+      <label class="drawer-field">发票状态
+        <select id="invStatus"><option>未开票</option><option>已开票</option></select>
+      </label>
+      <div class="drawer-actions">
+        <button type="button" class="ghost-btn" id="invoiceDrawerCancel">取消</button>
+        <button type="button" id="invoiceAdd">保存发票</button>
+      </div>
+    </div>
+  </aside>
+
+  <aside class="drawer drawer-wide" id="employeeFormDrawer" role="dialog" aria-modal="true" aria-labelledby="employeeFormDrawerTitle" aria-hidden="true">
+    <div class="drawer-head">
+      <h3 id="employeeFormDrawerTitle">新增员工</h3>
+      <button type="button" class="ghost-btn" id="closeEmployeeFormDrawer">关闭</button>
+    </div>
+    <div class="drawer-body drawer-form-body">
+      <label class="drawer-field">姓名
+        <input id="empName" placeholder="姓名" required>
+      </label>
+      <label class="drawer-field">证件号码
+        <input id="empIdNo" placeholder="证件号码">
+      </label>
+      <label class="drawer-field">手机
+        <input id="empMobile" placeholder="手机">
+      </label>
+      <label class="drawer-field">性别
+        <select id="empGender"><option>男</option><option>女</option></select>
+      </label>
+      <label class="drawer-field">员工状态
+        <select id="empStatus"><option>待入职</option><option>试用期</option><option>在职</option><option>待离职</option><option>已离职</option><option>异动中</option></select>
+      </label>
+      <label class="drawer-field">用工类型
+        <select id="empEmploymentType"><option>灵活用工</option><option>全职</option><option>兼职</option></select>
+      </label>
+      <label class="drawer-field">试用期结束
+        <input id="empProbationEnd" type="date">
+      </label>
+      <label class="drawer-field">入职日期
+        <input id="empHire" type="date">
+      </label>
+      <label class="drawer-field">工作地
+        <input id="empCity" placeholder="工作地">
+      </label>
+      <label class="drawer-field">社保城市
+        <input id="empSocialCity" placeholder="社保城市">
+      </label>
+      <div class="drawer-actions">
+        <button type="button" class="ghost-btn" id="employeeDrawerCancel">取消</button>
+        <button type="button" id="employeeAdd">保存员工</button>
+      </div>
+    </div>
+  </aside>
+
+  <aside class="drawer drawer-wide" id="contractDrawer" role="dialog" aria-modal="true" aria-labelledby="contractDrawerTitle" aria-hidden="true">
+    <div class="drawer-head">
+      <h3 id="contractDrawerTitle">新增合同记录</h3>
+      <button type="button" class="ghost-btn" id="closeContractDrawer">关闭</button>
+    </div>
+    <div class="drawer-body drawer-form-body">
+      <label class="drawer-field">用章对象
+        <select id="ctTarget" title="用章主体/印章归属">
+          <option value="">请选择</option>
+          <option>用工企业</option>
+          <option>派遣单位</option>
+          <option>人力资源公司</option>
+          <option>集团总部</option>
+        </select>
+      </label>
+      <label class="drawer-field">印章类型
+        <select id="ctSeal" title="实体印章类型">
+          <option value="">请选择</option>
+          <option>公章</option>
+          <option>合同专用章</option>
+          <option>财务专用章</option>
+          <option>人事专用章</option>
+          <option>法人章</option>
+          <option>发票专用章</option>
+          <option>电子印章（CA）</option>
+        </select>
+      </label>
+      <label class="drawer-field">用章类型 / 材料性质
+        <select id="ctType">
+          <option value="">请选择</option>
+          <option>劳动合同</option>
+          <option>保密协议</option>
+          <option>竞业限制协议</option>
+          <option>解除/终止协议</option>
+          <option>入职材料包</option>
+          <option>离职证明</option>
+          <option>其他协议</option>
+        </select>
+      </label>
+      <label class="drawer-field">签章材料名称
+        <select id="ctMaterial">
+          <option value="">请选择</option>
+          <option>标准劳动合同（全日制）</option>
+          <option>标准劳动合同（派遣）</option>
+          <option>保密协议模板 V1</option>
+          <option>保密协议模板 V2</option>
+          <option>竞业限制补充协议</option>
+          <option>协商解除劳动合同协议</option>
+        </select>
+      </label>
+      <label class="drawer-field">员工姓名
+        <input id="ctName" placeholder="员工姓名">
+      </label>
+      <label class="drawer-field">证件号
+        <input id="ctIdNo" placeholder="证件号">
+      </label>
+      <label class="drawer-field">入离职状态
+        <select id="ctEmpSt">
+          <option value="">请选择</option>
+          <option>入职</option>
+          <option>在职</option>
+          <option>转正</option>
+          <option>离职</option>
+        </select>
+      </label>
+      <label class="drawer-field">电子签状态
+        <select id="ctSignSt">
+          <option value="">请选择</option>
+          <option>待签署</option>
+          <option>签署中</option>
+          <option>已签署</option>
+          <option>已驳回</option>
+        </select>
+      </label>
+      <label class="drawer-field">办结日期
+        <input id="ctDone" type="date">
+      </label>
+      <label class="drawer-field">合同到期日
+        <input id="ctEnd" type="date">
+      </label>
+      <div class="drawer-actions">
+        <button type="button" class="ghost-btn" id="contractDrawerCancel">取消</button>
+        <button type="button" id="contractAdd">保存记录</button>
+      </div>
+    </div>
+  </aside>
+
+  <aside class="drawer" id="employeeDrawer" role="dialog" aria-modal="true" aria-labelledby="employeeDrawerTitle" aria-hidden="true">
+    <div class="drawer-head">
+      <h3 id="employeeDrawerTitle">员工详情</h3>
       <button class="ghost-btn" id="closeDrawer">关闭</button>
     </div>
     <div class="drawer-body">
-      <div class="kv"><span>姓名</span><strong>胡寿文</strong></div>
-      <div class="kv"><span>证件号码</span><strong>360102198908093212</strong></div>
-      <div class="kv"><span>员工状态</span><strong class="status status-success">在职</strong></div>
-      <div class="kv"><span>入职日期</span><strong>2024-09-01</strong></div>
-      <div class="kv"><span>社保缴费城市</span><strong>南昌市</strong></div>
-      <div class="kv"><span>公积金缴费城市</span><strong>南昌市</strong></div>
+      <p class="muted drawer-empty-hint">选择员工后加载详情</p>
     </div>
   </aside>
   <div class="drawer-mask" id="drawerMask"></div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script src="./adminDemoData.js"></script>
   <script src="./app.js"></script>
+  <script src="./staffing-ui.js"></script>
 </body>
 </html>

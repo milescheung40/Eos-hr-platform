@@ -1,0 +1,300 @@
+- generic [active] [ref=e1]:
+  - link "跳到主内容" [ref=e2] [cursor=pointer]:
+    - /url: "#mainContent"
+  - generic [ref=e13]:
+    - complementary "侧栏导航" [ref=e14]:
+      - generic [ref=e15]:
+        - button "收起左侧菜单" [expanded] [ref=e17] [cursor=pointer]:
+          - generic [ref=e18]: 
+        - generic [ref=e19]:
+          - generic [ref=e20]: HR
+          - generic [ref=e21]:
+            - generic [ref=e22]: 人力资源管理平台
+            - generic [ref=e23]: Human Resource Management
+        - navigation "二级导航" [ref=e353]:
+          - generic [ref=e415]:
+            - generic [ref=e416]: AI用工助手
+            - button "AI 用工助手" [ref=e417] [cursor=pointer]:
+              - generic [ref=e418]: 
+    - generic [ref=e24]:
+      - banner "顶栏" [ref=e25]:
+        - navigation "全局一级导航" [ref=e26]:
+          - button "工作台" [ref=e27] [cursor=pointer]:
+            - generic [ref=e28]: 
+          - button "人事" [ref=e30] [cursor=pointer]:
+            - generic [ref=e31]: 
+          - button "组织" [ref=e33] [cursor=pointer]:
+            - generic [ref=e34]: 
+          - button "考勤假期" [ref=e36] [cursor=pointer]:
+            - generic [ref=e37]: 
+          - button "薪酬" [ref=e39] [cursor=pointer]:
+            - generic [ref=e40]: 
+          - button "项目" [ref=e42] [cursor=pointer]:
+            - generic [ref=e43]: 
+          - button "AI用工助手" [ref=e45] [cursor=pointer]:
+            - generic [ref=e46]: 
+          - button "更多" [ref=e48] [cursor=pointer]:
+            - generic [ref=e49]: 
+        - generic [ref=e51]:
+          - generic [ref=e52]:
+            - generic [ref=e53]: A
+            - generic [ref=e54]:
+              - generic [ref=e55]: admin
+              - generic [ref=e56]: 客户管理员
+          - button "联系客服" [ref=e57] [cursor=pointer]
+          - button "登出" [ref=e58] [cursor=pointer]
+      - main [ref=e59]:
+        - generic [ref=e61]:
+          - navigation "面包屑导航" [ref=e62]:
+            - list [ref=e63]:
+              - listitem [ref=e64]:
+                - generic [ref=e65]: 平台
+              - listitem [ref=e66]: /
+              - listitem [ref=e67]:
+                - generic [ref=e68]: AI用工助手
+              - listitem [ref=e69]: /
+              - listitem [ref=e362]:
+                - generic [ref=e363]: AI用工助手
+              - listitem [ref=e70]: /
+              - listitem [ref=e71]:
+                - heading "AI 用工助手" [level=1] [ref=e420]
+          - paragraph [ref=e73]: 欢迎回来，admin
+        - generic [ref=e74]:
+          - text:                                
+          - article [ref=e422]:
+            - generic [ref=e423]:
+              - generic [ref=e424]:
+                - paragraph [ref=e425]: AI用工助手
+                - paragraph [ref=e426]: AI 用工助手
+              - button "智能匹配" [ref=e428] [cursor=pointer]
+            - paragraph [ref=e429]: 企业可用自然语言描述用工需求，系统给出候选人匹配建议。当前为演示版。
+            - generic [ref=e431]:
+              - textbox "例如：给我找 10 个上海保安，3 年以上经验，能立即上岗" [ref=e432]: 找3名北京Java开发，5年以上经验，下周到岗
+              - button "清空搜索" [ref=e440] [cursor=pointer]: ×
+            - generic [ref=e433]: 已解析需求：找3名北京Java开发，5年以上经验，下周到岗
+            - generic [ref=e435]:
+              - text: 
+              - table [ref=e442]:
+                - rowgroup [ref=e443]:
+                  - row [ref=e444]:
+                    - columnheader "姓名" [ref=e445]
+                    - columnheader "城市" [ref=e446]
+                    - columnheader "岗位" [ref=e447]
+                    - columnheader "经验" [ref=e448]
+                    - columnheader "可到岗时间" [ref=e449]
+                    - columnheader "匹配度" [ref=e450]
+                - rowgroup [ref=e451]:
+                  - row [ref=e452]:
+                    - cell "赵文杰" [ref=e453]
+                    - cell "上海市" [ref=e454]
+                    - cell "保安队长" [ref=e455]
+                    - cell "5年" [ref=e456]
+                    - cell "2天内" [ref=e457]
+                    - cell "92%" [ref=e458]
+                  - row [ref=e459]:
+                    - cell "李德凯" [ref=e460]
+                    - cell "上海市" [ref=e461]
+                    - cell "商场安保" [ref=e462]
+                    - cell "4年" [ref=e463]
+                    - cell "立即" [ref=e464]
+                    - cell "89%" [ref=e465]
+                  - row [ref=e466]:
+                    - cell "陈超" [ref=e467]
+                    - cell "苏州市" [ref=e468]
+                    - cell "安保巡检" [ref=e469]
+                    - cell "6年" [ref=e470]
+                    - cell "3天内" [ref=e471]
+                    - cell "84%" [ref=e472]
+  - dialog [ref=e215]:
+    - generic [ref=e216]:
+      - heading [level=3] [ref=e217]: 新增项目
+      - button [ref=e218] [cursor=pointer]: 关闭
+    - generic [ref=e219]:
+      - generic [ref=e220]:
+        - text: 项目名称
+        - textbox [ref=e221]:
+          - /placeholder: 项目名称
+      - generic [ref=e222]:
+        - text: 项目编码
+        - textbox [ref=e223]:
+          - /placeholder: 如 PRJ-2026-003
+      - generic [ref=e224]:
+        - text: 签约企业
+        - textbox [ref=e225]:
+          - /placeholder: 签约企业
+      - generic [ref=e226]:
+        - text: 项目负责人
+        - textbox [ref=e227]:
+          - /placeholder: 项目负责人
+      - generic [ref=e228]:
+        - text: 项目状态
+        - combobox [ref=e229]
+      - generic [ref=e230]:
+        - text: 开始日期
+        - textbox [ref=e231]
+      - generic [ref=e232]:
+        - text: 结束日期
+        - textbox [ref=e233]
+      - generic [ref=e234]:
+        - button [ref=e235] [cursor=pointer]: 取消
+        - button [ref=e236] [cursor=pointer]: 保存项目
+  - dialog [ref=e237]:
+    - generic [ref=e238]:
+      - heading [level=3] [ref=e239]: 新增企业
+      - button [ref=e240] [cursor=pointer]: 关闭
+    - generic [ref=e241]:
+      - generic [ref=e242]:
+        - text: 企业名称
+        - textbox [ref=e243]:
+          - /placeholder: 企业名称
+      - generic [ref=e244]:
+        - text: 客户编号
+        - textbox [ref=e245]:
+          - /placeholder: 客户编号
+      - generic [ref=e246]:
+        - text: 所在城市
+        - textbox [ref=e247]:
+          - /placeholder: 所在城市
+      - generic [ref=e248]:
+        - text: 服务类型
+        - textbox [ref=e249]:
+          - /placeholder: 服务类型
+      - generic [ref=e250]:
+        - text: 合作状态
+        - combobox [ref=e251]
+      - generic [ref=e252]:
+        - button [ref=e253] [cursor=pointer]: 取消
+        - button [ref=e254] [cursor=pointer]: 保存企业
+  - dialog [ref=e255]:
+    - generic [ref=e256]:
+      - heading [level=3] [ref=e257]: 新增发票
+      - button [ref=e258] [cursor=pointer]: 关闭
+    - generic [ref=e259]:
+      - generic [ref=e260]:
+        - text: 发票编号
+        - textbox [ref=e261]:
+          - /placeholder: 发票编号
+      - generic [ref=e262]:
+        - text: 客户名称
+        - textbox [ref=e263]:
+          - /placeholder: 客户名称
+      - generic [ref=e264]:
+        - text: 金额
+        - textbox [ref=e265]:
+          - /placeholder: 金额
+      - generic [ref=e266]:
+        - text: 月份
+        - textbox [ref=e267]
+      - generic [ref=e268]:
+        - text: 发票状态
+        - combobox [ref=e269]
+      - generic [ref=e270]:
+        - button [ref=e271] [cursor=pointer]: 取消
+        - button [ref=e272] [cursor=pointer]: 保存发票
+  - dialog [ref=e273]:
+    - generic [ref=e274]:
+      - heading [level=3] [ref=e275]: 新增员工
+      - button [ref=e276] [cursor=pointer]: 关闭
+    - generic [ref=e277]:
+      - generic [ref=e278]:
+        - text: 姓名
+        - textbox [ref=e279]:
+          - /placeholder: 姓名
+      - generic [ref=e280]:
+        - text: 证件号码
+        - textbox [ref=e281]:
+          - /placeholder: 证件号码
+      - generic [ref=e282]:
+        - text: 手机
+        - textbox [ref=e283]:
+          - /placeholder: 手机
+      - generic [ref=e284]:
+        - text: 性别
+        - combobox [ref=e285]
+      - generic [ref=e286]:
+        - text: 员工状态
+        - combobox [ref=e287]
+      - generic [ref=e288]:
+        - text: 用工类型
+        - combobox [ref=e289]
+      - generic [ref=e290]:
+        - text: 试用期结束
+        - textbox [ref=e291]
+      - generic [ref=e292]:
+        - text: 入职日期
+        - textbox [ref=e293]
+      - generic [ref=e294]:
+        - text: 工作地
+        - textbox [ref=e295]:
+          - /placeholder: 工作地
+      - generic [ref=e296]:
+        - text: 社保城市
+        - textbox [ref=e297]:
+          - /placeholder: 社保城市
+      - generic [ref=e298]:
+        - button [ref=e299] [cursor=pointer]: 取消
+        - button [ref=e300] [cursor=pointer]: 保存员工
+  - dialog [ref=e301]:
+    - generic [ref=e302]:
+      - heading [level=3] [ref=e303]: 新增合同记录
+      - button [ref=e304] [cursor=pointer]: 关闭
+    - generic [ref=e305]:
+      - generic [ref=e306]:
+        - text: 用章对象
+        - combobox [ref=e307]
+      - generic [ref=e308]:
+        - text: 印章类型
+        - combobox [ref=e309]
+      - generic [ref=e310]:
+        - text: 用章类型 / 材料性质
+        - combobox [ref=e311]
+      - generic [ref=e312]:
+        - text: 签章材料名称
+        - combobox [ref=e313]
+      - generic [ref=e314]:
+        - text: 员工姓名
+        - textbox [ref=e315]:
+          - /placeholder: 员工姓名
+      - generic [ref=e316]:
+        - text: 证件号
+        - textbox [ref=e317]:
+          - /placeholder: 证件号
+      - generic [ref=e318]:
+        - text: 入离职状态
+        - combobox [ref=e319]
+      - generic [ref=e320]:
+        - text: 电子签状态
+        - combobox [ref=e321]
+      - generic [ref=e322]:
+        - text: 办结日期
+        - textbox [ref=e323]
+      - generic [ref=e324]:
+        - text: 合同到期日
+        - textbox [ref=e325]
+      - generic [ref=e326]:
+        - button [ref=e327] [cursor=pointer]: 取消
+        - button [ref=e328] [cursor=pointer]: 保存记录
+  - dialog [ref=e329]:
+    - generic [ref=e330]:
+      - heading [level=3] [ref=e331]: 员工详情
+      - button [ref=e332] [cursor=pointer]: 关闭
+    - generic [ref=e333]:
+      - generic [ref=e334]:
+        - generic [ref=e335]: 姓名
+        - strong [ref=e336]: 胡寿文
+      - generic [ref=e337]:
+        - generic [ref=e338]: 证件号码
+        - strong [ref=e339]: "360102198908093212"
+      - generic [ref=e340]:
+        - generic [ref=e341]: 员工状态
+        - strong [ref=e342]: 在职
+      - generic [ref=e343]:
+        - generic [ref=e344]: 入职日期
+        - strong [ref=e345]: 2024-09-01
+      - generic [ref=e346]:
+        - generic [ref=e347]: 社保缴费城市
+        - strong [ref=e348]: 南昌市
+      - generic [ref=e349]:
+        - generic [ref=e350]: 公积金缴费城市
+        - strong [ref=e351]: 南昌市
+  - status [ref=e352]: 登录成功

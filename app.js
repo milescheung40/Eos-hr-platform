@@ -18,93 +18,117 @@ const STATUS_TRANSITIONS = {
   已离职: []
 };
 
-const staticRows = {
-  retire: [
-    ["陈建国", "310101196512123455", "上海市", "已受理", "2026-04-18 10:21", "补充材料审核中"],
-    ["周晓梅", "500101196611093322", "重庆市", "已提交", "2026-04-18 11:36", "待初审"]
-  ],
-  import: [
-    ["胡寿文", "身份证", "360102198908093212", "13812340001", "15600", "上海市", "6222024000112233445"],
-    ["吴振辉", "身份证", "310101199511213456", "13912340002", "18800", "上海市", "6222024000112233446"]
-  ]
-};
+const staticRows = window.ADMIN_DEMO_TABLES || {};
+
+const ENTERPRISE_PANEL_IDS = new Set(["enterprise-home", "ai-assistant"]);
+const detachedAdminPanels = [];
 
 const panels = [...document.querySelectorAll(".route-panels > section.panel")];
 const roleSwitcher = document.getElementById("roleSwitcher");
 const pageTitle = document.getElementById("pageTitle");
+const breadcrumbTop = document.getElementById("breadcrumbTop");
 const welcomeText = document.getElementById("welcomeText");
+const topbarUser = document.getElementById("topbarUser");
+const topbarUserAvatar = document.getElementById("topbarUserAvatar");
+const topbarUserName = document.getElementById("topbarUserName");
+const topbarUserRole = document.getElementById("topbarUserRole");
 const loginScreen = document.getElementById("loginScreen");
+const appShell = document.getElementById("appShell");
 const loginBtn = document.getElementById("loginBtn");
 const loginTips = document.getElementById("loginTips");
 const secondaryMenu = document.getElementById("secondaryMenu");
 const sidebarToggle = document.getElementById("sidebarToggle");
 
 const PANEL_MENU_ICONS = {
-  dashboard: "fa-home",
-  workspace: "fa-inbox",
-  project: "fa-briefcase",
-  employee: "fa-id-card-o",
-  contract: "fa-file-text-o",
-  retire: "fa-clock-o",
-  approval: "fa-check-square-o",
-  organization: "fa-sitemap",
-  company: "fa-building-o",
-  social: "fa-medkit",
-  policy: "fa-map-o",
-  import: "fa-upload",
-  invoice: "fa-file-o",
-  reports: "fa-bar-chart",
-  settings: "fa-cog",
-  "ai-assistant": "fa-lightbulb-o"
+  dashboard: "fa-solid fa-house",
+  workspace: "fa-solid fa-inbox",
+  project: "fa-solid fa-briefcase",
+  employee: "fa-regular fa-id-card",
+  contract: "fa-regular fa-file-lines",
+  retire: "fa-regular fa-clock",
+  approval: "fa-regular fa-square-check",
+  organization: "fa-solid fa-sitemap",
+  company: "fa-regular fa-building",
+  social: "fa-solid fa-calendar-check",
+  policy: "fa-regular fa-map",
+  import: "fa-solid fa-upload",
+  invoice: "fa-regular fa-file",
+  reports: "fa-solid fa-chart-column",
+  settings: "fa-solid fa-gear",
+  "ai-assistant": "fa-regular fa-lightbulb",
+  "enterprise-home": "fa-solid fa-building-user",
+  "staffing-admin": "fa-solid fa-list-check"
 };
 
 const panelTitleMap = {
-  dashboard: "首页",
-  workspace: "工作台",
+  dashboard: "运营概览",
+  workspace: "工单操作",
   project: "项目中心",
   employee: "员工名册",
   organization: "组织架构",
   company: "企业管理",
-  social: "社保公积金",
+  social: "考勤管理",
   contract: "劳动合同",
-  approval: "审批中心",
+  approval: "人事流程",
   invoice: "发票查询",
   retire: "退休办理",
   policy: "城市政策",
   import: "数据上传",
   reports: "报表中心",
   settings: "系统设置",
-  "ai-assistant": "AI 用工助手"
+  "ai-assistant": "AI 用工助手",
+  "enterprise-home": "企业工作台",
+  "staffing-admin": "用工需求"
 };
 
 const topNavConfig = {
   workspace: {
-    sections: [{ title: "工作台", items: ["dashboard", "workspace", "project"] }]
+    sections: [{ title: "工作台", items: ["dashboard", "workspace"] }]
   },
   employee: {
     sections: [
       { title: "员工管理", items: ["employee", "contract"] },
-      { title: "员工关系", items: ["retire", "approval"] }
+      { title: "人事流程", items: ["approval", "retire"] }
     ]
   },
   organization: {
     sections: [{ title: "组织管理", items: ["organization", "company"] }]
   },
-  project: {
-    sections: [{ title: "项目管理", items: ["project", "employee", "contract"] }]
-  },
-  approval: {
-    sections: [{ title: "招聘审批", items: ["approval", "employee"] }]
-  },
   social: {
-    sections: [{ title: "考勤社保", items: ["social", "policy"] }]
+    sections: [{ title: "考勤假期", items: ["social", "policy"] }]
   },
   import: {
     sections: [{ title: "薪酬管理", items: ["import", "invoice"] }]
   },
+  project: {
+    sections: [{ title: "项目管理", items: ["project"] }]
+  },
+  ai: {
+    sections: [
+      { title: "AI用工助手", items: ["ai-assistant"] },
+      { title: "需求管理", items: ["staffing-admin"] }
+    ]
+  },
+  enterprise: {
+    sections: [
+      { title: "企业工作台", items: ["enterprise-home"] },
+      { title: "智能用工", items: ["ai-assistant"] }
+    ]
+  },
   reports: {
-    sections: [{ title: "数据中心", items: ["reports", "settings", "ai-assistant"] }]
+    sections: [{ title: "更多", items: ["reports", "settings"] }]
   }
+};
+const topNavLabelMap = {
+  workspace: "工作台",
+  employee: "人事",
+  organization: "组织",
+  social: "考勤假期",
+  import: "薪酬",
+  project: "项目",
+  ai: "AI用工助手",
+  enterprise: "企业",
+  reports: "更多"
 };
 const panelToTop = {
   dashboard: "workspace",
@@ -113,7 +137,7 @@ const panelToTop = {
   employee: "employee",
   contract: "employee",
   retire: "employee",
-  approval: "approval",
+  approval: "employee",
   organization: "organization",
   company: "organization",
   social: "social",
@@ -122,10 +146,23 @@ const panelToTop = {
   invoice: "import",
   reports: "reports",
   settings: "reports",
-  "ai-assistant": "reports"
+  "ai-assistant": "ai",
+  "staffing-admin": "ai",
+  "enterprise-home": "enterprise"
+};
+const topNavRoleMap = {
+  workspace: ["admin"],
+  employee: ["admin"],
+  organization: ["admin"],
+  social: ["admin"],
+  import: ["admin"],
+  project: ["admin"],
+  ai: ["admin", "enterprise"],
+  enterprise: ["enterprise"],
+  reports: ["admin"]
 };
 const panelRoleMap = {
-  dashboard: ["admin", "enterprise"],
+  dashboard: ["admin"],
   workspace: ["admin"],
   project: ["admin"],
   employee: ["admin"],
@@ -140,22 +177,477 @@ const panelRoleMap = {
   import: ["admin"],
   reports: ["admin"],
   settings: ["admin"],
-  "ai-assistant": ["admin"]
+  "ai-assistant": ["admin", "enterprise"],
+  "enterprise-home": ["enterprise"],
+  "staffing-admin": ["admin"]
 };
 let currentTopKey = "workspace";
+
+const WORKBENCH_SHORTCUT_CATALOG = [
+  { key: "workspace-orders", jump: "workspace", scrollTarget: "workspaceOrdersPanel", label: "增减员管理", icon: "fa-solid fa-right-left" },
+  { key: "employee", jump: "employee", label: "员工名册", icon: "fa-solid fa-users" },
+  { key: "contract", jump: "contract", label: "劳动合同", icon: "fa-regular fa-file-lines" },
+  { key: "approval", jump: "approval", moduleTab: "pending-approval", label: "待处理审批", icon: "fa-solid fa-list-check" },
+  { key: "social-daily", jump: "social", moduleTab: "daily-attend", label: "考勤管理", icon: "fa-solid fa-calendar-check" },
+  { key: "social-insurance", jump: "social", moduleTab: "social-insurance", label: "社保办理", icon: "fa-solid fa-building-columns" },
+  { key: "import", jump: "import", label: "薪资上传", icon: "fa-solid fa-upload" },
+  { key: "invoice", jump: "invoice", label: "发票查询", icon: "fa-regular fa-file-lines" },
+  { key: "policy", jump: "policy", label: "城市政策", icon: "fa-regular fa-map" },
+  { key: "calculator", action: "calculator", label: "社保计算器", icon: "fa-solid fa-calculator" },
+  { key: "reports", jump: "reports", label: "报表中心", icon: "fa-solid fa-chart-column" },
+  { key: "project", jump: "project", label: "项目中心", icon: "fa-solid fa-briefcase" },
+  { key: "company", jump: "company", label: "企业管理", icon: "fa-regular fa-building" },
+  { key: "retire", jump: "retire", label: "退休办理", icon: "fa-regular fa-clock" }
+];
+const WORKBENCH_RECENT_STORAGE_KEY = "eos_workbench_recents";
+const WORKBENCH_RECENT_MAX = 6;
+const WORKBENCH_RECENT_DEFAULTS = ["workspace-orders", "employee", "approval", "contract", "social-daily", "invoice"];
+const PANEL_TO_SHORTCUT_KEY = {
+  workspace: "workspace-orders",
+  employee: "employee",
+  contract: "contract",
+  approval: "approval",
+  social: "social-daily",
+  import: "import",
+  invoice: "invoice",
+  policy: "policy",
+  reports: "reports",
+  project: "project",
+  company: "company",
+  retire: "retire"
+};
+
+function getWorkbenchShortcut(key) {
+  return WORKBENCH_SHORTCUT_CATALOG.find((item) => item.key === key);
+}
+
+function readWorkbenchRecents() {
+  try {
+    const raw = localStorage.getItem(WORKBENCH_RECENT_STORAGE_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((key) => getWorkbenchShortcut(key));
+  } catch {
+    return [];
+  }
+}
+
+function writeWorkbenchRecents(keys) {
+  localStorage.setItem(WORKBENCH_RECENT_STORAGE_KEY, JSON.stringify(keys.slice(0, WORKBENCH_RECENT_MAX)));
+}
+
+function pushWorkbenchRecent(key) {
+  if (!getWorkbenchShortcut(key)) return;
+  const next = [key, ...readWorkbenchRecents().filter((item) => item !== key)].slice(0, WORKBENCH_RECENT_MAX);
+  writeWorkbenchRecents(next);
+  const query = document.getElementById("workbenchMenuSearch")?.value.trim();
+  if (!query) renderWorkbenchTiles("");
+}
+
+function createWorkbenchTileButton(item) {
+  const attrs = [
+    `type="button"`,
+    `class="quick-btn workbench-tile-btn"`,
+    `data-shortcut-key="${item.key}"`,
+    `data-label="${item.label}"`
+  ];
+  if (item.jump) attrs.push(`data-jump="${item.jump}"`);
+  if (item.moduleTab) attrs.push(`data-module-tab="${item.moduleTab}"`);
+  if (item.scrollTarget) attrs.push(`data-scroll-target="${item.scrollTarget}"`);
+  if (item.action === "calculator") attrs.push(`id="openCalculatorFromWb"`);
+  return `<button ${attrs.join(" ")}><i class="${item.icon}" aria-hidden="true"></i>${item.label}</button>`;
+}
+
+function bindWorkbenchTileButton(btn) {
+  if (!(btn instanceof HTMLButtonElement) || btn.dataset.shortcutBound === "1") return;
+  btn.dataset.shortcutBound = "1";
+  if (!btn.dataset.labelHtml) btn.dataset.labelHtml = btn.innerHTML;
+  if (!btn.dataset.displayLabel) btn.dataset.displayLabel = btn.textContent.trim();
+  btn.addEventListener("click", () => {
+    if (btn.id === "openCalculatorFromWb") {
+      pushWorkbenchRecent(btn.dataset.shortcutKey || "calculator");
+      showCalculatorDialog();
+      return;
+    }
+    const jump = btn.dataset.jump;
+    const moduleTab = btn.dataset.moduleTab;
+    if (btn.dataset.shortcutKey) pushWorkbenchRecent(btn.dataset.shortcutKey);
+    if (jump) {
+      activate(jump);
+      if (moduleTab) requestAnimationFrame(() => activateModuleTab(jump, moduleTab));
+    }
+    const scrollId = btn.dataset.scrollTarget;
+    if (scrollId) {
+      requestAnimationFrame(() => document.getElementById(scrollId)?.scrollIntoView({ behavior: "smooth", block: "start" }));
+    }
+  });
+}
+
+function renderWorkbenchTiles(query = "") {
+  const list = document.getElementById("workbenchTiles");
+  if (!list) return;
+  const norm = (query || "").trim().toLowerCase();
+  let items = [];
+  if (norm) {
+    items = WORKBENCH_SHORTCUT_CATALOG.filter((item) => item.label.toLowerCase().includes(norm));
+  } else {
+    const recentKeys = readWorkbenchRecents();
+    const keys = recentKeys.length ? recentKeys : WORKBENCH_RECENT_DEFAULTS;
+    items = keys.map(getWorkbenchShortcut).filter(Boolean);
+  }
+  list.innerHTML = items.map((item) => `<li>${createWorkbenchTileButton(item)}</li>`).join("");
+  list.querySelectorAll(".workbench-tile-btn").forEach(bindWorkbenchTileButton);
+  const emptyEl = document.getElementById("workbenchMenuEmpty");
+  if (emptyEl) {
+    if (norm && items.length === 0) {
+      emptyEl.hidden = false;
+      emptyEl.textContent = "未找到匹配的菜单项";
+    } else if (norm && items.length > 0) {
+      emptyEl.hidden = false;
+      emptyEl.textContent = `共 ${items.length} 项匹配`;
+    } else {
+      emptyEl.hidden = true;
+      emptyEl.textContent = "未找到匹配的菜单项";
+    }
+  }
+  if (norm) {
+    list.querySelectorAll(".workbench-tile-btn").forEach((btn) => applyWorkbenchBtnHighlight(btn, query.trim()));
+  }
+}
 
 function getCurrentMenuItems() {
   return [...document.querySelectorAll(".secondary-menu-item[data-target]")];
 }
 
-function showToast(message, isError) {
+function normalizeToastOpts(opts) {
+  if (typeof opts === "boolean") return { variant: opts ? "error" : "success" };
+  if (!opts || typeof opts !== "object") return { variant: "success" };
+  if (opts.error) return { variant: "error" };
+  return { variant: opts.variant || "success" };
+}
+
+function applyToastVariant(el, variant) {
+  el.classList.remove("is-error", "is-success", "is-warn", "is-info");
+  if (variant === "error") el.classList.add("is-error");
+  else if (variant === "warn") el.classList.add("is-warn");
+  else if (variant === "info") el.classList.add("is-info");
+  else el.classList.add("is-success");
+}
+
+function showToast(message, opts) {
   const el = document.getElementById("toast");
   if (!el) return;
+  const { variant } = normalizeToastOpts(opts);
+  if (!Array.isArray(showToast._queue)) showToast._queue = [];
+  const sameVisible =
+    el.classList.contains("is-visible") &&
+    el.textContent === message &&
+    [...el.classList].some((c) => c === `is-${variant}`);
+  if (sameVisible) return;
+  if (el.classList.contains("is-visible")) {
+    const dupQueued = showToast._queue.some(
+      (item) => item.message === message && item.variant === variant
+    );
+    if (!dupQueued) showToast._queue.push({ message, variant });
+    return;
+  }
+  const revealNext = () => {
+    const next = showToast._queue.shift();
+    if (next) showToast(next.message, { variant: next.variant });
+  };
   el.textContent = message;
-  el.classList.toggle("is-error", !!isError);
+  applyToastVariant(el, variant);
   el.classList.add("is-visible");
   clearTimeout(showToast._t);
-  showToast._t = setTimeout(() => el.classList.remove("is-visible"), 3200);
+  showToast._t = setTimeout(() => {
+    el.classList.remove("is-visible");
+    revealNext();
+  }, 3200);
+}
+
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+let settingsSnapshot = null;
+
+function getSettingsFormState() {
+  return {
+    mfaEnabled: !!document.getElementById("setMfa")?.checked,
+    approvalNotify: !!document.getElementById("setNotify")?.checked,
+    policyAutoSync: !!document.getElementById("setPolicySync")?.checked,
+    socialApiPlaceholder: !!document.getElementById("setSocialApi")?.checked,
+    paymentApiPlaceholder: !!document.getElementById("setPaymentApi")?.checked
+  };
+}
+
+function captureSettingsSnapshot() {
+  settingsSnapshot = JSON.stringify(getSettingsFormState());
+  updateSettingsDirtyUi();
+}
+
+function isSettingsDirty() {
+  if (!settingsSnapshot) return false;
+  return JSON.stringify(getSettingsFormState()) !== settingsSnapshot;
+}
+
+function updateSettingsDirtyUi() {
+  const status = document.getElementById("settingsSaveStatus");
+  if (!status) return;
+  if (isSettingsDirty()) {
+    status.textContent = "有未保存的更改";
+    return;
+  }
+  if (status.textContent === "有未保存的更改") status.textContent = "";
+}
+
+function highlightWorkbenchText(text, query) {
+  const norm = (query || "").trim();
+  if (!norm) return escapeHtml(text);
+  const lower = text.toLowerCase();
+  const needle = norm.toLowerCase();
+  const idx = lower.indexOf(needle);
+  if (idx === -1) return escapeHtml(text);
+  const before = text.slice(0, idx);
+  const match = text.slice(idx, idx + needle.length);
+  const after = text.slice(idx + needle.length);
+  return `${escapeHtml(before)}<mark class="wb-search-hit">${escapeHtml(match)}</mark>${escapeHtml(after)}`;
+}
+
+function restoreWorkbenchBtnLabel(btn) {
+  if (btn.dataset.labelHtml) btn.innerHTML = btn.dataset.labelHtml;
+}
+
+function applyWorkbenchBtnHighlight(btn, query) {
+  const icon = btn.querySelector("i");
+  const iconHtml = icon ? icon.outerHTML : "";
+  const labelText = (btn.dataset.displayLabel || btn.textContent || "").trim();
+  if (!query) {
+    restoreWorkbenchBtnLabel(btn);
+    return;
+  }
+  btn.innerHTML = `${iconHtml}${highlightWorkbenchText(labelText, query)}`;
+}
+
+async function withButtonLoading(btn, defaultLabel, fn, loadingLabel = "查询中…") {
+  if (!(btn instanceof HTMLButtonElement) || btn.disabled) return;
+  const label = defaultLabel || btn.textContent;
+  btn.disabled = true;
+  btn.textContent = loadingLabel;
+  try {
+    await fn();
+  } finally {
+    btn.disabled = false;
+    btn.textContent = label;
+  }
+}
+
+function bindFilterEnterSubmit(container, handler) {
+  const root = typeof container === "string" ? document.querySelector(container) : container;
+  if (!root || typeof handler !== "function") return;
+  root.querySelectorAll('input:not([type="file"]):not([type="button"]):not([type="checkbox"]), select').forEach((el) => {
+    el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handler();
+      }
+    });
+  });
+}
+
+function bindAllFilterToolbars() {
+  document.querySelectorAll(".toolbar").forEach((toolbar) => {
+    const queryBtn = toolbar.querySelector(".filter-query-btn");
+    if (!queryBtn || queryBtn.dataset.enterBound === "1") return;
+    queryBtn.dataset.enterBound = "1";
+    bindFilterEnterSubmit(toolbar, () => queryBtn.click());
+  });
+}
+
+function bindSearchFields() {
+  document.querySelectorAll(".search-field, .workbench-search-field").forEach((wrap) => {
+    const input = wrap.querySelector("input[type='text'], input:not([type])");
+    const clearBtn = wrap.querySelector(".search-field-clear, .workbench-search-clear");
+    if (!(input instanceof HTMLInputElement) || !clearBtn) return;
+    const sync = () => {
+      clearBtn.hidden = !input.value.trim();
+    };
+    if (input.dataset.searchBound === "1") return;
+    input.dataset.searchBound = "1";
+    input.addEventListener("input", sync);
+    clearBtn.addEventListener("click", () => {
+      input.value = "";
+      sync();
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+      input.focus();
+    });
+    sync();
+  });
+}
+
+function activateModuleTab(panelId, moduleKey) {
+  const panel = document.getElementById(panelId);
+  const tabs = panel?.querySelector(".module-tabs[data-module-scope]");
+  const btn = tabs?.querySelector(`.module-tab[data-module="${moduleKey}"]`);
+  if (btn instanceof HTMLButtonElement) btn.click();
+}
+
+function updateQueryResultHint(id, count, entityName) {
+  const el = typeof id === "string" ? document.getElementById(id) : id;
+  if (!el) return;
+  el.textContent = count ? `共 ${count} 条${entityName}` : `未找到匹配的${entityName}`;
+}
+
+function updateDemoQueryHint(btn) {
+  const view = btn.closest(".module-view");
+  const hint = view?.querySelector(".query-result-hint");
+  if (!hint) return;
+  const rowCount = view.querySelectorAll("tbody tr").length;
+  if (rowCount > 0) {
+    hint.textContent = `共 ${rowCount} 条记录（演示）`;
+    return;
+  }
+  const gridItems = view.querySelectorAll(".policy-grid > div").length;
+  if (gridItems > 0) {
+    hint.textContent = `共 ${gridItems} 个组织节点（演示）`;
+    return;
+  }
+  if (view.querySelector(".metric-strip")) {
+    hint.textContent = "查询完成，指标已刷新（演示）";
+    return;
+  }
+  hint.textContent = "查询完成（演示）";
+}
+
+function updateReportsQueryHint() {
+  const panel = document.getElementById("reports");
+  const hint = document.getElementById("reportsQueryHint");
+  const activeView = panel?.querySelector(".module-view.is-active");
+  if (!hint || !activeView) return;
+  const rowCount = activeView.querySelectorAll("tbody tr").length;
+  if (rowCount > 0) {
+    hint.textContent = `共 ${rowCount} 条记录（演示）`;
+    return;
+  }
+  if (activeView.querySelector(".metric-strip")) {
+    hint.textContent = "查询完成，指标已刷新（演示）";
+    return;
+  }
+  hint.textContent = "查询完成（演示）";
+}
+
+let confirmDialogResolver = null;
+let overlayReturnFocus = null;
+
+function captureOverlayReturnFocus() {
+  const active = document.activeElement;
+  if (active instanceof HTMLElement) overlayReturnFocus = active;
+}
+
+function restoreOverlayReturnFocus() {
+  const target = overlayReturnFocus;
+  overlayReturnFocus = null;
+  if (target instanceof HTMLElement && document.contains(target)) {
+    requestAnimationFrame(() => target.focus());
+  }
+}
+
+function focusDrawerChrome(drawerEl) {
+  requestAnimationFrame(() => {
+    const closeBtn = drawerEl.querySelector(".drawer-head button");
+    closeBtn?.focus();
+  });
+}
+
+function focusDialogFirstField(dialogEl) {
+  requestAnimationFrame(() => {
+    const field = dialogEl.querySelector(
+      ".dialog-field input:not([type=hidden]), .dialog-field select, .dialog-field textarea"
+    );
+    field?.focus();
+  });
+}
+
+function showDemoRowDetail(tr) {
+  const label = tr.cells?.[0]?.textContent?.trim() || "记录";
+  showToast(`「${label}」详情（演示）`, { variant: "info" });
+}
+
+function bindInteractiveTableRows(tbodyId, rowSelector, onActivate) {
+  const tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+  tbody.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const tr = e.target.closest(rowSelector);
+    if (!tr || e.target.closest(".tiny-btn")) return;
+    e.preventDefault();
+    if (typeof onActivate === "function") {
+      onActivate(tr);
+      return;
+    }
+    const actionBtn = tr.querySelector(".tiny-btn");
+    if (actionBtn instanceof HTMLElement) actionBtn.focus();
+  });
+}
+
+function resetConfirmDialogForm() {
+  const note = document.getElementById("confirmDialogNote");
+  if (note) note.value = "";
+  const noteWrap = document.getElementById("confirmDialogNoteWrap");
+  if (noteWrap) noteWrap.hidden = true;
+}
+
+function closeConfirmDialog(confirmed, note = "") {
+  const dialog = document.getElementById("confirmDialog");
+  const resolver = confirmDialogResolver;
+  confirmDialogResolver = null;
+  resetConfirmDialogForm();
+  if (dialog instanceof HTMLDialogElement && dialog.open) dialog.close();
+  if (resolver) resolver({ confirmed, note });
+  restoreOverlayReturnFocus();
+}
+
+function openConfirmDialog(options = {}) {
+  const {
+    title = "确认操作",
+    message = "确定继续吗？",
+    confirmLabel = "确定",
+    cancelLabel = "取消",
+    danger = false,
+    showNote = false,
+    notePlaceholder = "可填写说明"
+  } = options;
+  return new Promise((resolve) => {
+    const dialog = document.getElementById("confirmDialog");
+    if (!(dialog instanceof HTMLDialogElement)) {
+      resolve({ confirmed: false, note: "" });
+      return;
+    }
+    confirmDialogResolver = resolve;
+    resetConfirmDialogForm();
+    const titleEl = document.getElementById("confirmDialogTitle");
+    const messageEl = document.getElementById("confirmDialogMessage");
+    const confirmBtn = document.getElementById("confirmDialogConfirm");
+    const cancelBtn = document.getElementById("confirmDialogCancel");
+    const noteWrap = document.getElementById("confirmDialogNoteWrap");
+    const noteInput = document.getElementById("confirmDialogNote");
+    if (titleEl) titleEl.textContent = title;
+    if (messageEl) messageEl.textContent = message;
+    if (confirmBtn) {
+      confirmBtn.textContent = confirmLabel;
+      confirmBtn.classList.toggle("danger-btn", danger);
+    }
+    if (cancelBtn) cancelBtn.textContent = cancelLabel;
+    if (noteWrap) noteWrap.hidden = !showNote;
+    if (noteInput) noteInput.placeholder = notePlaceholder;
+    captureOverlayReturnFocus();
+    dialog.showModal();
+    (showNote && noteInput instanceof HTMLElement ? noteInput : cancelBtn)?.focus();
+  });
 }
 
 function statusCell(text) {
@@ -205,6 +697,359 @@ function syncEzwbWorkbenchTabs(targetId) {
   }
 }
 
+function syncWorkspaceDomainChrome(targetId) {
+  const chrome = document.getElementById("workspaceDomainChrome");
+  if (!chrome) return;
+  const show = targetId === "dashboard" || targetId === "workspace";
+  chrome.hidden = !show;
+  if (show) syncEzwbWorkbenchTabs(targetId);
+}
+
+function setAppAuthed(authed) {
+  if (appShell) appShell.hidden = !authed;
+  document.body.classList.toggle("is-authed", authed);
+}
+
+function resetContractForm() {
+  ["ctTarget", "ctSeal", "ctType", "ctMaterial", "ctName", "ctIdNo", "ctEmpSt", "ctSignSt"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el instanceof HTMLSelectElement || el instanceof HTMLInputElement) el.value = "";
+  });
+  ["ctDone", "ctEnd"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el instanceof HTMLInputElement) el.value = "";
+  });
+}
+
+function resetEmployeeForm() {
+  ["empName", "empIdNo", "empMobile", "empCity", "empSocialCity"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el instanceof HTMLInputElement) el.value = "";
+  });
+  ["empProbationEnd", "empHire"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el instanceof HTMLInputElement) el.value = "";
+  });
+  const gender = document.getElementById("empGender");
+  if (gender instanceof HTMLSelectElement) gender.selectedIndex = 0;
+  const status = document.getElementById("empStatus");
+  if (status instanceof HTMLSelectElement) status.selectedIndex = 0;
+  const empType = document.getElementById("empEmploymentType");
+  if (empType instanceof HTMLSelectElement) empType.selectedIndex = 0;
+}
+
+function resetCompanyForm() {
+  ["coName", "coCode", "coCity", "coService"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el instanceof HTMLInputElement) el.value = "";
+  });
+  const status = document.getElementById("coStatus");
+  if (status instanceof HTMLSelectElement) status.selectedIndex = 0;
+}
+
+function resetInvoiceForm() {
+  ["invNo", "invCustomer", "invAmount"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el instanceof HTMLInputElement) el.value = "";
+  });
+  const month = document.getElementById("invMonth");
+  if (month instanceof HTMLInputElement) month.value = "";
+  const status = document.getElementById("invStatus");
+  if (status instanceof HTMLSelectElement) status.selectedIndex = 0;
+}
+
+function resetProjectForm() {
+  ["projName", "projCode", "projClient", "projManager"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el instanceof HTMLInputElement) el.value = "";
+  });
+  ["projStart", "projEnd"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el instanceof HTMLInputElement) el.value = "";
+  });
+  const status = document.getElementById("projStatus");
+  if (status instanceof HTMLSelectElement) status.selectedIndex = 0;
+}
+
+const DRAWER_RESET_MAP = {
+  contractDrawer: resetContractForm,
+  employeeFormDrawer: resetEmployeeForm,
+  companyDrawer: resetCompanyForm,
+  invoiceDrawer: resetInvoiceForm,
+  projectDrawer: resetProjectForm
+};
+
+function focusDrawerFirstField(drawerEl) {
+  requestAnimationFrame(() => {
+    const field = drawerEl.querySelector(
+      ".drawer-form-body input:not([type=hidden]), .drawer-form-body select, .drawer-form-body textarea"
+    );
+    field?.focus();
+  });
+}
+
+function getDrawerElements() {
+  return [
+    "employeeDrawer",
+    "employeeFormDrawer",
+    "contractDrawer",
+    "companyDrawer",
+    "invoiceDrawer",
+    "projectDrawer"
+  ]
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
+}
+
+function closeAllDrawers({ restoreFocus = true } = {}) {
+  getDrawerElements().forEach((el) => {
+    el.classList.remove("is-open");
+    el.setAttribute("aria-hidden", "true");
+  });
+  document.getElementById("drawerMask")?.classList.remove("is-open");
+  if (restoreFocus) restoreOverlayReturnFocus();
+}
+
+function openDrawer(drawerId, { reset = false } = {}) {
+  const el = document.getElementById(drawerId);
+  if (!el) return;
+  closeAllDrawers({ restoreFocus: false });
+  captureOverlayReturnFocus();
+  clearDrawerFieldErrors(drawerId);
+  if (reset && DRAWER_RESET_MAP[drawerId]) DRAWER_RESET_MAP[drawerId]();
+  el.classList.add("is-open");
+  el.setAttribute("aria-hidden", "false");
+  document.getElementById("drawerMask")?.classList.add("is-open");
+  if (el.querySelector(".drawer-form-body")) focusDrawerFirstField(el);
+  else focusDrawerChrome(el);
+}
+
+function closeDrawer(drawerId, { reset = false } = {}) {
+  if (reset && DRAWER_RESET_MAP[drawerId]) DRAWER_RESET_MAP[drawerId]();
+  const el = document.getElementById(drawerId);
+  el?.classList.remove("is-open");
+  el?.setAttribute("aria-hidden", "true");
+  const anyOpen = getDrawerElements().some((drawer) => drawer.classList.contains("is-open"));
+  if (!anyOpen) {
+    document.getElementById("drawerMask")?.classList.remove("is-open");
+    restoreOverlayReturnFocus();
+  }
+}
+
+function syncTableEmptyState(tbodyId) {
+  const tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+  const shell = tbody.closest(".table-shell");
+  if (!shell) return;
+  shell.classList.toggle("is-empty", tbody.children.length === 0);
+}
+
+function clearDrawerFieldErrors(drawerId) {
+  const drawer = document.getElementById(drawerId);
+  if (!drawer) return;
+  drawer.querySelectorAll(".drawer-field.is-invalid").forEach((field) => {
+    field.classList.remove("is-invalid");
+    field.querySelector(".field-hint")?.remove();
+  });
+}
+
+function clearDialogFieldErrors(dialogId) {
+  const dialog = document.getElementById(dialogId);
+  if (!dialog) return;
+  dialog.querySelectorAll(".dialog-field.is-invalid").forEach((field) => {
+    field.classList.remove("is-invalid");
+    field.querySelector(".field-hint")?.remove();
+  });
+}
+
+function markFieldInvalid(fieldId, message) {
+  const field = document.getElementById(fieldId);
+  if (!(field instanceof HTMLElement)) return;
+  const label = field.closest(".drawer-field, .dialog-field");
+  if (!label) return;
+  label.classList.add("is-invalid");
+  let hint = label.querySelector(".field-hint");
+  if (!hint) {
+    hint = document.createElement("span");
+    hint.className = "field-hint";
+    hint.setAttribute("role", "alert");
+    label.appendChild(hint);
+  }
+  hint.textContent = message;
+  field.focus();
+}
+
+function bindDrawerEnterSubmit(drawerId, submitBtnId) {
+  const drawer = document.getElementById(drawerId);
+  const submitBtn = document.getElementById(submitBtnId);
+  if (!drawer || !submitBtn) return;
+  drawer.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    const target = e.target;
+    if (target instanceof HTMLTextAreaElement || target instanceof HTMLButtonElement) return;
+    e.preventDefault();
+    submitBtn.click();
+  });
+}
+
+function syncTopbarUser(user) {
+  if (!topbarUser) return;
+  if (!user) {
+    topbarUser.hidden = true;
+    return;
+  }
+  const roleLabel = user.role === "admin" ? "客户管理员" : "企业用户";
+  const initial = (user.username || roleLabel).charAt(0).toUpperCase();
+  topbarUserAvatar.textContent = initial;
+  topbarUserName.textContent = user.username || "—";
+  topbarUserRole.textContent = roleLabel;
+  topbarUser.hidden = false;
+}
+
+function getSectionTitleForPanel(targetId) {
+  const topKey = panelToTop[targetId] || "workspace";
+  const cfg = topNavConfig[topKey];
+  if (!cfg) return "";
+  const section = cfg.sections.find((sec) => sec.items.includes(targetId));
+  return section?.title || "";
+}
+
+function syncModuleHeaderActions(tabs) {
+  const panel = tabs.closest("section.panel");
+  const activeKey = tabs.querySelector(".module-tab.is-active")?.dataset.module;
+  panel?.querySelectorAll(".module-page-header__actions[data-show-on-module]").forEach((actions) => {
+    const allowed = (actions.dataset.showOnModule || "")
+      .split(",")
+      .map((key) => key.trim())
+      .filter(Boolean);
+    actions.hidden = !allowed.includes(activeKey);
+  });
+}
+
+function syncActiveModuleTabHeader(tabs) {
+  const panel = tabs.closest("section.panel");
+  const activeTab = tabs.querySelector(".module-tab.is-active");
+  const headerText = panel?.querySelector("[data-module-header-text]");
+  if (!headerText || !activeTab || !panel) return;
+  const section = getSectionTitleForPanel(panel.id);
+  const tabTitle = activeTab.textContent.trim();
+  headerText.hidden = false;
+  const sectionHtml =
+    section && section !== tabTitle ? `<p class="module-page-section">${section}</p>` : "";
+  headerText.innerHTML = `${sectionHtml}<p class="module-page-title">${tabTitle}</p>`;
+  if (panel.classList.contains("is-active") && pageTitle) {
+    pageTitle.textContent = tabTitle;
+  }
+}
+
+function purgeSensitiveInlineDom() {
+  document.querySelectorAll(".table-shell[data-demo-static] tbody, tbody[data-demo-table]").forEach((tb) => {
+    tb.innerHTML = "";
+    const shell = tb.closest(".table-shell");
+    shell?.classList.add("is-empty");
+  });
+  const drawerBody = document.querySelector("#employeeDrawer .drawer-body");
+  if (drawerBody) {
+    drawerBody.innerHTML = '<p class="muted drawer-empty-hint">选择员工后加载详情</p>';
+  }
+}
+
+function detachAdminPanels() {
+  const container = document.querySelector(".route-panels");
+  if (!container) return;
+  [...container.querySelectorAll("section.panel")].forEach((panel) => {
+    if (ENTERPRISE_PANEL_IDS.has(panel.id)) return;
+    if (detachedAdminPanels.some((item) => item.id === panel.id)) return;
+    detachedAdminPanels.push({ id: panel.id, node: panel });
+    panel.remove();
+  });
+  purgeSensitiveInlineDom();
+}
+
+function restoreAdminPanels() {
+  const container = document.querySelector(".route-panels");
+  if (!container || !detachedAdminPanels.length) return;
+  detachedAdminPanels
+    .sort((a, b) => Number(a.node.dataset.panelOrder) - Number(b.node.dataset.panelOrder))
+    .forEach(({ node }) => container.appendChild(node));
+  detachedAdminPanels.length = 0;
+  panels.length = 0;
+  panels.push(...document.querySelectorAll(".route-panels > section.panel"));
+}
+
+function applyDomRoleSecurity(role) {
+  if (role === "admin") {
+    restoreAdminPanels();
+    renderStaticTables();
+    return;
+  }
+  detachAdminPanels();
+}
+
+function normNavLabel(text) {
+  return String(text || "").replace(/\s/g, "");
+}
+
+function syncModulePageHeaders(targetId) {
+  const panel = document.getElementById(targetId);
+  if (panel?.classList.contains("panel-title-in-chrome")) {
+    panel.querySelectorAll("[data-module-header-text]").forEach((el) => {
+      el.innerHTML = "";
+      el.hidden = true;
+    });
+    return;
+  }
+  const tabs = panel?.querySelector(".module-tabs[data-module-scope]");
+  if (tabs) {
+    syncActiveModuleTabHeader(tabs);
+    syncModuleHeaderActions(tabs);
+    return;
+  }
+  const title = panelTitleMap[targetId] || "";
+  const section = getSectionTitleForPanel(targetId);
+  document.querySelectorAll(`#${targetId} [data-module-header-text]`).forEach((el) => {
+    if (!title) {
+      el.innerHTML = "";
+      el.hidden = true;
+      return;
+    }
+    el.hidden = false;
+    const sectionHtml =
+      section && section !== title ? `<p class="module-page-section">${section}</p>` : "";
+    el.innerHTML = `${sectionHtml}<p class="module-page-title">${title}</p>`;
+  });
+}
+
+function updatePageChrome(targetId) {
+  const activeLabel = panelTitleMap[targetId] || "运营概览";
+  const topKey = panelToTop[targetId] || "workspace";
+  const topLabel = topNavLabelMap[topKey] || "工作台";
+  const sectionLabel = getSectionTitleForPanel(targetId);
+  const breadcrumbSection = document.getElementById("breadcrumbSection");
+  const breadcrumbSectionWrap = document.getElementById("breadcrumbSectionWrap");
+  const breadcrumbMidSep = document.getElementById("breadcrumbMidSep");
+  const breadcrumbTitleSep = document.getElementById("breadcrumbTitleSep");
+  const isChromeOnly = document.getElementById(targetId)?.classList.contains("panel-title-in-chrome");
+  if (pageTitle) pageTitle.textContent = activeLabel;
+  if (breadcrumbTop) breadcrumbTop.textContent = topLabel;
+  if (breadcrumbSection && breadcrumbMidSep && breadcrumbSectionWrap) {
+    const showSection =
+      !isChromeOnly &&
+      !!sectionLabel &&
+      normNavLabel(sectionLabel) !== normNavLabel(activeLabel) &&
+      normNavLabel(sectionLabel) !== normNavLabel(topLabel);
+    breadcrumbSectionWrap.hidden = !showSection;
+    breadcrumbMidSep.hidden = !showSection;
+    if (showSection) breadcrumbSection.textContent = sectionLabel;
+  }
+  if (breadcrumbTitleSep) {
+    const hideTitleSep =
+      isChromeOnly || (breadcrumbSectionWrap?.hidden !== false && normNavLabel(topLabel) === normNavLabel(activeLabel));
+    breadcrumbTitleSep.hidden = hideTitleSep;
+  }
+  syncModulePageHeaders(targetId);
+}
+
 function syncBizTopNav(targetId) {
   const resolved = panelToTop[targetId] || "workspace";
   currentTopKey = resolved;
@@ -222,8 +1067,8 @@ function renderSecondaryMenu(role, activeTarget) {
         .filter((target) => (panelRoleMap[target] || ["admin", "enterprise"]).includes(role))
         .map((target) => {
           const label = panelTitleMap[target] || target;
-          const icon = PANEL_MENU_ICONS[target] || "fa-circle-o";
-          return `<button type="button" class="secondary-menu-item ${target === activeTarget ? "is-active" : ""}" data-target="${target}" title="${label}"><i class="fa ${icon} secondary-menu-icon" aria-hidden="true"></i><span class="secondary-menu-label">${label}</span></button>`;
+          const icon = PANEL_MENU_ICONS[target] || "fa-regular fa-circle";
+          return `<button type="button" class="secondary-menu-item ${target === activeTarget ? "is-active" : ""}" data-target="${target}" title="${label}"><i class="${icon} secondary-menu-icon" aria-hidden="true"></i><span class="secondary-menu-label">${label}</span></button>`;
         })
         .join("");
       return `<div class="menu-section"><div class="menu-section-title">${sec.title}</div>${items}</div>`;
@@ -235,44 +1080,108 @@ function renderSecondaryMenu(role, activeTarget) {
   });
 }
 
-function activate(targetId) {
+async function activate(targetId, options = {}) {
+  const activePanel = panels.find((panel) => panel.classList.contains("is-active"));
+  if (!options.force && activePanel?.id === "settings" && targetId !== "settings" && isSettingsDirty()) {
+    const { confirmed } = await openConfirmDialog({
+      title: "未保存的更改",
+      message: "设置有未保存的更改，确定离开当前页面吗？",
+      confirmLabel: "离开",
+      cancelLabel: "留在此页"
+    });
+    if (!confirmed) return;
+  }
   getCurrentMenuItems().forEach((item) => item.classList.toggle("is-active", item.dataset.target === targetId));
   panels.forEach((panel) => panel.classList.toggle("is-active", panel.id === targetId));
-  const activeLabel = panelTitleMap[targetId] || "首页";
-  pageTitle.textContent = activeLabel;
-  if (targetId === "dashboard" || targetId === "workspace") syncEzwbWorkbenchTabs(targetId);
+  updatePageChrome(targetId);
+  syncWorkspaceDomainChrome(targetId);
   syncBizTopNav(targetId);
   renderSecondaryMenu(authState.user?.role || "admin", targetId);
+  const recentKey = PANEL_TO_SHORTCUT_KEY[targetId];
+  if (recentKey) pushWorkbenchRecent(recentKey);
+  if (targetId === "staffing-admin" && typeof window.loadStaffingAdminList === "function") {
+    window.loadStaffingAdminList();
+  }
+  if (targetId === "enterprise-home" && typeof window.loadEnterpriseRequirements === "function") {
+    window.loadEnterpriseRequirements();
+  }
   if (targetId === "dashboard") renderDashboardWorkCalendar();
+  document.getElementById("mainContent")?.focus({ preventScroll: true });
 }
 
 function applyRoleVisibility(role) {
-  const topButtons = [...document.querySelectorAll(".biz-top-item[data-top-nav-target]")];
+  document.querySelectorAll(".biz-top-item[data-top-nav-target]").forEach((btn) => {
+    const key = btn.dataset.topNavTarget;
+    const allowed = topNavRoleMap[key] || ["admin"];
+    btn.style.display = allowed.includes(role) ? "" : "none";
+  });
   if (role === "enterprise") {
-    topButtons.forEach((btn) => (btn.style.display = "none"));
-    if (secondaryMenu) secondaryMenu.innerHTML = "";
-    activate("dashboard");
-    return;
+    currentTopKey = "enterprise";
+    activate("enterprise-home");
+  } else {
+    const cfg = topNavConfig[currentTopKey] || topNavConfig.workspace;
+    let firstVisibleTarget = cfg.sections.flatMap((s) => s.items).find((target) => (panelRoleMap[target] || []).includes(role));
+    if (!firstVisibleTarget) {
+      currentTopKey = "workspace";
+      firstVisibleTarget = "dashboard";
+    }
+    if (firstVisibleTarget) activate(firstVisibleTarget);
   }
-  topButtons.forEach((btn) => (btn.style.display = ""));
-  const cfg = topNavConfig[currentTopKey] || topNavConfig.workspace;
-  let firstVisibleTarget = cfg.sections.flatMap((s) => s.items).find((target) => (panelRoleMap[target] || []).includes(role));
-  if (!firstVisibleTarget) {
-    currentTopKey = "workspace";
-    firstVisibleTarget = "dashboard";
-  }
-  if (firstVisibleTarget) activate(firstVisibleTarget);
   document.querySelectorAll(".admin-only").forEach((el) => {
     el.style.display = role === "admin" ? "" : "none";
   });
+  applyDomRoleSecurity(role);
+  if (typeof window.refreshStaffingPanels === "function") window.refreshStaffingPanels();
+}
+
+function syncDemoTableEmptyState(tbody) {
+  const shell = tbody.closest(".table-shell");
+  if (shell) shell.classList.toggle("is-empty", tbody.children.length === 0);
 }
 
 function renderStaticTables() {
+  if (authState.user?.role !== "admin") return;
   Object.entries(staticRows).forEach(([key, rows]) => {
-    const id = `${key}Rows`;
-    const tbody = document.getElementById(id);
+    const tbody = document.getElementById(`${key}Rows`) || document.querySelector(`tbody[data-demo-table="${key}"]`);
     if (!tbody) return;
     tbody.innerHTML = rows.map((r) => `<tr>${r.map((c) => statusCell(c)).join("")}</tr>`).join("");
+    syncDemoTableEmptyState(tbody);
+    if (tbody.id) syncTableEmptyState(tbody.id);
+  });
+  enhanceStaticDemoRows();
+}
+
+const DYNAMIC_TABLE_BODY_IDS = new Set([
+  "employeeRows",
+  "companyRows",
+  "projectRows",
+  "contractRows",
+  "invoiceRows",
+  "approvalRows",
+  "workspaceRows",
+  "importRows",
+  "auditRows"
+]);
+
+function enhanceStaticDemoRows() {
+  document.querySelectorAll(".module-view .table-scroll-wrap tbody tr, .table-shell[data-demo-static] tbody tr").forEach((tr) => {
+    const tbodyId = tr.closest("tbody")?.id || "";
+    if (DYNAMIC_TABLE_BODY_IDS.has(tbodyId)) return;
+    if (
+      tr.hasAttribute("data-emp-row") ||
+      tr.hasAttribute("data-appr-row") ||
+      tr.hasAttribute("data-ws-row") ||
+      tr.hasAttribute("data-proj-row") ||
+      tr.hasAttribute("data-co-row") ||
+      tr.hasAttribute("data-ct-row") ||
+      tr.hasAttribute("data-inv-row")
+    ) {
+      return;
+    }
+    const label = tr.cells?.[0]?.textContent?.trim() || "记录";
+    tr.setAttribute("tabindex", "0");
+    tr.setAttribute("data-demo-row", "1");
+    tr.setAttribute("aria-label", `演示记录 ${label}`);
   });
 }
 
@@ -286,7 +1195,7 @@ function renderWorkspaceTable() {
   tbody.innerHTML = workspaceState.rows
     .map(
       (r) => `
-      <tr>
+      <tr tabindex="0" data-ws-row="${r.id}" aria-label="工单 ${r.seq}，${escapeHtml(r.name)}，${r.status}">
         <td>${r.seq}</td>
         <td>${r.name}</td>
         <td>${r.idNo}</td>
@@ -313,6 +1222,8 @@ function renderWorkspaceTable() {
   pageInfo.textContent = `${workspaceState.page} / ${totalPages}`;
   prevBtn.disabled = workspaceState.page <= 1;
   nextBtn.disabled = workspaceState.page >= totalPages;
+  syncTableEmptyState("workspaceRows");
+  updateQueryResultHint("workspaceQueryHint", workspaceState.total, "工单");
 }
 
 async function loadWorkspace() {
@@ -355,16 +1266,18 @@ function renderEmployeeTable() {
             ${canConfirm ? `<button type="button" class="tiny-btn" data-life="confirm" data-id="${r.id}">转正申请</button>` : ""}
             ${canChange ? `<button type="button" class="tiny-btn" data-life="change" data-id="${r.id}">异动申请</button>` : ""}
             ${canOffboard ? `<button type="button" class="tiny-btn" data-life="offboard" data-id="${r.id}">离职申请</button>` : ""}
-            <button type="button" class="tiny-btn" data-del-emp="${r.id}">删除</button>
+            <button type="button" class="tiny-btn danger-text" data-del-emp="${r.id}">删除</button>
           </span><div class="muted" style="margin-top:4px;font-size:11px;">${transitionHint}</div></td>`
         : "";
-      return `<tr data-emp-row="${r.id}" style="cursor:pointer">
+      return `<tr data-emp-row="${r.id}" tabindex="0" role="button" aria-label="查看员工 ${escapeHtml(r.name)}">
         <td>${r.name}</td><td>${r.idNo}</td><td>${r.mobile || "-"}</td><td>${r.gender || "-"}</td>
         ${statusCell(r.status)}<td>${r.employmentType || "-"}</td><td>${r.hireDate || "-"}</td><td>${r.city || "-"}</td><td>${r.socialCity || "-"}</td>
         ${isAdmin ? actions : ""}
       </tr>`;
     })
     .join("");
+  syncTableEmptyState("employeeRows");
+  updateQueryResultHint("employeeQueryHint", employeeRowsCache.length, "员工记录");
 }
 
 function renderProjectTable(rows) {
@@ -372,7 +1285,7 @@ function renderProjectTable(rows) {
   if (!tbody) return;
   tbody.innerHTML = rows
     .map(
-      (r) => `<tr>
+      (r) => `<tr tabindex="0" data-proj-row="${r.id}" aria-label="查看项目 ${escapeHtml(r.name)}">
         <td>${r.name}</td>
         <td>${r.code}</td>
         <td>${r.clientCompany || "-"}</td>
@@ -383,13 +1296,32 @@ function renderProjectTable(rows) {
       </tr>`
     )
     .join("");
+  syncTableEmptyState("projectRows");
+  updateQueryResultHint("projectQueryHint", rows.length, "项目");
+}
+
+function filterProjects() {
+  let rows = projectRowsCache;
+  const q = document.getElementById("projectKeyword")?.value.trim().toLowerCase() || "";
+  const st = document.getElementById("projectStatusFilter")?.value || "";
+  if (q) {
+    rows = rows.filter(
+      (r) =>
+        (r.name || "").toLowerCase().includes(q) ||
+        (r.code || "").toLowerCase().includes(q) ||
+        (r.manager || "").toLowerCase().includes(q) ||
+        (r.clientCompany || "").toLowerCase().includes(q)
+    );
+  }
+  if (st) rows = rows.filter((r) => r.status === st);
+  renderProjectTable(rows);
 }
 
 async function loadProjects() {
   if (authState.user?.role !== "admin") return;
   const data = await apiRequest("/api/projects");
   projectRowsCache = data.rows || [];
-  renderProjectTable(projectRowsCache);
+  filterProjects();
 }
 
 async function loadEmployees() {
@@ -410,19 +1342,40 @@ function renderCompanyTable(rows) {
   tbody.innerHTML = rows
     .map((r) => {
       const del = isAdmin
-        ? `<td><button type="button" class="tiny-btn" data-del-co="${r.id}">删除</button></td>`
+        ? `<td><button type="button" class="tiny-btn danger-text" data-del-co="${r.id}">删除</button></td>`
         : "";
-      return `<tr><td>${r.name}</td><td>${r.code}</td><td>${r.city || "-"}</td><td>${r.serviceType || "-"}</td>${statusCell(
+      return `<tr tabindex="0" data-co-row="${r.id}" aria-label="查看企业 ${escapeHtml(r.name)}"><td>${r.name}</td><td>${r.code}</td><td>${r.city || "-"}</td><td>${r.serviceType || "-"}</td>${statusCell(
         r.status
       )}${isAdmin ? del : ""}</tr>`;
     })
     .join("");
+  syncTableEmptyState("companyRows");
+  updateQueryResultHint("companyQueryHint", rows.length, "企业");
+}
+
+let companyRowsCache = [];
+
+function filterCompanies() {
+  let rows = companyRowsCache;
+  const q = document.getElementById("companyKeyword")?.value.trim().toLowerCase() || "";
+  const st = document.getElementById("companyStatusFilter")?.value || "";
+  if (q) {
+    rows = rows.filter(
+      (r) =>
+        (r.name || "").toLowerCase().includes(q) ||
+        (r.code || "").toLowerCase().includes(q) ||
+        (r.city || "").toLowerCase().includes(q)
+    );
+  }
+  if (st) rows = rows.filter((r) => r.status === st);
+  renderCompanyTable(rows);
 }
 
 async function loadCompanies() {
   const data = await apiRequest("/api/companies");
-  companySelectCache = data.rows || [];
-  renderCompanyTable(data.rows);
+  companyRowsCache = data.rows || [];
+  companySelectCache = companyRowsCache;
+  filterCompanies();
 }
 
 function renderApprovalTable(rows) {
@@ -438,17 +1391,31 @@ function renderApprovalTable(rows) {
           <button type="button" class="tiny-btn" data-appr="reject" data-id="${r.id}">驳回</button>
         </span></td>`
         : "";
-      return `<tr><td>${r.no}</td><td>${r.type}</td><td>${r.applicant}</td><td>${r.submittedAt}</td>${statusCell(
+      return `<tr tabindex="0" data-appr-row="${r.id}" aria-label="审批单 ${r.no}，${r.type}，${r.applicant}，${r.status}"><td>${r.no}</td><td>${r.type}</td><td>${r.applicant}</td><td>${r.submittedAt}</td>${statusCell(
         r.status
       )}<td>${r.handler}</td>${isAdmin ? ops : ""}</tr>`;
     })
     .join("");
+  syncTableEmptyState("approvalRows");
+  updateQueryResultHint("approvalQueryHint", rows.length, "审批单");
+}
+
+let approvalRowsCache = [];
+
+function filterApprovals() {
+  let rows = approvalRowsCache;
+  const tp = document.getElementById("approvalTypeFilter")?.value || "";
+  const st = document.getElementById("approvalStatusFilter")?.value || "";
+  if (tp) rows = rows.filter((r) => r.type === tp);
+  if (st) rows = rows.filter((r) => r.status === st);
+  renderApprovalTable(rows);
 }
 
 async function loadApprovals() {
   if (authState.user?.role !== "admin") return;
   const data = await apiRequest("/api/approvals");
-  renderApprovalTable(data.rows);
+  approvalRowsCache = data.rows || [];
+  filterApprovals();
 }
 
 function renderInvoiceTable(rows) {
@@ -457,12 +1424,14 @@ function renderInvoiceTable(rows) {
   const isAdmin = authState.user?.role === "admin";
   tbody.innerHTML = rows
     .map((r) => {
-      const del = isAdmin ? `<td><button type="button" class="tiny-btn" data-del-inv="${r.id}">删除</button></td>` : "";
-      return `<tr><td>${r.no}</td><td>${r.customerName}</td><td>${r.amount}</td><td>${r.month}</td>${statusCell(
+      const del = isAdmin ? `<td><button type="button" class="tiny-btn danger-text" data-del-inv="${r.id}">删除</button></td>` : "";
+      return `<tr tabindex="0" data-inv-row="${r.id}" aria-label="发票 ${r.no}，${escapeHtml(r.customerName)}"><td>${r.no}</td><td>${r.customerName}</td><td>${r.amount}</td><td>${r.month}</td>${statusCell(
         r.status
       )}<td>${r.action}</td>${isAdmin ? del : ""}</tr>`;
     })
     .join("");
+  syncTableEmptyState("invoiceRows");
+  updateQueryResultHint("invoiceQueryHint", rows.length, "发票记录");
 }
 
 async function loadInvoices() {
@@ -476,19 +1445,44 @@ async function loadInvoices() {
   renderInvoiceTable(rows);
 }
 
-async function loadContracts() {
-  const data = await apiRequest("/api/contracts");
+let contractRowsCache = [];
+
+function renderContractTable(rows) {
   const tbody = document.getElementById("contractRows");
   if (!tbody) return;
   const isAdmin = authState.user?.role === "admin";
-  tbody.innerHTML = data.rows
+  tbody.innerHTML = rows
     .map((r) => {
-      const del = isAdmin ? `<td><button type="button" class="tiny-btn" data-del-ct="${r.id}">删除</button></td>` : "";
-      return `<tr><td>${r.target}</td><td>${r.type}</td><td>${r.material}</td><td>${r.name}</td><td>${r.idNo}</td><td>${r.employmentStatus}</td>${statusCell(
+      const del = isAdmin ? `<td><button type="button" class="tiny-btn danger-text" data-del-ct="${r.id}">删除</button></td>` : "";
+      return `<tr tabindex="0" data-ct-row="${r.id}" aria-label="合同 ${escapeHtml(r.name)}，${r.type}"><td>${r.target}</td><td>${r.type}</td><td>${r.material}</td><td>${r.name}</td><td>${r.idNo}</td><td>${r.employmentStatus}</td>${statusCell(
         r.signStatus
       )}<td>${r.doneTime}</td><td>${r.contractEnd || "-"}</td>${isAdmin ? del : ""}</tr>`;
     })
     .join("");
+  syncTableEmptyState("contractRows");
+  updateQueryResultHint("contractQueryHint", rows.length, "合同记录");
+}
+
+function filterContracts() {
+  let rows = contractRowsCache;
+  const q = document.getElementById("contractKeyword")?.value.trim().toLowerCase() || "";
+  const st = document.getElementById("contractStatusFilter")?.value || "";
+  if (q) {
+    rows = rows.filter(
+      (r) =>
+        (r.name || "").toLowerCase().includes(q) ||
+        (r.idNo || "").toLowerCase().includes(q) ||
+        (r.material || "").toLowerCase().includes(q)
+    );
+  }
+  if (st) rows = rows.filter((r) => r.signStatus === st);
+  renderContractTable(rows);
+}
+
+async function loadContracts() {
+  const data = await apiRequest("/api/contracts");
+  contractRowsCache = data.rows || [];
+  filterContracts();
 }
 
 async function loadDashboard() {
@@ -744,6 +1738,7 @@ async function loadSettingsUi() {
   const paymentApi = document.getElementById("setPaymentApi");
   if (socialApi) socialApi.checked = !!s.social_api_placeholder;
   if (paymentApi) paymentApi.checked = !!s.payment_api_placeholder;
+  captureSettingsSnapshot();
 }
 
 async function loadAudit() {
@@ -752,25 +1747,134 @@ async function loadAudit() {
   const tbody = document.getElementById("auditRows");
   if (!tbody) return;
   tbody.innerHTML = data.rows
-    .map((r) => `<tr><td>${r.createdAt}</td><td>${r.username || "-"}</td><td>${r.action}</td><td>${r.detail || "-"}</td></tr>`)
+    .map(
+      (r) =>
+        `<tr tabindex="0" data-audit-row="${r.id}" aria-label="审计记录 ${r.action}，${r.username || "未知用户"}"><td>${r.createdAt}</td><td>${r.username || "-"}</td><td>${r.action}</td><td>${r.detail || "-"}</td></tr>`
+    )
     .join("");
+  syncTableEmptyState("auditRows");
 }
 
 async function loadAllData() {
-  await loadWorkspace();
-  await loadProjects();
-  await loadEmployees();
-  await loadCompanies();
-  await loadContracts();
-  await loadInvoices();
-  await loadDashboard();
-  if (authState.user?.role === "admin") {
-    await loadApprovals();
-    await loadReports();
-    await loadSettingsUi();
-    await loadAudit();
+  setPageLoading(true);
+  try {
+    const role = authState.user?.role;
+    if (role === "enterprise") {
+      if (typeof window.loadEnterpriseRequirements === "function") {
+        await window.loadEnterpriseRequirements();
+      }
+      return;
+    }
+    await loadWorkspace();
+    await loadProjects();
+    await loadEmployees();
+    await loadCompanies();
+    await loadContracts();
+    await loadInvoices();
+    await loadDashboard();
+    if (authState.user?.role === "admin") {
+      await loadApprovals();
+      await loadReports();
+      await loadSettingsUi();
+      await loadAudit();
+    }
+    renderStaticTables();
+  } finally {
+    setPageLoading(false);
   }
-  renderStaticTables();
+}
+
+function setPageLoading(loading) {
+  const skeleton = document.getElementById("panelSkeleton");
+  const panels = document.querySelector(".content-area.route-panels");
+  if (skeleton) {
+    skeleton.hidden = !loading;
+    skeleton.setAttribute("aria-hidden", loading ? "false" : "true");
+  }
+  panels?.classList.toggle("is-page-loading", loading);
+}
+
+function resetTaskDialogForm() {
+  ["taskName", "taskOwner"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el instanceof HTMLInputElement) el.value = "";
+  });
+  const due = document.getElementById("taskDue");
+  if (due instanceof HTMLInputElement) due.value = "";
+  const city = document.getElementById("taskCity");
+  if (city instanceof HTMLSelectElement) city.selectedIndex = 0;
+}
+
+function openTaskDialog() {
+  resetTaskDialogForm();
+  clearDialogFieldErrors("taskDialog");
+  const dialog = document.getElementById("taskDialog");
+  if (!(dialog instanceof HTMLDialogElement)) return;
+  captureOverlayReturnFocus();
+  dialog.showModal();
+  focusDialogFirstField(dialog);
+}
+
+function closeTaskDialog(reset = true) {
+  const dialog = document.getElementById("taskDialog");
+  if (!(dialog instanceof HTMLDialogElement)) return;
+  dialog.close();
+  if (reset) {
+    resetTaskDialogForm();
+    clearDialogFieldErrors("taskDialog");
+  }
+  restoreOverlayReturnFocus();
+}
+
+function getTopOverlayLayer() {
+  if (getDrawerElements().some((el) => el.classList.contains("is-open"))) return "drawer";
+  const taskDialog = document.getElementById("taskDialog");
+  if (taskDialog instanceof HTMLDialogElement && taskDialog.open) return "taskDialog";
+  const calculator = document.getElementById("calculatorDialog");
+  if (calculator instanceof HTMLDialogElement && calculator.open) return "calculatorDialog";
+  const confirmDialogEl = document.getElementById("confirmDialog");
+  if (confirmDialogEl instanceof HTMLDialogElement && confirmDialogEl.open) return "confirmDialog";
+  const openDialog = document.querySelector("dialog[open]");
+  if (openDialog instanceof HTMLDialogElement) return "dialog";
+  return null;
+}
+
+function dismissTopOverlay() {
+  const layer = getTopOverlayLayer();
+  if (layer === "drawer") {
+    closeAllDrawers();
+    return true;
+  }
+  if (layer === "taskDialog") {
+    closeTaskDialog(true);
+    return true;
+  }
+  if (layer === "calculatorDialog") {
+    document.getElementById("calculatorDialog")?.close();
+    restoreOverlayReturnFocus();
+    return true;
+  }
+  if (layer === "confirmDialog") {
+    closeConfirmDialog(false);
+    return true;
+  }
+  if (layer === "dialog") {
+    const openDialog = document.querySelector("dialog[open]");
+    if (openDialog instanceof HTMLDialogElement) {
+      openDialog.close();
+      restoreOverlayReturnFocus();
+      return true;
+    }
+  }
+  return false;
+}
+
+function showCalculatorDialog() {
+  const dialog = document.getElementById("calculatorDialog");
+  if (!(dialog instanceof HTMLDialogElement)) return;
+  captureOverlayReturnFocus();
+  dialog.showModal();
+  focusDialogFirstField(dialog);
 }
 
 function exportCsv(filename, headers, rows) {
@@ -784,12 +1888,19 @@ function exportCsv(filename, headers, rows) {
   URL.revokeObjectURL(url);
 }
 
+function formatFileSize(bytes) {
+  if (!bytes || bytes < 1024) return `${bytes || 0} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 function setupEvents() {
   function syncSidebarAria() {
-    sidebarToggle?.setAttribute(
-      "aria-expanded",
-      document.body.classList.contains("sidebar-collapsed") ? "false" : "true"
-    );
+    const collapsed = document.body.classList.contains("sidebar-collapsed");
+    sidebarToggle?.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    const label = collapsed ? "展开左侧菜单" : "收起左侧菜单";
+    sidebarToggle?.setAttribute("title", label);
+    sidebarToggle?.setAttribute("aria-label", label);
   }
   if (localStorage.getItem("hr_sidebar_collapsed") === "1") {
     document.body.classList.add("sidebar-collapsed");
@@ -826,86 +1937,265 @@ function setupEvents() {
     });
   });
 
-  // Module tabs: switch sub-views inside a panel (layout-only enhancement).
-  document.querySelectorAll(".module-tabs[data-module-scope]").forEach((tabs) => {
-    tabs.querySelectorAll(".module-tab[data-module]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const scope = tabs.dataset.moduleScope;
-        const target = btn.dataset.module;
-        tabs.querySelectorAll(".module-tab").forEach((b) => b.classList.toggle("is-active", b === btn));
-        const root = tabs.closest("article");
-        if (!root) return;
-        root.querySelectorAll(".module-view").forEach((view) => {
-          view.classList.toggle("is-active", view.dataset.moduleView === target);
-        });
-        if (scope === "employee") showToast(`已切换到：${btn.textContent.trim()}`);
-      });
-    });
-  });
-
-  const calculator = document.getElementById("calculatorDialog");
-  document.getElementById("openCalculator")?.addEventListener("click", () => calculator?.showModal());
-  document.getElementById("openCalculatorFromWb")?.addEventListener("click", () => calculator?.showModal());
-
-  function filterWorkbenchMenu(query) {
-    const norm = (query || "").trim().toLowerCase();
-    document.querySelectorAll("#side-menu .workbench-tiles li").forEach((li) => {
-      const btn = li.querySelector(".workbenchBtn");
+  // Module tabs: document-level delegation (panels may restore after login).
+  if (!document.documentElement.dataset.moduleTabBound) {
+    document.documentElement.dataset.moduleTabBound = "1";
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest(".module-tab[data-module]");
       if (!btn) return;
-      const hay = `${btn.dataset.label || ""} ${btn.textContent || ""}`.toLowerCase();
-      li.style.display = !norm || hay.includes(norm) ? "" : "none";
+      const tabs = btn.closest(".module-tabs[data-module-scope]");
+      if (!tabs) return;
+      const scope = tabs.dataset.moduleScope;
+      const target = btn.dataset.module;
+      tabs.querySelectorAll(".module-tab").forEach((b) => b.classList.toggle("is-active", b === btn));
+      const root = tabs.closest("article");
+      if (!root) return;
+      root.querySelectorAll(".module-view").forEach((view) => {
+        view.classList.toggle("is-active", view.dataset.moduleView === target);
+      });
+      syncActiveModuleTabHeader(tabs);
+      syncModuleHeaderActions(tabs);
+      if (scope === "reports") {
+        const hint = document.getElementById("reportsQueryHint");
+        if (hint) hint.textContent = "";
+      }
+      enhanceStaticDemoRows();
     });
   }
-  document.getElementById("workbenchMenuSearch")?.addEventListener("input", (e) => filterWorkbenchMenu(e.target.value));
+
+  const calculator = document.getElementById("calculatorDialog");
+  document.getElementById("openCalculator")?.addEventListener("click", showCalculatorDialog);
+  document.getElementById("calculatorDialogClose")?.addEventListener("click", () => {
+    calculator?.close();
+    restoreOverlayReturnFocus();
+  });
+  document.getElementById("calculatorDialogConfirm")?.addEventListener("click", () => {
+    calculator?.close();
+    restoreOverlayReturnFocus();
+    showToast("测算完成（演示）");
+  });
+  calculator?.addEventListener("close", () => restoreOverlayReturnFocus());
+
+  const confirmDialog = document.getElementById("confirmDialog");
+  document.getElementById("confirmDialogCancel")?.addEventListener("click", () => closeConfirmDialog(false));
+  document.getElementById("confirmDialogConfirm")?.addEventListener("click", () => {
+    const noteWrap = document.getElementById("confirmDialogNoteWrap");
+    const note =
+      noteWrap?.hidden || !(document.getElementById("confirmDialogNote") instanceof HTMLTextAreaElement)
+        ? ""
+        : document.getElementById("confirmDialogNote").value.trim();
+    closeConfirmDialog(true, note);
+  });
+  confirmDialog?.addEventListener("cancel", (e) => {
+    e.preventDefault();
+    closeConfirmDialog(false);
+  });
+  confirmDialog?.addEventListener("close", () => {
+    if (!confirmDialogResolver) return;
+    const resolver = confirmDialogResolver;
+    confirmDialogResolver = null;
+    resetConfirmDialogForm();
+    restoreOverlayReturnFocus();
+    resolver({ confirmed: false, note: "" });
+  });
+
+  bindInteractiveTableRows("workspaceRows", "tr[data-ws-row]");
+  bindInteractiveTableRows("approvalRows", "tr[data-appr-row]");
+  bindInteractiveTableRows("companyRows", "tr[data-co-row]");
+  bindInteractiveTableRows("contractRows", "tr[data-ct-row]");
+  bindInteractiveTableRows("invoiceRows", "tr[data-inv-row]");
+  bindInteractiveTableRows("auditRows", "tr[data-audit-row]", (tr) => {
+    const action = tr.cells?.[2]?.textContent?.trim() || "操作";
+    showToast(`审计记录：${action}（演示）`, { variant: "info" });
+  });
+  bindInteractiveTableRows("projectRows", "tr[data-proj-row]", (tr) => {
+    const name = tr.querySelector("td")?.textContent?.trim() || "项目";
+    showToast(`项目「${name}」详情（演示）`, { variant: "info" });
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const tr = e.target.closest("tr[data-demo-row]");
+    if (!tr || e.target.closest(".tiny-btn")) return;
+    e.preventDefault();
+    showDemoRowDetail(tr);
+  });
+  document.addEventListener("click", (e) => {
+    const tr = e.target.closest("tr[data-demo-row]");
+    if (!tr || e.target.closest(".tiny-btn")) return;
+    showDemoRowDetail(tr);
+  });
+
+  renderWorkbenchTiles("");
+
+  function syncWorkbenchSearchClearBtn() {
+    const input = document.getElementById("workbenchMenuSearch");
+    const clearBtn = document.getElementById("workbenchMenuSearchClear");
+    if (!input || !clearBtn) return;
+    clearBtn.hidden = !input.value.trim();
+  }
+
+  function filterWorkbenchMenu(query) {
+    renderWorkbenchTiles(query || "");
+    syncWorkbenchSearchClearBtn();
+  }
+  document.getElementById("workbenchMenuSearch")?.addEventListener("input", (e) => {
+    filterWorkbenchMenu(e.target.value);
+    syncWorkbenchSearchClearBtn();
+  });
   document.getElementById("workbenchMenuSearchBtn")?.addEventListener("click", () => {
     filterWorkbenchMenu(document.getElementById("workbenchMenuSearch")?.value);
+  });
+  document.getElementById("workbenchMenuSearchClear")?.addEventListener("click", () => {
+    const input = document.getElementById("workbenchMenuSearch");
+    if (!(input instanceof HTMLInputElement)) return;
+    input.value = "";
+    filterWorkbenchMenu("");
+    input.focus();
+  });
+  document.getElementById("workbenchMenuSearch")?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      filterWorkbenchMenu(e.target.value);
+      return;
+    }
+    if (e.key === "Escape" && e.target.value) {
+      e.preventDefault();
+      e.target.value = "";
+      filterWorkbenchMenu("");
+    }
   });
 
   document.getElementById("ezwbTabHome")?.addEventListener("click", () => activate("dashboard"));
   document.getElementById("ezwbTabWorkbench")?.addEventListener("click", () => activate("workspace"));
 
-  document.querySelectorAll(".workbenchBtn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      if (btn.id === "openCalculatorFromWb") return;
-      const jump = btn.dataset.jump;
-      if (jump) activate(jump);
-      const scrollId = btn.dataset.scrollTarget;
-      if (scrollId) {
-        requestAnimationFrame(() => document.getElementById(scrollId)?.scrollIntoView({ behavior: "smooth", block: "start" }));
-      }
-    });
+  document.getElementById("retireQuery")?.addEventListener("click", () =>
+    withButtonLoading(document.getElementById("retireQuery"), "查询", () => {
+      const tbody = document.getElementById("retireRows");
+      const count = tbody ? tbody.querySelectorAll("tr").length : 0;
+      updateQueryResultHint("retireQueryHint", count, "退休办理记录");
+    })
+  );
+  document.getElementById("openTaskDialog")?.addEventListener("click", openTaskDialog);
+  document.getElementById("retireAddFromEmpty")?.addEventListener("click", openTaskDialog);
+  document.getElementById("taskDialogCancel")?.addEventListener("click", () => closeTaskDialog(true));
+  document.getElementById("taskDialog")?.addEventListener("cancel", (e) => {
+    e.preventDefault();
+    closeTaskDialog(true);
   });
-  document.getElementById("openTaskDialog")?.addEventListener("click", () => document.getElementById("taskDialog").showModal());
+  document.getElementById("taskDialogForm")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.getElementById("taskName")?.value.trim();
+    if (!name) {
+      markFieldInvalid("taskName", "请填写任务名称");
+      showToast("请填写任务名称", true);
+      return;
+    }
+    clearDialogFieldErrors("taskDialog");
+    closeTaskDialog(false);
+    showToast("退休办理任务已创建（演示）");
+    resetTaskDialogForm();
+  });
+  document.querySelectorAll("#taskDialog .dialog-field input, #taskDialog .dialog-field select").forEach((el) => {
+    const clearInvalid = () => {
+      const field = el.closest(".dialog-field");
+      field?.classList.remove("is-invalid");
+      field?.querySelector(".field-hint")?.remove();
+    };
+    el.addEventListener("input", clearInvalid);
+    el.addEventListener("change", clearInvalid);
+  });
 
   const uploadInput = document.getElementById("salaryUpload");
   const validateBtn = document.getElementById("validateUpload");
   const uploadResult = document.getElementById("uploadResult");
-  validateBtn?.addEventListener("click", () => {
-    const file = uploadInput.files && uploadInput.files[0];
-    if (!file) return (uploadResult.innerHTML = '<span class="status status-warn">请先选择上传文件</span>');
-    if (!/\.(xlsx|xls|csv)$/i.test(file.name)) {
-      return (uploadResult.innerHTML = '<span class="status status-warn">文件格式不正确，仅支持 xlsx/xls/csv</span>');
+  uploadInput?.addEventListener("change", () => {
+    const file = uploadInput.files?.[0];
+    if (!file) {
+      uploadResult.innerHTML = '<span class="muted">尚未选择文件</span>';
+      return;
     }
-    uploadResult.innerHTML = `<span class="status status-success">校验通过：${file.name}（演示模式）</span>`;
+    if (!/\.(xlsx|xls|csv)$/i.test(file.name)) {
+      uploadResult.innerHTML = '<span class="status status-warn">文件格式不正确，仅支持 xlsx/xls/csv</span>';
+      uploadInput.value = "";
+      return;
+    }
+    uploadResult.innerHTML = `<span class="muted">已选择：<strong>${escapeHtml(file.name)}</strong>（${formatFileSize(file.size)}），点击「上传并校验」继续</span>`;
+  });
+  validateBtn?.addEventListener("click", async () => {
+    const file = uploadInput.files && uploadInput.files[0];
+    if (!file) {
+      uploadResult.innerHTML = '<span class="status status-warn">请先选择上传文件</span>';
+      return;
+    }
+    if (!/\.(xlsx|xls|csv)$/i.test(file.name)) {
+      uploadResult.innerHTML = '<span class="status status-warn">文件格式不正确，仅支持 xlsx/xls/csv</span>';
+      return;
+    }
+    await withButtonLoading(validateBtn, "上传并校验", async () => {
+      await new Promise((resolve) => setTimeout(resolve, 420));
+      uploadResult.innerHTML = `<span class="status status-success">校验通过：${escapeHtml(file.name)}（演示模式，已加载预览数据）</span>`;
+      renderStaticTables();
+    }, "校验中…");
+  });
+  document.getElementById("salaryTemplateDownload")?.addEventListener("click", () => {
+    showToast("模板下载已开始（演示）", { variant: "info" });
   });
 
-  const drawer = document.getElementById("employeeDrawer");
-  const drawerMask = document.getElementById("drawerMask");
-  const setDrawer = (open) => {
-    drawer.classList.toggle("is-open", open);
-    drawerMask.classList.toggle("is-open", open);
-  };
+  const employeeDrawer = document.getElementById("employeeDrawer");
+  document.getElementById("drawerMask")?.addEventListener("click", closeAllDrawers);
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    dismissTopOverlay();
+  });
+
+
   document.getElementById("openDetailDrawer")?.addEventListener("click", async () => {
     const first = employeeRowsCache[0];
     if (first) {
       await fillDrawer(first);
-      setDrawer(true);
+      openDrawer("employeeDrawer");
     }
   });
-  document.getElementById("closeDrawer")?.addEventListener("click", () => setDrawer(false));
-  drawerMask?.addEventListener("click", () => setDrawer(false));
+  document.getElementById("closeDrawer")?.addEventListener("click", () => closeDrawer("employeeDrawer"));
+  document.getElementById("openContractDrawer")?.addEventListener("click", () => openDrawer("contractDrawer", { reset: true }));
+  document.getElementById("closeContractDrawer")?.addEventListener("click", () => closeDrawer("contractDrawer", { reset: true }));
+  document.getElementById("contractDrawerCancel")?.addEventListener("click", () => closeDrawer("contractDrawer", { reset: true }));
+  document.getElementById("openEmployeeDrawer")?.addEventListener("click", () => openDrawer("employeeFormDrawer", { reset: true }));
+  document.getElementById("closeEmployeeFormDrawer")?.addEventListener("click", () => closeDrawer("employeeFormDrawer", { reset: true }));
+  document.getElementById("employeeDrawerCancel")?.addEventListener("click", () => closeDrawer("employeeFormDrawer", { reset: true }));
+  document.getElementById("openCompanyDrawer")?.addEventListener("click", () => openDrawer("companyDrawer", { reset: true }));
+  document.getElementById("closeCompanyDrawer")?.addEventListener("click", () => closeDrawer("companyDrawer", { reset: true }));
+  document.getElementById("companyDrawerCancel")?.addEventListener("click", () => closeDrawer("companyDrawer", { reset: true }));
+  document.getElementById("openInvoiceDrawer")?.addEventListener("click", () => openDrawer("invoiceDrawer", { reset: true }));
+  document.getElementById("closeInvoiceDrawer")?.addEventListener("click", () => closeDrawer("invoiceDrawer", { reset: true }));
+  document.getElementById("invoiceDrawerCancel")?.addEventListener("click", () => closeDrawer("invoiceDrawer", { reset: true }));
+  document.getElementById("openProjectDrawer")?.addEventListener("click", () => openDrawer("projectDrawer", { reset: true }));
+  document.getElementById("closeProjectDrawer")?.addEventListener("click", () => closeDrawer("projectDrawer", { reset: true }));
+  document.getElementById("projectDrawerCancel")?.addEventListener("click", () => closeDrawer("projectDrawer", { reset: true }));
 
-  drawer?.addEventListener("click", async (e) => {
+  bindDrawerEnterSubmit("companyDrawer", "companyAdd");
+  bindDrawerEnterSubmit("invoiceDrawer", "invoiceAdd");
+  bindDrawerEnterSubmit("employeeFormDrawer", "employeeAdd");
+  bindDrawerEnterSubmit("contractDrawer", "contractAdd");
+  bindDrawerEnterSubmit("projectDrawer", "projectAdd");
+
+  document.querySelectorAll(".drawer-form-body .drawer-field input, .drawer-form-body .drawer-field select").forEach((el) => {
+    const clearInvalid = () => {
+      const field = el.closest(".drawer-field");
+      field?.classList.remove("is-invalid");
+      field?.querySelector(".field-hint")?.remove();
+    };
+    el.addEventListener("input", clearInvalid);
+    el.addEventListener("change", clearInvalid);
+  });
+
+  document.getElementById("companyAddFromEmpty")?.addEventListener("click", () => openDrawer("companyDrawer", { reset: true }));
+  document.getElementById("invoiceAddFromEmpty")?.addEventListener("click", () => openDrawer("invoiceDrawer", { reset: true }));
+  document.getElementById("contractAddFromEmpty")?.addEventListener("click", () => openDrawer("contractDrawer", { reset: true }));
+  document.getElementById("projectAddFromEmpty")?.addEventListener("click", () => openDrawer("projectDrawer", { reset: true }));
+
+  employeeDrawer?.addEventListener("click", async (e) => {
     const t = e.target;
     if (!(t instanceof HTMLElement) || !drawerEmployeeId) return;
     if (authState.user?.role !== "admin") return;
@@ -957,6 +2247,21 @@ function setupEvents() {
     }
   });
 
+  async function openEmployeeRowDrawer(rowId) {
+    const row = employeeRowsCache.find((x) => String(x.id) === String(rowId));
+    if (!row) return;
+    await fillDrawer(row);
+    openDrawer("employeeDrawer");
+  }
+
+  document.getElementById("employeeRows")?.addEventListener("keydown", async (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const tr = e.target.closest("tr[data-emp-row]");
+    if (!tr || e.target.closest(".tiny-btn")) return;
+    e.preventDefault();
+    await openEmployeeRowDrawer(tr.getAttribute("data-emp-row"));
+  });
+
   document.getElementById("employeeRows")?.addEventListener("click", async (e) => {
     const t = e.target;
     if (!(t instanceof HTMLElement)) return;
@@ -971,37 +2276,67 @@ function setupEvents() {
       };
       const cfg = map[life];
       if (cfg) {
-        const note = prompt("请输入审批备注（可选）", "") || "";
-        await apiRequest(`/api/employees/${employeeId}/lifecycle-request`, {
-          method: "POST",
-          body: JSON.stringify({ ...cfg, note, effectiveDate: new Date().toISOString().slice(0, 10) })
+        const { confirmed, note } = await openConfirmDialog({
+          title: `提交${cfg.requestType}`,
+          message: `确认为该员工提交「${cfg.requestType}」审批申请？`,
+          confirmLabel: "提交审批",
+          showNote: true,
+          notePlaceholder: "请输入审批备注（可选）"
         });
-        showToast("已提交审批，请在审批中心处理");
-        await loadApprovals();
+        if (!confirmed) return;
+        try {
+          await apiRequest(`/api/employees/${employeeId}/lifecycle-request`, {
+            method: "POST",
+            body: JSON.stringify({ ...cfg, note, effectiveDate: new Date().toISOString().slice(0, 10) })
+          });
+          showToast("已提交审批，请在审批中心处理");
+          await loadApprovals();
+        } catch (err) {
+          showToast(err.message || "提交失败", true);
+        }
       }
       return;
     }
     const id = t.dataset.delEmp;
     if (id) {
-      if (!confirm("确定删除该员工？")) return;
-      await apiRequest(`/api/employees/${id}`, { method: "DELETE" });
-      showToast("已删除");
-      await loadEmployees();
-      await loadDashboard();
+      const { confirmed } = await openConfirmDialog({
+        title: "删除员工",
+        message: "确定删除该员工？此操作不可撤销。",
+        confirmLabel: "删除",
+        danger: true
+      });
+      if (!confirmed) return;
+      try {
+        await apiRequest(`/api/employees/${id}`, { method: "DELETE" });
+        showToast("已删除");
+        await loadEmployees();
+        await loadDashboard();
+      } catch (err) {
+        showToast(err.message || "删除失败", true);
+      }
       return;
     }
     const tr = t.closest("tr[data-emp-row]");
-    if (tr) {
-      const rid = tr.getAttribute("data-emp-row");
-      const row = employeeRowsCache.find((x) => String(x.id) === rid);
-      if (row) {
-        await fillDrawer(row);
-        setDrawer(true);
-      }
+    if (tr && !t.closest(".tiny-btn")) {
+      await openEmployeeRowDrawer(tr.getAttribute("data-emp-row"));
     }
   });
 
-  document.getElementById("employeeQuery")?.addEventListener("click", () => loadEmployees());
+  document.getElementById("employeeQuery")?.addEventListener("click", () =>
+    withButtonLoading(document.getElementById("employeeQuery"), "查询", () => loadEmployees())
+  );
+  document.getElementById("projectQuery")?.addEventListener("click", () =>
+    withButtonLoading(document.getElementById("projectQuery"), "查询", () => filterProjects())
+  );
+  document.getElementById("companyQuery")?.addEventListener("click", () =>
+    withButtonLoading(document.getElementById("companyQuery"), "查询", () => filterCompanies())
+  );
+  document.getElementById("contractQuery")?.addEventListener("click", () =>
+    withButtonLoading(document.getElementById("contractQuery"), "查询", () => filterContracts())
+  );
+  document.getElementById("approvalQuery")?.addEventListener("click", () =>
+    withButtonLoading(document.getElementById("approvalQuery"), "查询", () => filterApprovals())
+  );
   document.getElementById("employeeExport")?.addEventListener("click", () => {
     const h = ["姓名", "证件号", "手机", "性别", "状态", "用工类型", "入职日", "工作地", "社保城市"];
     const rows = employeeRowsCache.map((r) => [
@@ -1019,7 +2354,7 @@ function setupEvents() {
     showToast("已导出当前列表");
   });
   document.getElementById("employeeAddFromEmpty")?.addEventListener("click", () => {
-    document.getElementById("employeeAdd")?.click();
+    openDrawer("employeeFormDrawer", { reset: true });
   });
 
   document.getElementById("employeeAdd")?.addEventListener("click", async () => {
@@ -1035,19 +2370,40 @@ function setupEvents() {
       city: document.getElementById("empCity").value.trim(),
       socialCity: document.getElementById("empSocialCity").value.trim()
     };
-    await apiRequest("/api/employees", { method: "POST", body: JSON.stringify(body) });
-    showToast("员工已新增");
-    await loadEmployees();
-    await loadDashboard();
+    if (!body.name) {
+      markFieldInvalid("empName", "请填写员工姓名");
+      showToast("请填写员工姓名", true);
+      return;
+    }
+    try {
+      await apiRequest("/api/employees", { method: "POST", body: JSON.stringify(body) });
+      showToast("员工已新增");
+      resetEmployeeForm();
+      closeDrawer("employeeFormDrawer");
+      await loadEmployees();
+      await loadDashboard();
+    } catch (err) {
+      showToast(err.message || "新增失败", true);
+    }
   });
 
   document.getElementById("companyRows")?.addEventListener("click", async (e) => {
     const t = e.target;
     if (!(t instanceof HTMLElement) || !t.dataset.delCo) return;
-    if (!confirm("确定删除该企业？")) return;
-    await apiRequest(`/api/companies/${t.dataset.delCo}`, { method: "DELETE" });
-    showToast("企业已删除");
-    await loadCompanies();
+    const { confirmed } = await openConfirmDialog({
+      title: "删除企业",
+      message: "确定删除该企业？此操作不可撤销。",
+      confirmLabel: "删除",
+      danger: true
+    });
+    if (!confirmed) return;
+    try {
+      await apiRequest(`/api/companies/${t.dataset.delCo}`, { method: "DELETE" });
+      showToast("企业已删除");
+      await loadCompanies();
+    } catch (err) {
+      showToast(err.message || "删除失败", true);
+    }
   });
   document.getElementById("companyAdd")?.addEventListener("click", async () => {
     const body = {
@@ -1057,9 +2413,20 @@ function setupEvents() {
       serviceType: document.getElementById("coService").value.trim(),
       status: document.getElementById("coStatus").value
     };
-    await apiRequest("/api/companies", { method: "POST", body: JSON.stringify(body) });
-    showToast("企业已新增");
-    await loadCompanies();
+    if (!body.name) {
+      markFieldInvalid("coName", "请填写企业名称");
+      showToast("请填写企业名称", true);
+      return;
+    }
+    try {
+      await apiRequest("/api/companies", { method: "POST", body: JSON.stringify(body) });
+      showToast("企业已新增");
+      resetCompanyForm();
+      closeDrawer("companyDrawer");
+      await loadCompanies();
+    } catch (err) {
+      showToast(err.message || "新增失败", true);
+    }
   });
 
   document.getElementById("approvalRows")?.addEventListener("click", async (e) => {
@@ -1080,10 +2447,20 @@ function setupEvents() {
   document.getElementById("contractRows")?.addEventListener("click", async (e) => {
     const t = e.target;
     if (!(t instanceof HTMLElement) || !t.dataset.delCt) return;
-    if (!confirm("确定删除该合同记录？")) return;
-    await apiRequest(`/api/contracts/${t.dataset.delCt}`, { method: "DELETE" });
-    showToast("已删除");
-    await loadContracts();
+    const { confirmed } = await openConfirmDialog({
+      title: "删除合同记录",
+      message: "确定删除该合同记录？此操作不可撤销。",
+      confirmLabel: "删除",
+      danger: true
+    });
+    if (!confirmed) return;
+    try {
+      await apiRequest(`/api/contracts/${t.dataset.delCt}`, { method: "DELETE" });
+      showToast("已删除");
+      await loadContracts();
+    } catch (err) {
+      showToast(err.message || "删除失败", true);
+    }
   });
   document.getElementById("contractAdd")?.addEventListener("click", async () => {
     const entity = document.getElementById("ctTarget").value.trim();
@@ -1100,19 +2477,40 @@ function setupEvents() {
       doneTime: document.getElementById("ctDone").value.trim(),
       contractEnd: document.getElementById("ctEnd").value.trim()
     };
-    await apiRequest("/api/contracts", { method: "POST", body: JSON.stringify(body) });
-    showToast("合同记录已新增");
-    await loadContracts();
+    if (!body.name) {
+      markFieldInvalid("ctName", "请填写员工姓名");
+      showToast("请填写员工姓名", true);
+      return;
+    }
+    try {
+      await apiRequest("/api/contracts", { method: "POST", body: JSON.stringify(body) });
+      showToast("合同记录已新增");
+      resetContractForm();
+      closeDrawer("contractDrawer");
+      await loadContracts();
+    } catch (err) {
+      showToast(err.message || "新增失败", true);
+    }
   });
 
   document.getElementById("invoiceRows")?.addEventListener("click", async (e) => {
     const t = e.target;
     if (!(t instanceof HTMLElement) || !t.dataset.delInv) return;
-    if (!confirm("确定删除该发票记录？")) return;
-    await apiRequest(`/api/invoices/${t.dataset.delInv}`, { method: "DELETE" });
-    showToast("已删除");
-    await loadInvoices();
-    await loadDashboard();
+    const { confirmed } = await openConfirmDialog({
+      title: "删除发票记录",
+      message: "确定删除该发票记录？此操作不可撤销。",
+      confirmLabel: "删除",
+      danger: true
+    });
+    if (!confirmed) return;
+    try {
+      await apiRequest(`/api/invoices/${t.dataset.delInv}`, { method: "DELETE" });
+      showToast("已删除");
+      await loadInvoices();
+      await loadDashboard();
+    } catch (err) {
+      showToast(err.message || "删除失败", true);
+    }
   });
   document.getElementById("invoiceAdd")?.addEventListener("click", async () => {
     const body = {
@@ -1123,12 +2521,25 @@ function setupEvents() {
       status: document.getElementById("invStatus").value,
       action: document.getElementById("invStatus").value === "已开票" ? "下载" : "-"
     };
-    await apiRequest("/api/invoices", { method: "POST", body: JSON.stringify(body) });
-    showToast("发票已新增");
-    await loadInvoices();
-    await loadDashboard();
+    if (!body.customerName) {
+      markFieldInvalid("invCustomer", "请填写客户名称");
+      showToast("请填写客户名称", true);
+      return;
+    }
+    try {
+      await apiRequest("/api/invoices", { method: "POST", body: JSON.stringify(body) });
+      showToast("发票已新增");
+      resetInvoiceForm();
+      closeDrawer("invoiceDrawer");
+      await loadInvoices();
+      await loadDashboard();
+    } catch (err) {
+      showToast(err.message || "新增失败", true);
+    }
   });
-  document.getElementById("invoiceQuery")?.addEventListener("click", () => loadInvoices());
+  document.getElementById("invoiceQuery")?.addEventListener("click", () =>
+    withButtonLoading(document.getElementById("invoiceQuery"), "查询", () => loadInvoices())
+  );
   document.getElementById("invoiceExport")?.addEventListener("click", () => {
     const h = ["发票编号", "客户", "金额", "月份", "状态", "下载"];
     const rows = invoiceRowsCache.map((r) => [r.no, r.customerName, r.amount, r.month, r.status, r.action]);
@@ -1136,7 +2547,13 @@ function setupEvents() {
     showToast("已导出当前筛选结果");
   });
 
+  ["setMfa", "setNotify", "setPolicySync", "setSocialApi", "setPaymentApi"].forEach((id) => {
+    document.getElementById(id)?.addEventListener("change", updateSettingsDirtyUi);
+  });
+
   document.getElementById("settingsSave")?.addEventListener("click", async () => {
+    const btn = document.getElementById("settingsSave");
+    const status = document.getElementById("settingsSaveStatus");
     const body = {
       mfaEnabled: document.getElementById("setMfa").checked,
       approvalNotify: document.getElementById("setNotify").checked,
@@ -1144,9 +2561,26 @@ function setupEvents() {
       socialApiPlaceholder: document.getElementById("setSocialApi")?.checked,
       paymentApiPlaceholder: document.getElementById("setPaymentApi")?.checked
     };
-    await apiRequest("/api/settings", { method: "PUT", body: JSON.stringify(body) });
-    showToast("设置已保存");
-    await loadAudit();
+    const btnLabel = btn?.textContent || "保存设置";
+    if (btn instanceof HTMLButtonElement) {
+      btn.disabled = true;
+      btn.textContent = "保存中…";
+    }
+    if (status) status.textContent = "";
+    try {
+      await apiRequest("/api/settings", { method: "PUT", body: JSON.stringify(body) });
+      captureSettingsSnapshot();
+      showToast("设置已保存");
+      if (status) status.textContent = "已保存";
+      await loadAudit();
+    } catch (err) {
+      showToast(err.message || "保存失败", true);
+    } finally {
+      if (btn instanceof HTMLButtonElement) {
+        btn.disabled = false;
+        btn.textContent = btnLabel;
+      }
+    }
   });
 
   document.getElementById("workspaceRows")?.addEventListener("click", async (event) => {
@@ -1175,15 +2609,27 @@ function setupEvents() {
       startDate: document.getElementById("projStart").value,
       endDate: document.getElementById("projEnd").value
     };
-    await apiRequest("/api/projects", { method: "POST", body: JSON.stringify(body) });
-    showToast("项目已新增");
-    await loadProjects();
+    if (!body.name) {
+      markFieldInvalid("projName", "请填写项目名称");
+      showToast("请填写项目名称", true);
+      return;
+    }
+    try {
+      await apiRequest("/api/projects", { method: "POST", body: JSON.stringify(body) });
+      showToast("项目已新增");
+      resetProjectForm();
+      closeDrawer("projectDrawer");
+      await loadProjects();
+    } catch (err) {
+      showToast(err.message || "新增失败", true);
+    }
   });
 
-  document.getElementById("queryWorkspace")?.addEventListener("click", async () => {
+  const runWorkspaceQuery = async () => {
     workspaceState.page = 1;
-    await loadWorkspace();
-  });
+    await withButtonLoading(document.getElementById("queryWorkspace"), "查询", () => loadWorkspace());
+  };
+  document.getElementById("queryWorkspace")?.addEventListener("click", runWorkspaceQuery);
   document.getElementById("workspacePageSize")?.addEventListener("change", async (event) => {
     workspaceState.pageSize = Number(event.target.value) || 10;
     workspaceState.page = 1;
@@ -1224,6 +2670,18 @@ function setupEvents() {
     updatePolicyByCity(policyCity.value);
     policyCity.addEventListener("change", () => updatePolicyByCity(policyCity.value));
   }
+  document.getElementById("policyQuery")?.addEventListener("click", () =>
+    withButtonLoading(document.getElementById("policyQuery"), "查询", () => {
+      const city = document.getElementById("policyCity")?.value || "上海市";
+      updatePolicyByCity(city);
+      const hint = document.getElementById("policyQueryHint");
+      if (hint) hint.textContent = `已加载 ${city} 政策指标（演示）`;
+      showToast("政策指标已刷新", { variant: "info" });
+    })
+  );
+  document.getElementById("contactSupportBtn")?.addEventListener("click", () => {
+    showToast("客服功能演示中，请通过企业管理员联系支持", { variant: "info" });
+  });
 
   const socialCity = document.getElementById("socialCity");
   if (socialCity) {
@@ -1241,21 +2699,52 @@ function setupEvents() {
     syncSocial();
   }
 
-  document.getElementById("runAiMatch")?.addEventListener("click", async () => {
-    const query = document.getElementById("aiQueryInput")?.value.trim();
-    const aiResult = document.getElementById("aiResult");
-    const aiTbody = document.getElementById("aiRows");
-    if (!query) return (aiResult.innerHTML = '<span class="status status-warn">请输入需求描述后再匹配</span>');
-    const data = await apiRequest("/api/ai/match", { method: "POST", body: JSON.stringify({ query }) });
-    aiResult.innerHTML = `<span class="status status-success">${data.summary}</span>`;
-    aiTbody.innerHTML = data.rows.map((row) => `<tr>${row.map((c) => `<td>${c}</td>`).join("")}</tr>`).join("");
+  document.querySelectorAll(".filter-query-btn[data-demo-query]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      withButtonLoading(btn, "查询", async () => {
+        updateDemoQueryHint(btn);
+        showToast("查询完成（演示）", { variant: "info" });
+      });
+    });
+  });
+  document.getElementById("reportsExportDemo")?.addEventListener("click", (e) => {
+    const btn = e.currentTarget;
+    if (btn instanceof HTMLButtonElement) {
+      withButtonLoading(btn, "导出报表", async () => {
+        showToast("报表导出任务已创建（演示）");
+      });
+    }
+  });
+  document.getElementById("reportsQuery")?.addEventListener("click", () =>
+    withButtonLoading(document.getElementById("reportsQuery"), "查询", () => {
+      updateReportsQueryHint();
+      showToast("查询完成（演示）", { variant: "info" });
+    })
+  );
+  document.getElementById("salarySlipBatchSend")?.addEventListener("click", (e) => {
+    const btn = e.currentTarget;
+    if (btn instanceof HTMLButtonElement) {
+      withButtonLoading(btn, "批量发放", async () => {
+        showToast("工资条批量发放任务已提交（演示）");
+      });
+    }
+  });
+  bindAllFilterToolbars();
+  bindSearchFields();
+  document.querySelectorAll(".table-shell table tbody").forEach((tbody) => {
+    const shell = tbody.closest(".table-shell");
+    if (!shell) return;
+    if (tbody.id) syncTableEmptyState(tbody.id);
+    else shell.classList.toggle("is-empty", tbody.children.length === 0);
   });
 }
 
 async function fillDrawer(r) {
+  if (authState.user?.role !== "admin") return;
   drawerEmployeeId = r.id;
   const body = document.querySelector("#employeeDrawer .drawer-body");
   if (!body) return;
+  body.innerHTML = '<p class="muted drawer-empty-hint">加载中…</p>';
   if (authState.user?.role === "admin") {
     if (!projectRowsCache.length) {
       try {
@@ -1350,6 +2839,14 @@ async function fillDrawer(r) {
   `;
 }
 
+function replayLoginEnterAnimation() {
+  const card = loginScreen?.querySelector(".login-card");
+  if (!(card instanceof HTMLElement)) return;
+  card.style.animation = "none";
+  void card.offsetHeight;
+  card.style.animation = "";
+}
+
 async function login(username, password, role) {
   const data = await apiRequest("/api/auth/login", {
     method: "POST",
@@ -1360,8 +2857,13 @@ async function login(username, password, role) {
   localStorage.setItem("eos_token", authState.token);
   localStorage.setItem("eos_user", JSON.stringify(authState.user));
   if (roleSwitcher) roleSwitcher.value = data.user.role;
-  welcomeText.textContent = `你好，${data.user.role === "admin" ? "客户管理员" : "企业用户"}（${data.user.username}）`;
+  welcomeText.textContent = `欢迎回来，${data.user.username}`;
+  syncTopbarUser(data.user);
+  setAppAuthed(true);
+  loginScreen.classList.add("is-leaving");
+  await new Promise((resolve) => setTimeout(resolve, 260));
   loginScreen.classList.add("is-hidden");
+  loginScreen.classList.remove("is-leaving");
   applyRoleVisibility(data.user.role);
   await loadAllData();
 }
@@ -1371,29 +2873,70 @@ function logout(expired = false) {
   authState.user = null;
   localStorage.removeItem("eos_token");
   localStorage.removeItem("eos_user");
-  loginScreen.classList.remove("is-hidden");
+  syncTopbarUser(null);
+  setAppAuthed(false);
+  applyDomRoleSecurity(null);
+  loginScreen.classList.remove("is-hidden", "is-leaving");
+  replayLoginEnterAnimation();
   loginTips.textContent = expired ? "登录已过期，请重新登录" : "请先登录";
 }
 
-loginBtn?.addEventListener("click", async () => {
+loginBtn?.closest("form")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
   const role = document.getElementById("loginRole").value;
   const username = document.getElementById("loginUsername").value.trim();
   const password = document.getElementById("loginPassword").value.trim();
+  const loginLabel = loginBtn.textContent;
+  loginBtn.disabled = true;
+  loginBtn.textContent = "登录中…";
   try {
     await login(username, password, role);
     showToast("登录成功");
   } catch (error) {
     loginTips.textContent = error.message;
     showToast(error.message, true);
+  } finally {
+    loginBtn.disabled = false;
+    loginBtn.textContent = loginLabel;
   }
 });
 
-document.querySelector(".danger-btn")?.addEventListener("click", () => {
+document.getElementById("loginPassword")?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") loginBtn?.closest("form")?.requestSubmit();
+});
+document.getElementById("loginUsername")?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") loginBtn?.closest("form")?.requestSubmit();
+});
+
+document.getElementById("logoutBtn")?.addEventListener("click", async () => {
+  if (isSettingsDirty()) {
+    const { confirmed } = await openConfirmDialog({
+      title: "未保存的更改",
+      message: "设置尚未保存，确定登出吗？未保存的更改将丢失。",
+      confirmLabel: "登出",
+      cancelLabel: "取消"
+    });
+    if (!confirmed) return;
+  }
   logout(false);
   showToast("已登出");
 });
 
-renderStaticTables();
+document.documentElement.removeAttribute("data-theme");
+localStorage.removeItem("hr_theme");
+panels.forEach((panel, index) => {
+  panel.dataset.panelOrder = String(index);
+});
+purgeSensitiveInlineDom();
+detachAdminPanels();
+window.__eosBridge = {
+  apiRequest,
+  showToast,
+  activate,
+  getUser: () => authState.user,
+  openConfirmDialog,
+  withButtonLoading
+};
 setupEvents();
 /** 工作日历：页面一加载就完成绑定与首帧绘制，无需等待接口（刷新浏览器即可操作） */
 initDashboardWorkCalendar();
@@ -1402,7 +2945,9 @@ if (authState.token && authState.user) {
   apiRequest("/api/me")
     .then(async () => {
       if (roleSwitcher) roleSwitcher.value = authState.user.role;
-      welcomeText.textContent = `你好，${authState.user.role === "admin" ? "客户管理员" : "企业用户"}（${authState.user.username}）`;
+      welcomeText.textContent = `欢迎回来，${authState.user.username}`;
+      syncTopbarUser(authState.user);
+      setAppAuthed(true);
       loginScreen.classList.add("is-hidden");
       applyRoleVisibility(authState.user.role);
       await loadAllData();

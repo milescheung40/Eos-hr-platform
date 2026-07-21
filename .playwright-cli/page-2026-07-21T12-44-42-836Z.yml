@@ -1,0 +1,596 @@
+- generic [ref=e1]:
+  - link "跳到主内容" [ref=e2] [cursor=pointer]:
+    - /url: "#mainContent"
+  - generic [ref=e13]:
+    - complementary "侧栏导航" [ref=e14]:
+      - generic [ref=e15]:
+        - button "收起左侧菜单" [expanded] [ref=e17] [cursor=pointer]:
+          - generic [ref=e18]: 
+        - generic [ref=e19]:
+          - generic [ref=e20]: HR
+          - generic [ref=e21]:
+            - generic [ref=e22]: 人力资源管理平台
+            - generic [ref=e23]: Human Resource Management
+        - navigation "二级导航" [ref=e199]:
+          - generic [ref=e356]:
+            - generic [ref=e357]: 员工管理
+            - button "员工名册" [ref=e358] [cursor=pointer]:
+              - generic [ref=e359]: 
+            - button "劳动合同" [ref=e361] [cursor=pointer]:
+              - generic [ref=e362]: 
+          - generic [ref=e364]:
+            - generic [ref=e365]: 人事流程
+            - button "人事流程" [ref=e366] [cursor=pointer]:
+              - generic [ref=e367]: 
+            - button "退休办理" [ref=e369] [cursor=pointer]:
+              - generic [ref=e370]: 
+    - generic [ref=e24]:
+      - banner "顶栏" [ref=e25]:
+        - navigation "全局一级导航" [ref=e26]:
+          - button "工作台" [ref=e27] [cursor=pointer]:
+            - generic [ref=e28]: 
+          - button "人事" [ref=e30] [cursor=pointer]:
+            - generic [ref=e31]: 
+          - button "组织" [ref=e33] [cursor=pointer]:
+            - generic [ref=e34]: 
+          - button "考勤假期" [ref=e36] [cursor=pointer]:
+            - generic [ref=e37]: 
+          - button "薪酬" [ref=e39] [cursor=pointer]:
+            - generic [ref=e40]: 
+          - button "项目" [ref=e42] [cursor=pointer]:
+            - generic [ref=e43]: 
+          - text: 
+          - button "AI用工助手" [ref=e48] [cursor=pointer]:
+            - generic [ref=e49]: 
+          - button "更多" [ref=e51] [cursor=pointer]:
+            - generic [ref=e52]: 
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - generic [ref=e56]: A
+            - generic [ref=e57]:
+              - generic [ref=e58]: admin
+              - generic [ref=e59]: 客户管理员
+          - button "联系客服" [ref=e60] [cursor=pointer]
+          - button "登出" [ref=e61] [cursor=pointer]
+      - main [active] [ref=e62]:
+        - generic [ref=e64]:
+          - navigation "面包屑导航" [ref=e65]:
+            - list [ref=e66]:
+              - listitem [ref=e67]:
+                - generic [ref=e68]: 平台
+              - listitem [ref=e69]: /
+              - listitem [ref=e70]:
+                - generic [ref=e71]: 人事
+              - listitem [ref=e72]: /
+              - listitem [ref=e372]:
+                - generic [ref=e373]: 员工管理
+              - listitem [ref=e73]: /
+              - listitem [ref=e74]:
+                - heading "员工名册" [level=1] [ref=e374]
+          - paragraph [ref=e76]: 欢迎回来，admin
+        - generic [ref=e77]:
+          - text:     
+          - article [ref=e376]:
+            - generic [ref=e377]:
+              - generic [ref=e378]:
+                - paragraph [ref=e379]: 员工管理
+                - paragraph [ref=e380]: 员工名册
+              - button "新增员工" [ref=e382] [cursor=pointer]
+            - generic "员工模块子导航" [ref=e383]:
+              - button "员工名册" [ref=e384] [cursor=pointer]
+              - button "员工档案库" [ref=e385] [cursor=pointer]
+              - button "工作经历" [ref=e386] [cursor=pointer]
+              - button "教育经历" [ref=e387] [cursor=pointer]
+            - generic [ref=e388]:
+              - generic [ref=e389]:
+                - textbox "姓名 / 证件号码" [ref=e391]
+                - combobox [ref=e392]:
+                  - option "员工状态：全部" [selected]
+                  - option "待入职"
+                  - option "在职"
+                  - option "试用期"
+                  - option "待离职"
+                  - option "已离职"
+                  - option "异动中"
+                - button "查询" [ref=e393] [cursor=pointer]
+                - button "导出 CSV" [ref=e394] [cursor=pointer]
+              - paragraph [ref=e395]: 共 19 条员工记录
+              - generic [ref=e397]:
+                - text: 
+                - table [ref=e398]:
+                  - rowgroup [ref=e399]:
+                    - row [ref=e400]:
+                      - columnheader "姓名" [ref=e401]
+                      - columnheader "证件号码" [ref=e402]
+                      - columnheader "手机号码" [ref=e403]
+                      - columnheader "性别" [ref=e404]
+                      - columnheader "员工状态" [ref=e405]
+                      - columnheader "用工类型" [ref=e406]
+                      - columnheader "入职日期" [ref=e407]
+                      - columnheader "工作地" [ref=e408]
+                      - columnheader "社保缴费城市" [ref=e409]
+                      - columnheader "操作" [ref=e410]
+                  - rowgroup [ref=e411]:
+                    - button "查看员工 唐琳" [ref=e412] [cursor=pointer]:
+                      - cell "唐琳" [ref=e413]
+                      - cell "440305199408084787" [ref=e414]
+                      - cell "13100070002" [ref=e415]
+                      - cell "女" [ref=e416]
+                      - cell "在职" [ref=e417]
+                      - cell "灵活用工" [ref=e419]
+                      - cell "2024-03-01" [ref=e420]
+                      - cell "深圳市" [ref=e421]
+                      - cell "深圳市" [ref=e422]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e423]:
+                        - generic [ref=e424]:
+                          - button "异动申请" [ref=e425]
+                          - button "离职申请" [ref=e426]
+                          - button "删除" [ref=e427]
+                        - generic [ref=e428]: 可流转到：异动中 / 待离职
+                    - button "查看员工 宋杰" [ref=e429] [cursor=pointer]:
+                      - cell "宋杰" [ref=e430]
+                      - cell "110101199210054323" [ref=e431]
+                      - cell "13100070001" [ref=e432]
+                      - cell "男" [ref=e433]
+                      - cell "在职" [ref=e434]
+                      - cell "全职" [ref=e436]
+                      - cell "2021-07-01" [ref=e437]
+                      - cell "北京市" [ref=e438]
+                      - cell "北京市" [ref=e439]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e440]:
+                        - generic [ref=e441]:
+                          - button "异动申请" [ref=e442]
+                          - button "离职申请" [ref=e443]
+                          - button "删除" [ref=e444]
+                        - generic [ref=e445]: 可流转到：异动中 / 待离职
+                    - button "查看员工 何静" [ref=e446] [cursor=pointer]:
+                      - cell "何静" [ref=e447]
+                      - cell "310101199702182236" [ref=e448]
+                      - cell "13200060002" [ref=e449]
+                      - cell "女" [ref=e450]
+                      - cell "在职" [ref=e451]
+                      - cell "灵活用工" [ref=e453]
+                      - cell "2023-09-01" [ref=e454]
+                      - cell "上海市" [ref=e455]
+                      - cell "上海市" [ref=e456]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e457]:
+                        - generic [ref=e458]:
+                          - button "异动申请" [ref=e459]
+                          - button "离职申请" [ref=e460]
+                          - button "删除" [ref=e461]
+                        - generic [ref=e462]: 可流转到：异动中 / 待离职
+                    - button "查看员工 郑涛" [ref=e463] [cursor=pointer]:
+                      - cell "郑涛" [ref=e464]
+                      - cell "500101199105121215" [ref=e465]
+                      - cell "13200060001" [ref=e466]
+                      - cell "男" [ref=e467]
+                      - cell "在职" [ref=e468]
+                      - cell "全职" [ref=e470]
+                      - cell "2018-09-01" [ref=e471]
+                      - cell "重庆市" [ref=e472]
+                      - cell "重庆市" [ref=e473]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e474]:
+                        - generic [ref=e475]:
+                          - button "异动申请" [ref=e476]
+                          - button "离职申请" [ref=e477]
+                          - button "删除" [ref=e478]
+                        - generic [ref=e479]: 可流转到：异动中 / 待离职
+                    - button "查看员工 林雪" [ref=e480] [cursor=pointer]:
+                      - cell "林雪" [ref=e481]
+                      - cell "440105199702182235" [ref=e482]
+                      - cell "13300050002" [ref=e483]
+                      - cell "女" [ref=e484]
+                      - cell "在职" [ref=e485]
+                      - cell "灵活用工" [ref=e487]
+                      - cell "2024-06-01" [ref=e488]
+                      - cell "广州市" [ref=e489]
+                      - cell "广州市" [ref=e490]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e491]:
+                        - generic [ref=e492]:
+                          - button "异动申请" [ref=e493]
+                          - button "离职申请" [ref=e494]
+                          - button "删除" [ref=e495]
+                        - generic [ref=e496]: 可流转到：异动中 / 待离职
+                    - button "查看员工 黄凯" [ref=e497] [cursor=pointer]:
+                      - cell "黄凯" [ref=e498]
+                      - cell "440105199511213457" [ref=e499]
+                      - cell "13300050001" [ref=e500]
+                      - cell "男" [ref=e501]
+                      - cell "在职" [ref=e502]
+                      - cell "灵活用工" [ref=e504]
+                      - cell "2022-02-01" [ref=e505]
+                      - cell "广州市" [ref=e506]
+                      - cell "广州市" [ref=e507]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e508]:
+                        - generic [ref=e509]:
+                          - button "异动申请" [ref=e510]
+                          - button "离职申请" [ref=e511]
+                          - button "删除" [ref=e512]
+                        - generic [ref=e513]: 可流转到：异动中 / 待离职
+                    - button "查看员工 高峰" [ref=e514] [cursor=pointer]:
+                      - cell "高峰" [ref=e515]
+                      - cell "320101199203034322" [ref=e516]
+                      - cell "13400040002" [ref=e517]
+                      - cell "男" [ref=e518]
+                      - cell "在职" [ref=e519]
+                      - cell "灵活用工" [ref=e521]
+                      - cell "2020-04-01" [ref=e522]
+                      - cell "苏州市" [ref=e523]
+                      - cell "苏州市" [ref=e524]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e525]:
+                        - generic [ref=e526]:
+                          - button "异动申请" [ref=e527]
+                          - button "离职申请" [ref=e528]
+                          - button "删除" [ref=e529]
+                        - generic [ref=e530]: 可流转到：异动中 / 待离职
+                    - button "查看员工 马丽" [ref=e531] [cursor=pointer]:
+                      - cell "马丽" [ref=e532]
+                      - cell "330101199408084786" [ref=e533]
+                      - cell "13400040001" [ref=e534]
+                      - cell "女" [ref=e535]
+                      - cell "在职" [ref=e536]
+                      - cell "灵活用工" [ref=e538]
+                      - cell "2021-11-01" [ref=e539]
+                      - cell "杭州市" [ref=e540]
+                      - cell "杭州市" [ref=e541]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e542]:
+                        - generic [ref=e543]:
+                          - button "异动申请" [ref=e544]
+                          - button "离职申请" [ref=e545]
+                          - button "删除" [ref=e546]
+                        - generic [ref=e547]: 可流转到：异动中 / 待离职
+                    - button "查看员工 孙伟" [ref=e548] [cursor=pointer]:
+                      - cell "孙伟" [ref=e549]
+                      - cell "310101199105121214" [ref=e550]
+                      - cell "13500030002" [ref=e551]
+                      - cell "男" [ref=e552]
+                      - cell "在职" [ref=e553]
+                      - cell "灵活用工" [ref=e555]
+                      - cell "2023-05-01" [ref=e556]
+                      - cell "上海市" [ref=e557]
+                      - cell "上海市" [ref=e558]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e559]:
+                        - generic [ref=e560]:
+                          - button "异动申请" [ref=e561]
+                          - button "离职申请" [ref=e562]
+                          - button "删除" [ref=e563]
+                        - generic [ref=e564]: 可流转到：异动中 / 待离职
+                    - button "查看员工 赵强" [ref=e565] [cursor=pointer]:
+                      - cell "赵强" [ref=e566]
+                      - cell "320101199105121213" [ref=e567]
+                      - cell "13500030001" [ref=e568]
+                      - cell "男" [ref=e569]
+                      - cell "在职" [ref=e570]
+                      - cell "灵活用工" [ref=e572]
+                      - cell "2022-08-01" [ref=e573]
+                      - cell "苏州市" [ref=e574]
+                      - cell "苏州市" [ref=e575]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e576]:
+                        - generic [ref=e577]:
+                          - button "异动申请" [ref=e578]
+                          - button "离职申请" [ref=e579]
+                          - button "删除" [ref=e580]
+                        - generic [ref=e581]: 可流转到：异动中 / 待离职
+                    - button "查看员工 周婷" [ref=e582] [cursor=pointer]:
+                      - cell "周婷" [ref=e583]
+                      - cell "440305199702182234" [ref=e584]
+                      - cell "13700020002" [ref=e585]
+                      - cell "女" [ref=e586]
+                      - cell "在职" [ref=e587]
+                      - cell "灵活用工" [ref=e589]
+                      - cell "2024-01-15" [ref=e590]
+                      - cell "深圳市" [ref=e591]
+                      - cell "深圳市" [ref=e592]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e593]:
+                        - generic [ref=e594]:
+                          - button "异动申请" [ref=e595]
+                          - button "离职申请" [ref=e596]
+                          - button "删除" [ref=e597]
+                        - generic [ref=e598]: 可流转到：异动中 / 待离职
+                    - button "查看员工 刘洋" [ref=e599] [cursor=pointer]:
+                      - cell "刘洋" [ref=e600]
+                      - cell "440305199210054322" [ref=e601]
+                      - cell "13700020001" [ref=e602]
+                      - cell "男" [ref=e603]
+                      - cell "在职" [ref=e604]
+                      - cell "全职" [ref=e606]
+                      - cell "2023-02-01" [ref=e607]
+                      - cell "深圳市" [ref=e608]
+                      - cell "深圳市" [ref=e609]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e610]:
+                        - generic [ref=e611]:
+                          - button "异动申请" [ref=e612]
+                          - button "离职申请" [ref=e613]
+                          - button "删除" [ref=e614]
+                        - generic [ref=e615]: 可流转到：异动中 / 待离职
+                    - button "查看员工 张敏" [ref=e616] [cursor=pointer]:
+                      - cell "张敏" [ref=e617]
+                      - cell "110101199408084788" [ref=e618]
+                      - cell "13600010003" [ref=e619]
+                      - cell "女" [ref=e620]
+                      - cell "在职" [ref=e621]
+                      - cell "全职" [ref=e623]
+                      - cell "2021-03-01" [ref=e624]
+                      - cell "北京市" [ref=e625]
+                      - cell "北京市" [ref=e626]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e627]:
+                        - generic [ref=e628]:
+                          - button "异动申请" [ref=e629]
+                          - button "离职申请" [ref=e630]
+                          - button "删除" [ref=e631]
+                        - generic [ref=e632]: 可流转到：异动中 / 待离职
+                    - button "查看员工 王磊" [ref=e633] [cursor=pointer]:
+                      - cell "王磊" [ref=e634]
+                      - cell "110101199511213499" [ref=e635]
+                      - cell "13600010002" [ref=e636]
+                      - cell "男" [ref=e637]
+                      - cell "在职" [ref=e638]
+                      - cell "全职" [ref=e640]
+                      - cell "2019-06-01" [ref=e641]
+                      - cell "北京市" [ref=e642]
+                      - cell "北京市" [ref=e643]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e644]:
+                        - generic [ref=e645]:
+                          - button "异动申请" [ref=e646]
+                          - button "离职申请" [ref=e647]
+                          - button "删除" [ref=e648]
+                        - generic [ref=e649]: 可流转到：异动中 / 待离职
+                    - button "查看员工 陈浩" [ref=e650] [cursor=pointer]:
+                      - cell "陈浩" [ref=e651]
+                      - cell "110101199203034321" [ref=e652]
+                      - cell "13600010001" [ref=e653]
+                      - cell "男" [ref=e654]
+                      - cell "在职" [ref=e655]
+                      - cell "全职" [ref=e657]
+                      - cell "2020-01-10" [ref=e658]
+                      - cell "北京市" [ref=e659]
+                      - cell "北京市" [ref=e660]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e661]:
+                        - generic [ref=e662]:
+                          - button "异动申请" [ref=e663]
+                          - button "离职申请" [ref=e664]
+                          - button "删除" [ref=e665]
+                        - generic [ref=e666]: 可流转到：异动中 / 待离职
+                    - button "查看员工 演示-待入职" [ref=e667] [cursor=pointer]:
+                      - cell "演示-待入职" [ref=e668]
+                      - cell "110101199901011234" [ref=e669]
+                      - cell "13600000000" [ref=e670]
+                      - cell "女" [ref=e671]
+                      - cell "待入职" [ref=e672]
+                      - cell "灵活用工" [ref=e674]
+                      - cell "2026-05-01" [ref=e675]
+                      - cell "上海市" [ref=e676]
+                      - cell "上海市" [ref=e677]
+                      - cell "入职手续 删除 可流转到：试用期 / 在职" [ref=e678]:
+                        - generic [ref=e679]:
+                          - button "入职手续" [ref=e680]
+                          - button "删除" [ref=e681]
+                        - generic [ref=e682]: 可流转到：试用期 / 在职
+                    - button "查看员工 李娜" [ref=e683] [cursor=pointer]:
+                      - cell "李娜" [ref=e684]
+                      - cell "440105199408084785" [ref=e685]
+                      - cell "13712340003" [ref=e686]
+                      - cell "女" [ref=e687]
+                      - cell "在职" [ref=e688]
+                      - cell "全职" [ref=e690]
+                      - cell "2022-06-01" [ref=e691]
+                      - cell "深圳市" [ref=e692]
+                      - cell "深圳市" [ref=e693]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e694]:
+                        - generic [ref=e695]:
+                          - button "异动申请" [ref=e696]
+                          - button "离职申请" [ref=e697]
+                          - button "删除" [ref=e698]
+                        - generic [ref=e699]: 可流转到：异动中 / 待离职
+                    - button "查看员工 吴振辉" [ref=e700] [cursor=pointer]:
+                      - cell "吴振辉" [ref=e701]
+                      - cell "310101199511213456" [ref=e702]
+                      - cell "13912340002" [ref=e703]
+                      - cell "男" [ref=e704]
+                      - cell "在职" [ref=e705]
+                      - cell "灵活用工" [ref=e707]
+                      - cell "2023-03-15" [ref=e708]
+                      - cell "上海市" [ref=e709]
+                      - cell "上海市" [ref=e710]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e711]:
+                        - generic [ref=e712]:
+                          - button "异动申请" [ref=e713]
+                          - button "离职申请" [ref=e714]
+                          - button "删除" [ref=e715]
+                        - generic [ref=e716]: 可流转到：异动中 / 待离职
+                    - button "查看员工 胡寿文" [ref=e717] [cursor=pointer]:
+                      - cell "胡寿文" [ref=e718]
+                      - cell "360102198908093212" [ref=e719]
+                      - cell "13812340001" [ref=e720]
+                      - cell "男" [ref=e721]
+                      - cell "在职" [ref=e722]
+                      - cell "灵活用工" [ref=e724]
+                      - cell "2024-09-01" [ref=e725]
+                      - cell "上海市" [ref=e726]
+                      - cell "上海市" [ref=e727]
+                      - cell "异动申请 离职申请 删除 可流转到：异动中 / 待离职" [ref=e728]:
+                        - generic [ref=e729]:
+                          - button "异动申请" [ref=e730]
+                          - button "离职申请" [ref=e731]
+                          - button "删除" [ref=e732]
+                        - generic [ref=e733]: 可流转到：异动中 / 待离职
+              - generic [ref=e734]:
+                - generic [ref=e735]: 在列表中选中员工后可查看详情与办理手续
+                - button "打开详情抽屉（演示）" [ref=e736] [cursor=pointer]
+            - text:   
+          - text:                     
+  - dialog [ref=e78]:
+    - generic [ref=e79]:
+      - heading [level=3] [ref=e80]: 新增项目
+      - button [ref=e81] [cursor=pointer]: 关闭
+    - generic [ref=e82]:
+      - generic [ref=e83]:
+        - text: 项目名称
+        - textbox [ref=e84]:
+          - /placeholder: 项目名称
+      - generic [ref=e85]:
+        - text: 项目编码
+        - textbox [ref=e86]:
+          - /placeholder: 如 PRJ-2026-003
+      - generic [ref=e87]:
+        - text: 签约企业
+        - textbox [ref=e88]:
+          - /placeholder: 签约企业
+      - generic [ref=e89]:
+        - text: 项目负责人
+        - textbox [ref=e90]:
+          - /placeholder: 项目负责人
+      - generic [ref=e91]:
+        - text: 项目状态
+        - combobox [ref=e92]
+      - generic [ref=e93]:
+        - text: 开始日期
+        - textbox [ref=e94]
+      - generic [ref=e95]:
+        - text: 结束日期
+        - textbox [ref=e96]
+      - generic [ref=e97]:
+        - button [ref=e98] [cursor=pointer]: 取消
+        - button [ref=e99] [cursor=pointer]: 保存项目
+  - dialog [ref=e100]:
+    - generic [ref=e101]:
+      - heading [level=3] [ref=e102]: 新增企业
+      - button [ref=e103] [cursor=pointer]: 关闭
+    - generic [ref=e104]:
+      - generic [ref=e105]:
+        - text: 企业名称
+        - textbox [ref=e106]:
+          - /placeholder: 企业名称
+      - generic [ref=e107]:
+        - text: 客户编号
+        - textbox [ref=e108]:
+          - /placeholder: 客户编号
+      - generic [ref=e109]:
+        - text: 所在城市
+        - textbox [ref=e110]:
+          - /placeholder: 所在城市
+      - generic [ref=e111]:
+        - text: 服务类型
+        - textbox [ref=e112]:
+          - /placeholder: 服务类型
+      - generic [ref=e113]:
+        - text: 合作状态
+        - combobox [ref=e114]
+      - generic [ref=e115]:
+        - button [ref=e116] [cursor=pointer]: 取消
+        - button [ref=e117] [cursor=pointer]: 保存企业
+  - dialog [ref=e118]:
+    - generic [ref=e119]:
+      - heading [level=3] [ref=e120]: 新增发票
+      - button [ref=e121] [cursor=pointer]: 关闭
+    - generic [ref=e122]:
+      - generic [ref=e123]:
+        - text: 发票编号
+        - textbox [ref=e124]:
+          - /placeholder: 发票编号
+      - generic [ref=e125]:
+        - text: 客户名称
+        - textbox [ref=e126]:
+          - /placeholder: 客户名称
+      - generic [ref=e127]:
+        - text: 金额
+        - textbox [ref=e128]:
+          - /placeholder: 金额
+      - generic [ref=e129]:
+        - text: 月份
+        - textbox [ref=e130]
+      - generic [ref=e131]:
+        - text: 发票状态
+        - combobox [ref=e132]
+      - generic [ref=e133]:
+        - button [ref=e134] [cursor=pointer]: 取消
+        - button [ref=e135] [cursor=pointer]: 保存发票
+  - dialog [ref=e136]:
+    - generic [ref=e137]:
+      - heading [level=3] [ref=e138]: 新增员工
+      - button [ref=e139] [cursor=pointer]: 关闭
+    - generic [ref=e140]:
+      - generic [ref=e141]:
+        - text: 姓名
+        - textbox [ref=e142]:
+          - /placeholder: 姓名
+      - generic [ref=e143]:
+        - text: 证件号码
+        - textbox [ref=e144]:
+          - /placeholder: 证件号码
+      - generic [ref=e145]:
+        - text: 手机
+        - textbox [ref=e146]:
+          - /placeholder: 手机
+      - generic [ref=e147]:
+        - text: 性别
+        - combobox [ref=e148]
+      - generic [ref=e149]:
+        - text: 员工状态
+        - combobox [ref=e150]
+      - generic [ref=e151]:
+        - text: 用工类型
+        - combobox [ref=e152]
+      - generic [ref=e153]:
+        - text: 试用期结束
+        - textbox [ref=e154]
+      - generic [ref=e155]:
+        - text: 入职日期
+        - textbox [ref=e156]
+      - generic [ref=e157]:
+        - text: 工作地
+        - textbox [ref=e158]:
+          - /placeholder: 工作地
+      - generic [ref=e159]:
+        - text: 社保城市
+        - textbox [ref=e160]:
+          - /placeholder: 社保城市
+      - generic [ref=e161]:
+        - button [ref=e162] [cursor=pointer]: 取消
+        - button [ref=e163] [cursor=pointer]: 保存员工
+  - dialog [ref=e164]:
+    - generic [ref=e165]:
+      - heading [level=3] [ref=e166]: 新增合同记录
+      - button [ref=e167] [cursor=pointer]: 关闭
+    - generic [ref=e168]:
+      - generic [ref=e169]:
+        - text: 用章对象
+        - combobox [ref=e170]
+      - generic [ref=e171]:
+        - text: 印章类型
+        - combobox [ref=e172]
+      - generic [ref=e173]:
+        - text: 用章类型 / 材料性质
+        - combobox [ref=e174]
+      - generic [ref=e175]:
+        - text: 签章材料名称
+        - combobox [ref=e176]
+      - generic [ref=e177]:
+        - text: 员工姓名
+        - textbox [ref=e178]:
+          - /placeholder: 员工姓名
+      - generic [ref=e179]:
+        - text: 证件号
+        - textbox [ref=e180]:
+          - /placeholder: 证件号
+      - generic [ref=e181]:
+        - text: 入离职状态
+        - combobox [ref=e182]
+      - generic [ref=e183]:
+        - text: 电子签状态
+        - combobox [ref=e184]
+      - generic [ref=e185]:
+        - text: 办结日期
+        - textbox [ref=e186]
+      - generic [ref=e187]:
+        - text: 合同到期日
+        - textbox [ref=e188]
+      - generic [ref=e189]:
+        - button [ref=e190] [cursor=pointer]: 取消
+        - button [ref=e191] [cursor=pointer]: 保存记录
+  - dialog [ref=e192]:
+    - generic [ref=e193]:
+      - heading [level=3] [ref=e194]: 员工详情
+      - button [ref=e195] [cursor=pointer]: 关闭
+    - paragraph [ref=e197]: 选择员工后加载详情
+  - status [ref=e198]: 登录成功

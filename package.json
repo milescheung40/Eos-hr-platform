@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "test": "echo \"No tests configured\""
+    "test": "node --test tests/staffingMatch.test.js tests/staffingApi.test.js tests/aiParse.test.js",
+    "test:e2e": "node tests/playwright-smoke.mjs",
+    "backup:db": "node scripts/backup-db.js",
+    "reset:demo-data": "node scripts/reset-demo-data.js"
   },
   "keywords": [],
   "author": "",
@@ -14,8 +17,12 @@
   "type": "commonjs",
   "dependencies": {
     "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "playwright": "^1.61.1"
   }
 }
