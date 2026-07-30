@@ -2477,6 +2477,76 @@ main .route-panels > section.panel.page-shell-module .table-scroll-wrap ~ .table
 #staffingAdminRows tr.is-selected {
   background: var(--color-bg-subtle);
 }
+.resume-parse-dialog {
+  max-width: min(640px, calc(100vw - 2rem));
+  width: 100%;
+}
+.resume-parse-dialog .dialog-form {
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+}
+.resume-parse-note {
+  margin: 0 0 var(--space-3);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.resume-parse-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+.resume-parse-status {
+  margin: 0 0 var(--space-3);
+  min-height: 1.25rem;
+}
+.resume-parse-result {
+  margin-bottom: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-subtle);
+}
+.resume-parse-result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+.resume-parse-result-head h4 {
+  margin: 0;
+  font-size: 14px;
+}
+.resume-parse-dl {
+  margin: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+.resume-parse-dl-row {
+  display: grid;
+  grid-template-columns: minmax(72px, 28%) 1fr;
+  gap: var(--space-2);
+  align-items: start;
+  font-size: 13px;
+}
+.resume-parse-dl-row dt {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+.resume-parse-dl-row dd {
+  margin: 0;
+  word-break: break-word;
+}
+.resume-parse-tag-section {
+  margin-top: var(--space-3);
+}
+.resume-parse-tag-section h5 {
+  margin: 0 0 var(--space-2);
+  font-size: 13px;
+  font-weight: 600;
+}
 @media (max-width: 1100px) {
   .ai-workbench-grid,
   .staffing-admin-layout {

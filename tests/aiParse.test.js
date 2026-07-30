@@ -87,6 +87,7 @@ describe("AI parse service", () => {
   test("valid AI JSON returns ai source", async () => {
     process.env.AI_ENABLED = "true";
     process.env.AI_API_KEY = "sk-test";
+    process.env.AI_MODEL = "deepseek-v4-flash";
     const originalFetch = global.fetch;
     global.fetch = async () => ({
       ok: true,
@@ -136,5 +137,82 @@ describe("AI validators", () => {
     assert.equal(validateRequirementShape(null), null);
     assert.equal(validateRequirementShape([]), null);
     assert.equal(validateRequirementShape({ jobTitle: "", city: "" }).jobTitle, "");
+  });
+});
+
+describe("AI config and provider", () => {
+  beforeEach(() => {
+    restoreEnv();
+    delete require.cache[require.resolve("../lib/ai/config")];
+    delete require.cache[require.resolve("../lib/ai/deepseekProvider")];
+    delete require.cache[require.resolve("../lib/ai/providerAdapter")];
+    delete require.cache[require.resolve("../lib/ai/parseService")];
+  });
+
+  afterEach(() => {
+    restoreEnv();
+  });
+
+  test("default model is deepseek-v4-flash", () => {
+    delete process.env.AI_MODEL;
+    const { getAiConfig } = require("../lib/ai/config");
+    assert.equal(getAiConfig().model, "deepseek-v4-flash");
+  });
+
+  test("chat completions URL matches official docs", () => {
+    const { getChatCompletionsUrl } = require("../lib/ai/config");
+    assert.equal(getChatCompletionsUrl("https://api.deepseek.com"), "https://api.deepseek.com/chat/completions");
+    assert.equal(
+      getChatCompletionsUrl("https://api.deepseek.com/v1"),
+      "https://api.deepseek.com/v1/chat/completions"
+    );
+  });
+
+  test("provider request includes max_tokens and does not call real API", async () => {
+    process.env.AI_ENABLED = "true";
+    process.env.AI_API_KEY = "sk-test-mock";
+    process.env.AI_MODEL = "deepseek-v4-flash";
+    process.env.AI_BASE_URL = "https://api.deepseek.com";
+    process.env.AI_MAX_TOKENS = "1024";
+    let capturedUrl = "";
+    let capturedBody = null;
+    const originalFetch = global.fetch;
+    global.fetch = async (url, opts) => {
+      capturedUrl = url;
+      capturedBody = JSON.parse(opts.body);
+      return {
+        ok: true,
+        json: async () => ({
+          choices: [
+            {
+              message: {
+                content: JSON.stringify({
+                  jobTitle: "Java开发",
+                  city: "北京",
+                  headcount: 2,
+                  minExperience: 3,
+                  requiredSkills: ["Java"],
+                  requiredCertificates: [],
+                  availableBefore: "立即",
+                  employmentType: "全职",
+                  budgetRange: ""
+                })
+              }
+            }
+          ]
+        })
+      };
+    };
+    try {
+      const { parseRequirementWithFallback, PARSE_SOURCE } = require("../lib/ai/parseService");
+      const result = await parseRequirementWithFallback("找2名北京Java开发，3年以上经验，立即到岗");
+      assert.equal(capturedUrl, "https://api.deepseek.com/chat/completions");
+      assert.equal(capturedBody.model, "deepseek-v4-flash");
+      assert.equal(capturedBody.max_tokens, 1024);
+      assert.equal(capturedBody.response_format?.type, "json_object");
+      assert.equal(result.parseSource, PARSE_SOURCE.AI);
+    } finally {
+      global.fetch = originalFetch;
+    }
   });
 });

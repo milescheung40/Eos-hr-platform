@@ -1362,6 +1362,7 @@
           <div class="module-page-header module-page-header--toolbar">
             <div class="module-page-header__text" data-module-header-text></div>
             <div class="module-page-header__actions">
+              <button type="button" class="ghost-btn" id="openResumeParseDialog">解析简历文本</button>
               <button type="button" class="ghost-btn" id="aiSaveDraft">保存草稿</button>
               <button type="button" class="filter-query-btn" id="runAiMatch">智能匹配</button>
             </div>
@@ -1425,6 +1426,40 @@
       </main>
     </div>
   </div>
+
+  <dialog id="resumeParseDialog" class="resume-parse-dialog" aria-labelledby="resumeParseDialogTitle">
+    <div class="dialog-form">
+      <h3 id="resumeParseDialogTitle">简历文本 AI 解析（演示）</h3>
+      <p class="muted resume-parse-note">仅解析合成文本，不上传文件，不写入人才库；结果供业务人员人工参考，不代表录用决定。</p>
+      <label class="dialog-field" for="resumeParseInput">简历文本
+        <textarea id="resumeParseInput" rows="6" placeholder="粘贴或填入合成简历文本…"></textarea>
+      </label>
+      <div class="resume-parse-toolbar">
+        <button type="button" class="ghost-btn" id="resumeParseFillExample">填入合成示例</button>
+        <button type="button" class="ghost-btn" id="resumeParseClear">清空</button>
+        <button type="button" class="filter-query-btn" id="resumeParseSubmit">开始 AI 解析</button>
+      </div>
+      <p class="resume-parse-status muted" id="resumeParseStatus" role="status" aria-live="polite"></p>
+      <div class="resume-parse-result" id="resumeParseResult" hidden>
+        <div class="resume-parse-result-head">
+          <h4>结构化结果</h4>
+          <span class="ai-parse-source muted" id="resumeParseSource"></span>
+        </div>
+        <dl class="resume-parse-dl" id="resumeParseFields"></dl>
+        <div class="resume-parse-tag-section" id="resumeParseSkillsWrap" hidden>
+          <h5>技能</h5>
+          <div class="ai-parsed-tags" id="resumeParseSkills"></div>
+        </div>
+        <div class="resume-parse-tag-section" id="resumeParseCertsWrap" hidden>
+          <h5>证书</h5>
+          <div class="ai-parsed-tags" id="resumeParseCerts"></div>
+        </div>
+      </div>
+      <menu>
+        <button type="button" class="ghost-btn" id="resumeParseClose">关闭</button>
+      </menu>
+    </div>
+  </dialog>
 
   <dialog id="confirmDialog">
     <div class="dialog-form">

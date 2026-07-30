@@ -233,6 +233,103 @@ async function runLogoutSecurityTest(page) {
   console.log("✔ logout hides admin panels and demo data");
 }
 
+async function runResumeParseTests(page) {
+  await login(page, "enterprise");
+  await page.click('button[data-jump="ai-assistant"]');
+  await page.waitForSelector("#ai-assistant.is-active");
+
+  const mockPayload = {
+    candidate: {
+      name: "演示候选人A",
+      jobTitle: "Java开发工程师",
+      city: "北京",
+      yearsExperience: 6,
+      skills: ["Java", "Spring Boot", "MySQL", "Redis"],
+      certificates: [],
+      availableDate: "7天内",
+      employmentType: "全职",
+      salaryRange: "",
+      education: "本科",
+      summary: "6年后端开发经验，熟悉Java生态"
+    },
+    parseSource: "ai",
+    parseSourceLabel: "AI大模型解析"
+  };
+
+  await page.route("**/api/ai/parse-resume", async (route) => {
+    if (route.request().method() !== "POST") {
+      await route.continue();
+      return;
+    }
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(mockPayload)
+    });
+  });
+
+  await page.locator("#openResumeParseDialog").focus();
+  await page.click("#openResumeParseDialog");
+  await page.waitForSelector("#resumeParseDialog[open]");
+
+  await page.click("#resumeParseFillExample");
+  const filled = await page.inputValue("#resumeParseInput");
+  if (!filled.includes("演示候选人A")) throw new Error("resume example not filled");
+
+  const loadingPromise = page.waitForFunction(
+    () => document.getElementById("resumeParseSubmit")?.disabled === true,
+    null,
+    { timeout: 5000 }
+  ).catch(() => null);
+  await page.click("#resumeParseSubmit");
+  await loadingPromise;
+  await page.waitForFunction(
+    () => document.getElementById("resumeParseSource")?.textContent?.includes("AI大模型解析"),
+    null,
+    { timeout: 10000 }
+  );
+
+  const resultText = await page.locator("#resumeParseResult").innerText();
+  for (const needle of ["演示候选人A", "Java开发工程师", "6", "本科", "Java", "6年后端开发经验"]) {
+    if (!resultText.includes(needle)) throw new Error(`resume result missing: ${needle}`);
+  }
+
+  await page.click("#resumeParseClose");
+  await page.waitForFunction(() => !document.getElementById("resumeParseDialog")?.open, null, { timeout: 5000 });
+  const focusedId = await page.evaluate(() => document.activeElement?.id || "");
+  if (focusedId !== "openResumeParseDialog") throw new Error(`focus not restored to opener, got ${focusedId}`);
+
+  await page.unroute("**/api/ai/parse-resume");
+  await page.route("**/api/ai/parse-resume", async (route) => {
+    if (route.request().method() !== "POST") {
+      await route.continue();
+      return;
+    }
+    await route.fulfill({
+      status: 500,
+      contentType: "application/json",
+      body: JSON.stringify({ message: "服务暂不可用" })
+    });
+  });
+
+  await page.click("#openResumeParseDialog");
+  await page.click("#resumeParseFillExample");
+  await page.click("#resumeParseSubmit");
+  await page.waitForFunction(
+    () => {
+      const t = document.getElementById("resumeParseStatus")?.textContent || "";
+      return t.includes("服务暂不可用") || t.includes("解析失败");
+    },
+    null,
+    { timeout: 10000 }
+  );
+  const dialogStillOpen = await page.evaluate(() => document.getElementById("resumeParseDialog")?.open);
+  if (!dialogStillOpen) throw new Error("dialog closed unexpectedly on error");
+
+  await page.click("#resumeParseClose");
+  console.log("✔ resume parse UI OK");
+}
+
 const tempDb = copyTempDb();
 const prodCountsBefore = await queryCounts(DEFAULT_DB);
 let serverProc;
@@ -250,6 +347,9 @@ try {
     await page.goto(BASE);
     await runModuleTabTests(page);
     await runLogoutSecurityTest(page);
+    await page.evaluate(() => localStorage.clear());
+    await page.goto(BASE);
+    await runResumeParseTests(page);
     await page.evaluate(() => localStorage.clear());
     await page.goto(BASE);
     await runFullFlow(page);

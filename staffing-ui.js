@@ -16,6 +16,169 @@
   };
 
   let adminSelectedId = null;
+  let resumeDialogReturnFocus = null;
+  let resumeParseLoading = false;
+
+  const RESUME_PARSE_EXAMPLE =
+    "演示候选人A，本科学历，现居北京，Java开发工程师，6年开发经验，熟悉Java、Spring Boot、MySQL和Redis，可在7天内到岗。";
+
+  function displayField(value) {
+    const v = String(value ?? "").trim();
+    return v ? esc(v) : '<span class="muted">未提取</span>';
+  }
+
+  function setResumeParseStatus(kind, text) {
+    const el = document.getElementById("resumeParseStatus");
+    if (!el) return;
+    el.className =
+      kind === "error"
+        ? "resume-parse-status status status-warn"
+        : kind === "success"
+          ? "resume-parse-status status status-success"
+          : kind === "loading"
+            ? "resume-parse-status status status-pending"
+            : "resume-parse-status muted";
+    el.textContent = text || "";
+  }
+
+  function renderResumeParseResult(data) {
+    const result = document.getElementById("resumeParseResult");
+    const fields = document.getElementById("resumeParseFields");
+    const sourceEl = document.getElementById("resumeParseSource");
+    const skillsWrap = document.getElementById("resumeParseSkillsWrap");
+    const certsWrap = document.getElementById("resumeParseCertsWrap");
+    const skillsEl = document.getElementById("resumeParseSkills");
+    const certsEl = document.getElementById("resumeParseCerts");
+    if (!result || !fields) return;
+
+    const c = data?.candidate || {};
+    const exp =
+      c.yearsExperience != null && c.yearsExperience !== "" && Number(c.yearsExperience) >= 0
+        ? `${c.yearsExperience} 年`
+        : "";
+
+    if (sourceEl) {
+      sourceEl.textContent = data?.parseSourceLabel ? `来源：${data.parseSourceLabel}` : "";
+    }
+
+    fields.innerHTML = [
+      ["姓名", c.name],
+      ["目标岗位", c.jobTitle],
+      ["城市", c.city],
+      ["工作经验", exp],
+      ["到岗时间", c.availableDate],
+      ["用工形式", c.employmentType],
+      ["薪资范围", c.salaryRange],
+      ["学历", c.education],
+      ["AI 摘要", c.summary]
+    ]
+      .map(
+        ([label, val]) =>
+          `<div class="resume-parse-dl-row"><dt>${esc(label)}</dt><dd>${displayField(val)}</dd></div>`
+      )
+      .join("");
+
+    const skills = Array.isArray(c.skills) ? c.skills.filter(Boolean) : [];
+    const certs = Array.isArray(c.certificates) ? c.certificates.filter(Boolean) : [];
+
+    if (skillsWrap && skillsEl) {
+      if (skills.length) {
+        skillsWrap.hidden = false;
+        skillsEl.innerHTML = skills.map((s) => `<span class="ai-tag">${esc(s)}</span>`).join("");
+      } else {
+        skillsWrap.hidden = false;
+        skillsEl.innerHTML = '<span class="muted">未提取</span>';
+      }
+    }
+    if (certsWrap && certsEl) {
+      if (certs.length) {
+        certsWrap.hidden = false;
+        certsEl.innerHTML = certs.map((s) => `<span class="ai-tag">${esc(s)}</span>`).join("");
+      } else {
+        certsWrap.hidden = false;
+        certsEl.innerHTML = '<span class="muted">未提取</span>';
+      }
+    }
+
+    result.hidden = false;
+  }
+
+  function openResumeParseDialog() {
+    const dialog = document.getElementById("resumeParseDialog");
+    if (!(dialog instanceof HTMLDialogElement)) return;
+    const active = document.activeElement;
+    resumeDialogReturnFocus = active instanceof HTMLElement ? active : null;
+    setResumeParseStatus("", "");
+    dialog.showModal();
+    document.getElementById("resumeParseInput")?.focus();
+  }
+
+  function closeResumeParseDialog() {
+    const dialog = document.getElementById("resumeParseDialog");
+    dialog?.close();
+    const target = resumeDialogReturnFocus;
+    resumeDialogReturnFocus = null;
+    if (target instanceof HTMLElement && document.contains(target)) {
+      requestAnimationFrame(() => target.focus());
+    }
+  }
+
+  async function runResumeParse() {
+    if (resumeParseLoading) return;
+    const input = document.getElementById("resumeParseInput");
+    const submitBtn = document.getElementById("resumeParseSubmit");
+    const text = input?.value.trim() || "";
+    if (!text) {
+      setResumeParseStatus("error", "请先输入或填入合成简历文本");
+      return;
+    }
+
+    resumeParseLoading = true;
+    const label = submitBtn?.textContent;
+    if (submitBtn instanceof HTMLButtonElement) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "解析中…";
+    }
+    document.getElementById("resumeParseResult")?.setAttribute("hidden", "");
+    setResumeParseStatus("loading", "正在调用 AI 解析简历文本…");
+
+    try {
+      const data = await api("/api/ai/parse-resume", {
+        method: "POST",
+        body: JSON.stringify({ text })
+      });
+      const c = data?.candidate;
+      const hasContent =
+        c &&
+        (c.name ||
+          c.jobTitle ||
+          c.city ||
+          (c.skills && c.skills.length) ||
+          c.summary ||
+          c.education);
+      if (!hasContent) {
+        setResumeParseStatus("error", "未解析到有效字段，请调整文本后重试");
+        return;
+      }
+      renderResumeParseResult(data);
+      setResumeParseStatus("success", "解析完成，请人工核对后使用");
+    } catch (err) {
+      setResumeParseStatus("error", err?.message || "解析失败，请稍后重试");
+    } finally {
+      resumeParseLoading = false;
+      if (submitBtn instanceof HTMLButtonElement) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = label || "开始 AI 解析";
+      }
+    }
+  }
+
+  function clearResumeParseForm() {
+    const input = document.getElementById("resumeParseInput");
+    if (input) input.value = "";
+    document.getElementById("resumeParseResult")?.setAttribute("hidden", "");
+    setResumeParseStatus("", "");
+  }
 
   function esc(s) {
     return String(s ?? "")
@@ -490,6 +653,28 @@
         if (input) input.value = btn.dataset.aiExample || "";
         runMatch();
       });
+    });
+
+    document.getElementById("openResumeParseDialog")?.addEventListener("click", openResumeParseDialog);
+    document.getElementById("resumeParseClose")?.addEventListener("click", closeResumeParseDialog);
+    document.getElementById("resumeParseFillExample")?.addEventListener("click", () => {
+      const input = document.getElementById("resumeParseInput");
+      if (input) input.value = RESUME_PARSE_EXAMPLE;
+      setResumeParseStatus("", "");
+    });
+    document.getElementById("resumeParseClear")?.addEventListener("click", clearResumeParseForm);
+    document.getElementById("resumeParseSubmit")?.addEventListener("click", runResumeParse);
+    document.getElementById("resumeParseDialog")?.addEventListener("close", () => {
+      resumeParseLoading = false;
+      const submitBtn = document.getElementById("resumeParseSubmit");
+      if (submitBtn instanceof HTMLButtonElement) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "开始 AI 解析";
+      }
+    });
+    document.getElementById("resumeParseDialog")?.addEventListener("cancel", (e) => {
+      e.preventDefault();
+      closeResumeParseDialog();
     });
 
     document.addEventListener("click", async (e) => {
