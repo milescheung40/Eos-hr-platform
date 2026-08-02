@@ -18,6 +18,7 @@
   let adminSelectedId = null;
   let resumeDialogReturnFocus = null;
   let resumeParseLoading = false;
+  let resumeSelectedFile = null;
 
   const RESUME_PARSE_EXAMPLE =
     "演示候选人A，本科学历，现居北京，Java开发工程师，6年开发经验，熟悉Java、Spring Boot、MySQL和Redis，可在7天内到岗。";
@@ -49,6 +50,7 @@
     const certsWrap = document.getElementById("resumeParseCertsWrap");
     const skillsEl = document.getElementById("resumeParseSkills");
     const certsEl = document.getElementById("resumeParseCerts");
+    const fileMetaEl = document.getElementById("resumeFileResultMeta");
     if (!result || !fields) return;
 
     const c = data?.candidate || {};
@@ -59,6 +61,17 @@
 
     if (sourceEl) {
       sourceEl.textContent = data?.parseSourceLabel ? `来源：${data.parseSourceLabel}` : "";
+    }
+    if (fileMetaEl) {
+      if (data?.filename) {
+        const type = String(data.fileType || "").toUpperCase();
+        const count = Number(data.extractedCharCount) || 0;
+        fileMetaEl.hidden = false;
+        fileMetaEl.textContent = `文件：${data.filename}${type ? ` · ${type}` : ""}${count ? ` · 提取 ${count} 字符` : ""}`;
+      } else {
+        fileMetaEl.hidden = true;
+        fileMetaEl.textContent = "";
+      }
     }
 
     fields.innerHTML = [
@@ -110,7 +123,7 @@
     resumeDialogReturnFocus = active instanceof HTMLElement ? active : null;
     setResumeParseStatus("", "");
     dialog.showModal();
-    document.getElementById("resumeParseInput")?.focus();
+    document.getElementById("resumeFileInput")?.focus();
   }
 
   function closeResumeParseDialog() {
@@ -128,8 +141,9 @@
     const input = document.getElementById("resumeParseInput");
     const submitBtn = document.getElementById("resumeParseSubmit");
     const text = input?.value.trim() || "";
-    if (!text) {
-      setResumeParseStatus("error", "请先输入或填入合成简历文本");
+    const file = resumeSelectedFile;
+    if (!file && !text) {
+      setResumeParseStatus("error", "请先选择 PDF/DOCX 文件或输入简历文本");
       return;
     }
 
@@ -140,13 +154,20 @@
       submitBtn.textContent = "解析中…";
     }
     document.getElementById("resumeParseResult")?.setAttribute("hidden", "");
-    setResumeParseStatus("loading", "正在调用 AI 解析简历文本…");
+    setResumeParseStatus("loading", file ? "正在上传、提取并解析简历…" : "正在调用 AI 解析简历文本…");
 
     try {
-      const data = await api("/api/ai/parse-resume", {
-        method: "POST",
-        body: JSON.stringify({ text })
-      });
+      let data;
+      if (file) {
+        const form = new FormData();
+        form.append("file", file, file.name);
+        data = await api("/api/ai/parse-resume-file", { method: "POST", body: form });
+      } else {
+        data = await api("/api/ai/parse-resume", {
+          method: "POST",
+          body: JSON.stringify({ text })
+        });
+      }
       const c = data?.candidate;
       const hasContent =
         c &&
@@ -161,22 +182,70 @@
         return;
       }
       renderResumeParseResult(data);
-      setResumeParseStatus("success", "解析完成，请人工核对后使用");
+      setResumeParseStatus("success", "解析完成，请人工核对；当前结果尚未写入人才库");
     } catch (err) {
       setResumeParseStatus("error", err?.message || "解析失败，请稍后重试");
     } finally {
       resumeParseLoading = false;
       if (submitBtn instanceof HTMLButtonElement) {
         submitBtn.disabled = false;
-        submitBtn.textContent = label || "开始 AI 解析";
+        submitBtn.textContent = label || "上传并解析";
       }
     }
+  }
+
+  function formatResumeFileSize(bytes) {
+    const size = Number(bytes) || 0;
+    if (size < 1024) return `${size} B`;
+    if (size < 1024 * 1024) return `${Math.round(size / 1024)} KB`;
+    return `${(size / 1024 / 1024).toFixed(1)} MB`;
+  }
+
+  function setResumeFile(file) {
+    const input = document.getElementById("resumeFileInput");
+    const zone = document.getElementById("resumeUploadZone");
+    const meta = document.getElementById("resumeFileMeta");
+    const name = document.getElementById("resumeFileName");
+    if (!file) {
+      resumeSelectedFile = null;
+      if (input instanceof HTMLInputElement) input.value = "";
+      if (meta) meta.hidden = true;
+      if (name) name.textContent = "";
+      zone?.classList.remove("has-file", "is-dragover");
+      return true;
+    }
+    const lower = file.name.toLowerCase();
+    if (!lower.endsWith(".pdf") && !lower.endsWith(".docx")) {
+      setResumeParseStatus("error", "仅支持 PDF 和 DOCX；旧版 .doc 暂不支持");
+      setResumeFile(null);
+      return false;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setResumeParseStatus("error", "文件大小不能超过 5MB");
+      setResumeFile(null);
+      return false;
+    }
+    if (!file.size) {
+      setResumeParseStatus("error", "所选文件为空，请重新选择");
+      setResumeFile(null);
+      return false;
+    }
+    resumeSelectedFile = file;
+    if (meta) meta.hidden = false;
+    if (name) name.textContent = `${file.name} · ${formatResumeFileSize(file.size)}`;
+    zone?.classList.add("has-file");
+    zone?.classList.remove("is-dragover");
+    document.getElementById("resumeParseResult")?.setAttribute("hidden", "");
+    setResumeParseStatus("", "已选择文件，点击“上传并解析”继续");
+    return true;
   }
 
   function clearResumeParseForm() {
     const input = document.getElementById("resumeParseInput");
     if (input) input.value = "";
+    setResumeFile(null);
     document.getElementById("resumeParseResult")?.setAttribute("hidden", "");
+    document.getElementById("resumeFileResultMeta")?.setAttribute("hidden", "");
     setResumeParseStatus("", "");
   }
 
@@ -660,7 +729,24 @@
     document.getElementById("resumeParseFillExample")?.addEventListener("click", () => {
       const input = document.getElementById("resumeParseInput");
       if (input) input.value = RESUME_PARSE_EXAMPLE;
+      setResumeFile(null);
       setResumeParseStatus("", "");
+    });
+    document.getElementById("resumeFileInput")?.addEventListener("change", (e) => {
+      const target = e.target;
+      if (target instanceof HTMLInputElement) setResumeFile(target.files?.[0] || null);
+    });
+    document.getElementById("resumeFileRemove")?.addEventListener("click", () => setResumeFile(null));
+    const uploadZone = document.getElementById("resumeUploadZone");
+    uploadZone?.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      uploadZone.classList.add("is-dragover");
+    });
+    uploadZone?.addEventListener("dragleave", () => uploadZone.classList.remove("is-dragover"));
+    uploadZone?.addEventListener("drop", (e) => {
+      e.preventDefault();
+      uploadZone.classList.remove("is-dragover");
+      setResumeFile(e.dataTransfer?.files?.[0] || null);
     });
     document.getElementById("resumeParseClear")?.addEventListener("click", clearResumeParseForm);
     document.getElementById("resumeParseSubmit")?.addEventListener("click", runResumeParse);
@@ -669,7 +755,7 @@
       const submitBtn = document.getElementById("resumeParseSubmit");
       if (submitBtn instanceof HTMLButtonElement) {
         submitBtn.disabled = false;
-        submitBtn.textContent = "开始 AI 解析";
+        submitBtn.textContent = "上传并解析";
       }
     });
     document.getElementById("resumeParseDialog")?.addEventListener("cancel", (e) => {

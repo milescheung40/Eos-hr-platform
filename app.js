@@ -665,7 +665,7 @@ function statusCell(text) {
 
 async function apiRequest(path, options = {}) {
   const headers = { ...(options.headers || {}) };
-  if (options.body != null && !headers["Content-Type"]) {
+  if (options.body != null && !(options.body instanceof FormData) && !headers["Content-Type"]) {
     headers["Content-Type"] = "application/json";
   }
   if (authState.token) headers.Authorization = `Bearer ${authState.token}`;

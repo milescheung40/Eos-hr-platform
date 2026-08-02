@@ -1,0 +1,736 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedFor": "eos-hr-rebuild demo talent pool (phase: job templates only)",
+  "jobCount": 27,
+  "jobs": [
+    {
+      "jobCode": "JOB-001",
+      "jobTitle": "保安",
+      "jobCategory": "职能后勤",
+      "aliases": ["安保员", "园区保安", "门卫"],
+      "cities": ["上海", "北京", "深圳", "广州", "苏州", "重庆"],
+      "requiredSkills": ["巡逻", "门禁管理", "应急响应"],
+      "optionalSkills": ["监控值守", "消防基础", "访客登记"],
+      "requiredCertificates": [],
+      "optionalCertificates": ["保安证", "消防证"],
+      "experienceMin": 0,
+      "experienceMax": 8,
+      "educationOptions": ["初中", "高中", "中专"],
+      "salaryMin": 4500,
+      "salaryMax": 7500,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职", "灵活用工"],
+      "availabilityOptions": ["立即", "3天内", "7天内"],
+      "projectExperienceTemplates": [
+        "参与{city}园区{months}个月安保巡逻与门禁管理",
+        "负责{project}日常巡更及突发事件初步处置"
+      ],
+      "summaryTemplates": [
+        "具备园区安保经验，熟悉巡逻与门禁流程",
+        "责任心强，可适应倒班与户外值守"
+      ]
+    },
+    {
+      "jobCode": "JOB-002",
+      "jobTitle": "保洁",
+      "jobCategory": "职能后勤",
+      "aliases": ["清洁员", "环境维护员"],
+      "cities": ["上海", "北京", "杭州", "南京", "成都", "武汉"],
+      "requiredSkills": ["日常清洁", "卫生消毒", "工具使用"],
+      "optionalSkills": ["地毯清洁", "外墙清洗", "垃圾分类"],
+      "requiredCertificates": [],
+      "optionalCertificates": ["健康证"],
+      "experienceMin": 0,
+      "experienceMax": 6,
+      "educationOptions": ["初中", "高中"],
+      "salaryMin": 4000,
+      "salaryMax": 6500,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职", "灵活用工", "兼职"],
+      "availabilityOptions": ["立即", "3天内", "7天内"],
+      "projectExperienceTemplates": [
+        "负责{project}办公区域日常保洁与消毒",
+        "在{city}商业综合体从事环境维护{months}个月"
+      ],
+      "summaryTemplates": [
+        "熟悉办公及公共区域清洁标准",
+        "工作细致，可配合弹性排班"
+      ]
+    },
+    {
+      "jobCode": "JOB-003",
+      "jobTitle": "商务司机",
+      "jobCategory": "职能后勤",
+      "aliases": ["行政司机", "专职司机"],
+      "cities": ["上海", "北京", "深圳", "广州", "杭州", "成都"],
+      "requiredSkills": ["安全驾驶", "商务礼仪", "路线规划"],
+      "optionalSkills": ["车辆保养", "英文接待", "机场接送"],
+      "requiredCertificates": ["C1驾驶证"],
+      "optionalCertificates": [],
+      "experienceMin": 2,
+      "experienceMax": 15,
+      "educationOptions": ["高中", "中专", "大专"],
+      "salaryMin": 6000,
+      "salaryMax": 10000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["7天内", "15天内", "30天内"],
+      "projectExperienceTemplates": [
+        "为{city}企业高管提供商务出行服务{months}年",
+        "负责{project}团队日常接送与车辆维护"
+      ],
+      "summaryTemplates": [
+        "驾龄稳定，熟悉本地路况与商务接待规范",
+        "无重大交通违法记录，服务意识良好"
+      ]
+    },
+    {
+      "jobCode": "JOB-004",
+      "jobTitle": "行政专员",
+      "jobCategory": "职能后勤",
+      "aliases": ["行政助理", "办公室专员"],
+      "cities": ["上海", "北京", "深圳", "杭州", "苏州", "武汉"],
+      "requiredSkills": ["办公协调", "会议安排", "文档管理"],
+      "optionalSkills": ["固定资产管理", "差旅预订", "活动组织"],
+      "requiredCertificates": [],
+      "optionalCertificates": [],
+      "experienceMin": 1,
+      "experienceMax": 8,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 6000,
+      "salaryMax": 12000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["15天内", "30天内"],
+      "projectExperienceTemplates": [
+        "支持{city}办公室日常行政与会议保障",
+        "负责{project}行政事务及供应商对接"
+      ],
+      "summaryTemplates": [
+        "行政事务处理熟练，沟通协调能力较好",
+        "熟悉办公软件与基础流程管理"
+      ]
+    },
+    {
+      "jobCode": "JOB-005",
+      "jobTitle": "人事专员",
+      "jobCategory": "职能后勤",
+      "aliases": ["HR专员", "招聘助理"],
+      "cities": ["上海", "北京", "深圳", "广州", "南京", "成都"],
+      "requiredSkills": ["入离职办理", "考勤协助", "员工关系"],
+      "optionalSkills": ["招聘筛选", "培训组织", "社保公积金协助"],
+      "requiredCertificates": [],
+      "optionalCertificates": ["人力资源管理师"],
+      "experienceMin": 1,
+      "experienceMax": 8,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 6500,
+      "salaryMax": 13000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["15天内", "30天内"],
+      "projectExperienceTemplates": [
+        "负责{city}团队入转调离及考勤支持",
+        "协助{project}招聘与员工活动组织"
+      ],
+      "summaryTemplates": [
+        "熟悉基础人事流程与员工沟通",
+        "做事规范，保密意识良好"
+      ]
+    },
+    {
+      "jobCode": "JOB-006",
+      "jobTitle": "出纳",
+      "jobCategory": "职能后勤",
+      "aliases": ["资金出纳", "现金会计"],
+      "cities": ["上海", "北京", "杭州", "苏州", "武汉", "重庆"],
+      "requiredSkills": ["现金管理", "银行对账", "报销审核"],
+      "optionalSkills": ["网银操作", "票据管理", "外汇结算"],
+      "requiredCertificates": [],
+      "optionalCertificates": ["会计从业相关培训"],
+      "experienceMin": 1,
+      "experienceMax": 10,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 5500,
+      "salaryMax": 10000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["15天内", "30天内"],
+      "projectExperienceTemplates": [
+        "负责{city}分公司日常收付款与银行对账",
+        "支持{project}费用报销与资金流水管理"
+      ],
+      "summaryTemplates": [
+        "出纳实务经验丰富，账目清晰规范",
+        "注重细节，具备基本财务合规意识"
+      ]
+    },
+    {
+      "jobCode": "JOB-007",
+      "jobTitle": "会计",
+      "jobCategory": "职能后勤",
+      "aliases": ["财务会计", "总账会计"],
+      "cities": ["上海", "北京", "深圳", "广州", "南京", "成都"],
+      "requiredSkills": ["账务处理", "报表编制", "税务申报协助"],
+      "optionalSkills": ["成本核算", "审计配合", "财务分析"],
+      "requiredCertificates": [],
+      "optionalCertificates": ["初级会计职称"],
+      "experienceMin": 2,
+      "experienceMax": 12,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 7000,
+      "salaryMax": 15000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["30天内"],
+      "projectExperienceTemplates": [
+        "负责{city}公司月度结账与报表出具",
+        "参与{project}成本核算与税务申报支持"
+      ],
+      "summaryTemplates": [
+        "熟悉一般企业会计流程与报表逻辑",
+        "与出纳岗位分工清晰，合规意识强"
+      ]
+    },
+    {
+      "jobCode": "JOB-008",
+      "jobTitle": "采购专员",
+      "jobCategory": "职能后勤",
+      "aliases": ["采购助理", "供应链专员"],
+      "cities": ["上海", "深圳", "广州", "苏州", "杭州", "武汉"],
+      "requiredSkills": ["询价比价", "供应商管理", "订单跟进"],
+      "optionalSkills": ["合同谈判", "库存协调", "ERP录入"],
+      "requiredCertificates": [],
+      "optionalCertificates": [],
+      "experienceMin": 1,
+      "experienceMax": 8,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 6000,
+      "salaryMax": 12000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["15天内", "30天内"],
+      "projectExperienceTemplates": [
+        "负责{city}项目物料采购与交付跟踪",
+        "维护{project}供应商档案及价格记录"
+      ],
+      "summaryTemplates": [
+        "采购流程熟悉，沟通与跟进能力较好",
+        "注重成本与交付时效平衡"
+      ]
+    },
+    {
+      "jobCode": "JOB-009",
+      "jobTitle": "仓库管理员",
+      "jobCategory": "职能后勤",
+      "aliases": ["仓储员", "库管员"],
+      "cities": ["上海", "苏州", "广州", "武汉", "重庆", "南京"],
+      "requiredSkills": ["入库管理", "出库管理", "库存盘点"],
+      "optionalSkills": ["WMS系统", "拣货打包", "批次管理"],
+      "requiredCertificates": [],
+      "optionalCertificates": ["叉车证"],
+      "experienceMin": 1,
+      "experienceMax": 10,
+      "educationOptions": ["高中", "中专", "大专"],
+      "salaryMin": 5500,
+      "salaryMax": 9500,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职", "灵活用工"],
+      "availabilityOptions": ["立即", "7天内", "15天内"],
+      "projectExperienceTemplates": [
+        "管理{city}仓库收发存及盘点差异处理",
+        "使用WMS完成{project}订单拣配与出库"
+      ],
+      "summaryTemplates": [
+        "熟悉仓储收发存流程，数据记录准确",
+        "可配合加班与旺季弹性作业"
+      ]
+    },
+    {
+      "jobCode": "JOB-010",
+      "jobTitle": "销售专员",
+      "jobCategory": "业务销售",
+      "aliases": ["销售代表", "业务专员"],
+      "cities": ["上海", "北京", "深圳", "广州", "杭州", "成都"],
+      "requiredSkills": ["客户开发", "需求挖掘", "报价跟进"],
+      "optionalSkills": ["CRM使用", "合同协助", "行业方案介绍"],
+      "requiredCertificates": [],
+      "optionalCertificates": [],
+      "experienceMin": 1,
+      "experienceMax": 10,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 6000,
+      "salaryMax": 15000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["15天内", "30天内"],
+      "projectExperienceTemplates": [
+        "在{city}完成B端客户开拓与回款跟进",
+        "负责{project}区域销售目标及线索转化"
+      ],
+      "summaryTemplates": [
+        "具备基础销售拓展与跟进能力",
+        "目标导向，沟通表达清晰"
+      ]
+    },
+    {
+      "jobCode": "JOB-011",
+      "jobTitle": "客户经理",
+      "jobCategory": "业务销售",
+      "aliases": ["大客户经理", "客户成功经理"],
+      "cities": ["上海", "北京", "深圳", "杭州", "南京", "武汉"],
+      "requiredSkills": ["客户关系维护", "续约管理", "需求协调"],
+      "optionalSkills": ["方案汇报", "跨部门协同", "满意度调研"],
+      "requiredCertificates": [],
+      "optionalCertificates": [],
+      "experienceMin": 3,
+      "experienceMax": 12,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 9000,
+      "salaryMax": 20000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["30天内"],
+      "projectExperienceTemplates": [
+        "维护{city}重点客户并推动续约与增购",
+        "协调{project}交付团队解决客户问题"
+      ],
+      "summaryTemplates": [
+        "擅长客户关系管理与价值传递",
+        "与销售专员分工侧重存量经营与续约"
+      ]
+    },
+    {
+      "jobCode": "JOB-012",
+      "jobTitle": "市场专员",
+      "jobCategory": "业务销售",
+      "aliases": ["市场助理", "品牌专员"],
+      "cities": ["上海", "北京", "广州", "杭州", "成都", "重庆"],
+      "requiredSkills": ["活动策划", "渠道推广", "市场资料制作"],
+      "optionalSkills": ["新媒体运营", "数据分析", "竞品调研"],
+      "requiredCertificates": [],
+      "optionalCertificates": [],
+      "experienceMin": 1,
+      "experienceMax": 8,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 6500,
+      "salaryMax": 14000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["15天内", "30天内"],
+      "projectExperienceTemplates": [
+        "策划并执行{city}线下活动与品牌推广",
+        "负责{project}市场物料与渠道投放跟踪"
+      ],
+      "summaryTemplates": [
+        "具备市场活动执行与推广协作经验",
+        "与销售、运营岗位侧重前端获客与品牌"
+      ]
+    },
+    {
+      "jobCode": "JOB-013",
+      "jobTitle": "客服专员",
+      "jobCategory": "业务销售",
+      "aliases": ["热线客服", "在线客服"],
+      "cities": ["上海", "武汉", "成都", "重庆", "广州", "苏州"],
+      "requiredSkills": ["问题受理", "工单记录", "服务话术"],
+      "optionalSkills": ["投诉处理", "质检配合", "知识库维护"],
+      "requiredCertificates": [],
+      "optionalCertificates": [],
+      "experienceMin": 0,
+      "experienceMax": 6,
+      "educationOptions": ["高中", "大专", "本科"],
+      "salaryMin": 5000,
+      "salaryMax": 9000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职", "灵活用工"],
+      "availabilityOptions": ["立即", "7天内", "15天内"],
+      "projectExperienceTemplates": [
+        "负责{city}热线/在线客服一线受理",
+        "处理{project}用户咨询并升级复杂工单"
+      ],
+      "summaryTemplates": [
+        "服务意识良好，熟悉标准话术与记录规范",
+        "耐心细致，可适应轮班"
+      ]
+    },
+    {
+      "jobCode": "JOB-014",
+      "jobTitle": "运营专员",
+      "jobCategory": "业务销售",
+      "aliases": ["业务运营", "平台运营"],
+      "cities": ["上海", "北京", "深圳", "杭州", "南京", "成都"],
+      "requiredSkills": ["流程优化", "数据跟踪", "活动协同"],
+      "optionalSkills": ["用户增长", "内容排期", "A/B测试协助"],
+      "requiredCertificates": [],
+      "optionalCertificates": [],
+      "experienceMin": 1,
+      "experienceMax": 8,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 7000,
+      "salaryMax": 15000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["15天内", "30天内"],
+      "projectExperienceTemplates": [
+        "负责{city}业务运营指标监控与改进",
+        "协同{project}市场与销售完成活动落地"
+      ],
+      "summaryTemplates": [
+        "具备业务运营分析与跨团队协作经验",
+        "关注流程效率与用户转化数据"
+      ]
+    },
+    {
+      "jobCode": "JOB-015",
+      "jobTitle": "运维工程师",
+      "jobCategory": "IT技术通用岗",
+      "aliases": ["DevOps工程师", "系统运维"],
+      "cities": ["上海", "北京", "深圳", "杭州", "成都", "武汉"],
+      "requiredSkills": ["Linux运维", "监控告警", "发布部署"],
+      "optionalSkills": ["Docker", "CI/CD", "脚本自动化"],
+      "requiredCertificates": [],
+      "optionalCertificates": [],
+      "experienceMin": 2,
+      "experienceMax": 10,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 10000,
+      "salaryMax": 22000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["30天内"],
+      "projectExperienceTemplates": [
+        "负责{city}生产环境稳定运行与故障响应",
+        "建设{project}自动化部署与监控体系"
+      ],
+      "summaryTemplates": [
+        "熟悉服务器运维与发布流程，具备应急处理能力",
+        "与开发、网络岗位分工明确，侧重系统稳定"
+      ]
+    },
+    {
+      "jobCode": "JOB-016",
+      "jobTitle": "前端开发",
+      "jobCategory": "IT技术通用岗",
+      "aliases": ["Web前端", "前端工程师"],
+      "cities": ["上海", "北京", "深圳", "杭州", "南京", "成都"],
+      "requiredSkills": ["HTML/CSS", "JavaScript", "Vue或React"],
+      "optionalSkills": ["TypeScript", "组件化", "性能优化"],
+      "requiredCertificates": [],
+      "optionalCertificates": [],
+      "experienceMin": 1,
+      "experienceMax": 10,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 10000,
+      "salaryMax": 25000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职", "灵活用工"],
+      "availabilityOptions": ["30天内"],
+      "projectExperienceTemplates": [
+        "参与{city}企业管理系统前端模块开发",
+        "负责{project}中后台页面与交互实现"
+      ],
+      "summaryTemplates": [
+        "熟悉主流前端框架与工程化基础",
+        "与UI设计师协作完成界面还原"
+      ]
+    },
+    {
+      "jobCode": "JOB-017",
+      "jobTitle": "后端开发",
+      "jobCategory": "IT技术通用岗",
+      "aliases": ["服务端开发", "Java工程师", "Node工程师"],
+      "cities": ["上海", "北京", "深圳", "广州", "杭州", "武汉"],
+      "requiredSkills": ["RESTful API", "数据库设计", "服务端开发"],
+      "optionalSkills": ["Java/Spring", "Node.js/Express", "Python/Django", "Redis", "消息队列"],
+      "requiredCertificates": [],
+      "optionalCertificates": [],
+      "experienceMin": 2,
+      "experienceMax": 12,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 12000,
+      "salaryMax": 28000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["30天内"],
+      "projectExperienceTemplates": [
+        "负责{city}业务系统API与数据层开发（Java或Node或Python其一）",
+        "参与{project}微服务模块设计与性能优化"
+      ],
+      "summaryTemplates": [
+        "具备单一后端技术栈项目经验，接口设计规范",
+        "不要求同时精通Java、Node.js与Python"
+      ]
+    },
+    {
+      "jobCode": "JOB-018",
+      "jobTitle": "测试工程师",
+      "jobCategory": "IT技术通用岗",
+      "aliases": ["QA工程师", "软件测试"],
+      "cities": ["上海", "北京", "深圳", "杭州", "苏州", "成都"],
+      "requiredSkills": ["测试用例设计", "缺陷管理", "功能测试"],
+      "optionalSkills": ["接口测试", "自动化测试", "性能测试基础"],
+      "requiredCertificates": [],
+      "optionalCertificates": [],
+      "experienceMin": 1,
+      "experienceMax": 8,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 8000,
+      "salaryMax": 18000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["15天内", "30天内"],
+      "projectExperienceTemplates": [
+        "负责{city}项目版本测试与回归验证",
+        "建立{project}测试用例库与缺陷跟踪流程"
+      ],
+      "summaryTemplates": [
+        "测试流程规范，善于发现边界与回归问题",
+        "与开发协作顺畅，质量意识强"
+      ]
+    },
+    {
+      "jobCode": "JOB-019",
+      "jobTitle": "网络工程师",
+      "jobCategory": "IT技术通用岗",
+      "aliases": ["网络运维", "网络管理员"],
+      "cities": ["上海", "北京", "深圳", "广州", "武汉", "重庆"],
+      "requiredSkills": ["网络配置", "故障排查", "安全策略基础"],
+      "optionalSkills": ["防火墙", "VPN", "无线网络"],
+      "requiredCertificates": [],
+      "optionalCertificates": ["网络工程师相关认证"],
+      "experienceMin": 2,
+      "experienceMax": 12,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 9000,
+      "salaryMax": 20000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["30天内"],
+      "projectExperienceTemplates": [
+        "维护{city}办公及机房网络设备与链路",
+        "负责{project}网络架构调整与安全加固"
+      ],
+      "summaryTemplates": [
+        "熟悉常见网络设备配置与排障流程",
+        "与运维工程师分工侧重网络层"
+      ]
+    },
+    {
+      "jobCode": "JOB-020",
+      "jobTitle": "UI设计师",
+      "jobCategory": "IT技术通用岗",
+      "aliases": ["视觉设计师", "界面设计师"],
+      "cities": ["上海", "北京", "深圳", "杭州", "成都", "广州"],
+      "requiredSkills": ["界面设计", "设计规范", "原型协作"],
+      "optionalSkills": ["Figma", "Sketch", "动效设计", "设计系统"],
+      "requiredCertificates": [],
+      "optionalCertificates": [],
+      "experienceMin": 1,
+      "experienceMax": 8,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 8000,
+      "salaryMax": 20000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职", "灵活用工"],
+      "availabilityOptions": ["30天内"],
+      "projectExperienceTemplates": [
+        "负责{city}产品界面与视觉规范设计",
+        "输出{project}高保真稿并协同前端还原"
+      ],
+      "summaryTemplates": [
+        "视觉与交互表达清晰，熟悉设计协作流程",
+        "岗位侧重设计而非前端开发实现"
+      ]
+    },
+    {
+      "jobCode": "JOB-021",
+      "jobTitle": "操作工",
+      "jobCategory": "实体生产通用岗",
+      "aliases": ["产线操作员", "生产工人"],
+      "cities": ["苏州", "重庆", "武汉", "广州", "南京", "成都"],
+      "requiredSkills": ["产线操作", "安全规范", "质量自检"],
+      "optionalSkills": ["设备点检", "班组协作", "5S整理"],
+      "requiredCertificates": [],
+      "optionalCertificates": [],
+      "experienceMin": 0,
+      "experienceMax": 8,
+      "educationOptions": ["初中", "高中", "中专"],
+      "salaryMin": 5000,
+      "salaryMax": 8500,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职", "灵活用工"],
+      "availabilityOptions": ["立即", "3天内", "7天内"],
+      "projectExperienceTemplates": [
+        "在{city}工厂产线从事装配/包装作业",
+        "参与{project}旺季产能支援与质量互检"
+      ],
+      "summaryTemplates": [
+        "服从产线管理，具备基础质量与安全意识",
+        "可适应倒班与重复性作业"
+      ]
+    },
+    {
+      "jobCode": "JOB-022",
+      "jobTitle": "质检专员",
+      "jobCategory": "实体生产通用岗",
+      "aliases": ["QC专员", "质量检验员"],
+      "cities": ["苏州", "上海", "武汉", "重庆", "广州", "南京"],
+      "requiredSkills": ["来料检验", "过程检验", "不合格品处理"],
+      "optionalSkills": ["SPC基础", "检验记录", "8D协助"],
+      "requiredCertificates": [],
+      "optionalCertificates": ["质量检验员证"],
+      "experienceMin": 1,
+      "experienceMax": 10,
+      "educationOptions": ["高中", "中专", "大专"],
+      "salaryMin": 5500,
+      "salaryMax": 10000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["7天内", "15天内"],
+      "projectExperienceTemplates": [
+        "负责{city}工厂IQC/IPQC检验与记录",
+        "参与{project}质量异常分析与改善跟踪"
+      ],
+      "summaryTemplates": [
+        "质量检验流程熟悉，记录规范",
+        "与操作工岗位分工侧重检验判定"
+      ]
+    },
+    {
+      "jobCode": "JOB-023",
+      "jobTitle": "电工",
+      "jobCategory": "实体生产通用岗",
+      "aliases": ["维修电工", "设备电工"],
+      "cities": ["重庆", "武汉", "苏州", "广州", "成都", "南京"],
+      "requiredSkills": ["电气维修", "设备点检", "安全操作"],
+      "optionalSkills": ["PLC基础", "弱电布线", "预防性维护"],
+      "requiredCertificates": ["电工证"],
+      "optionalCertificates": [],
+      "experienceMin": 2,
+      "experienceMax": 15,
+      "educationOptions": ["中专", "大专"],
+      "salaryMin": 6500,
+      "salaryMax": 12000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["15天内", "30天内"],
+      "projectExperienceTemplates": [
+        "负责{city}厂区设备电气维护与故障修复",
+        "执行{project}电气安全巡检与台账管理"
+      ],
+      "summaryTemplates": [
+        "持有效电工证，熟悉工厂电气安全规范",
+        "应急处理与预防性维护经验较好"
+      ]
+    },
+    {
+      "jobCode": "JOB-024",
+      "jobTitle": "项目经理",
+      "jobCategory": "项目管理/综合管理",
+      "aliases": ["PM", "项目负责人"],
+      "cities": ["上海", "北京", "深圳", "杭州", "成都", "武汉"],
+      "requiredSkills": ["项目计划", "进度管理", "风险控制"],
+      "optionalSkills": ["干系人沟通", "预算跟踪", "敏捷协作"],
+      "requiredCertificates": [],
+      "optionalCertificates": ["PMP"],
+      "experienceMin": 3,
+      "experienceMax": 15,
+      "educationOptions": ["本科", "硕士"],
+      "salaryMin": 12000,
+      "salaryMax": 30000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["30天内"],
+      "projectExperienceTemplates": [
+        "主导{city}交付项目从立项到验收",
+        "管理{project}跨部门资源与里程碑节点"
+      ],
+      "summaryTemplates": [
+        "项目统筹与沟通能力较强，注重交付结果",
+        "与资料员、法务等岗位分工不同，侧重整体推进"
+      ]
+    },
+    {
+      "jobCode": "JOB-025",
+      "jobTitle": "资料员",
+      "jobCategory": "项目管理/综合管理",
+      "aliases": ["文档管理员", "项目资料专员"],
+      "cities": ["上海", "北京", "广州", "苏州", "武汉", "重庆"],
+      "requiredSkills": ["资料归档", "台账管理", "版本控制"],
+      "optionalSkills": ["工程资料规范", "扫描录入", "借阅登记"],
+      "requiredCertificates": [],
+      "optionalCertificates": ["资料员证"],
+      "experienceMin": 1,
+      "experienceMax": 8,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 5500,
+      "salaryMax": 10000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["15天内", "30天内"],
+      "projectExperienceTemplates": [
+        "负责{city}项目资料收集、编目与归档",
+        "维护{project}文档版本与借阅记录"
+      ],
+      "summaryTemplates": [
+        "资料管理细致，熟悉归档与台账流程",
+        "与项目经理分工侧重文档而非整体统筹"
+      ]
+    },
+    {
+      "jobCode": "JOB-026",
+      "jobTitle": "法务专员",
+      "jobCategory": "项目管理/综合管理",
+      "aliases": ["法务助理", "合规专员"],
+      "cities": ["上海", "北京", "深圳", "杭州", "南京", "成都"],
+      "requiredSkills": ["合同审核", "法律咨询协助", "合规记录"],
+      "optionalSkills": ["劳动法务", "知识产权基础", "诉讼材料整理"],
+      "requiredCertificates": [],
+      "optionalCertificates": ["法律职业资格相关"],
+      "experienceMin": 2,
+      "experienceMax": 10,
+      "educationOptions": ["本科", "硕士"],
+      "salaryMin": 9000,
+      "salaryMax": 20000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职"],
+      "availabilityOptions": ["30天内"],
+      "projectExperienceTemplates": [
+        "协助{city}公司合同审查与模板维护",
+        "支持{project}合规培训与风险清单更新"
+      ],
+      "summaryTemplates": [
+        "法务基础扎实，合同与合规意识较强",
+        "与文案策划分工侧重法律风险而非创意内容"
+      ]
+    },
+    {
+      "jobCode": "JOB-027",
+      "jobTitle": "文案策划",
+      "jobCategory": "项目管理/综合管理",
+      "aliases": ["内容策划", "品牌文案"],
+      "cities": ["上海", "北京", "广州", "杭州", "成都", "深圳"],
+      "requiredSkills": ["文案撰写", "内容策划", "品牌表达"],
+      "optionalSkills": ["短视频脚本", "活动主题策划", "SEO基础"],
+      "requiredCertificates": [],
+      "optionalCertificates": [],
+      "experienceMin": 1,
+      "experienceMax": 8,
+      "educationOptions": ["大专", "本科"],
+      "salaryMin": 7000,
+      "salaryMax": 16000,
+      "salaryUnit": "月",
+      "employmentTypes": ["全职", "灵活用工"],
+      "availabilityOptions": ["15天内", "30天内"],
+      "projectExperienceTemplates": [
+        "负责{city}品牌宣传文案与活动主题策划",
+        "输出{project}多渠道内容并协同设计落地"
+      ],
+      "summaryTemplates": [
+        "文字表达与创意策划能力较好",
+        "与法务、市场岗位分工侧重内容创作"
+      ]
+    }
+  ]
+}

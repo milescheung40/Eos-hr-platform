@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "test": "node --test tests/staffingMatch.test.js tests/staffingApi.test.js tests/aiParse.test.js",
+    "test": "node --test tests/staffingMatch.test.js tests/staffingApi.test.js tests/aiParse.test.js tests/resumeUpload.test.js",
     "test:e2e": "node tests/playwright-smoke.mjs",
     "backup:db": "node scripts/backup-db.js",
     "reset:demo-data": "node scripts/reset-demo-data.js"
@@ -20,9 +20,14 @@
     "dotenv": "^16.6.1",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
+    "mammoth": "^1.12.0",
+    "multer": "^2.2.0",
+    "pdf-parse": "^2.4.5",
     "sqlite3": "^6.0.1"
   },
   "devDependencies": {
+    "jszip": "^3.10.1",
+    "pdfkit": "^0.19.1",
     "playwright": "^1.61.1"
   }
 }

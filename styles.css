@@ -2490,6 +2490,87 @@ main .route-panels > section.panel.page-shell-module .table-scroll-wrap ~ .table
   font-size: 13px;
   line-height: 1.5;
 }
+.resume-upload-zone {
+  position: relative;
+  margin-bottom: var(--space-3);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-subtle);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.resume-upload-zone.is-dragover,
+.resume-upload-zone:focus-within {
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 7%, var(--color-bg-card));
+}
+.resume-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.resume-upload-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: 104px;
+  padding: var(--space-3);
+  cursor: pointer;
+  text-align: left;
+}
+.resume-upload-label > i {
+  font-size: 24px;
+  color: var(--color-primary);
+}
+.resume-upload-label span {
+  display: grid;
+  gap: 4px;
+}
+.resume-upload-label small {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+.resume-file-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-top: 1px solid var(--color-border);
+  font-size: 13px;
+}
+.resume-file-meta[hidden] {
+  display: none;
+}
+.resume-file-meta span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.resume-input-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+.resume-input-divider::before,
+.resume-input-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+.resume-file-result-meta {
+  margin: 0 0 var(--space-2);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
 .resume-parse-toolbar {
   display: flex;
   flex-wrap: wrap;

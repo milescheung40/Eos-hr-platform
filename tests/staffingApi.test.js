@@ -3,6 +3,7 @@ const assert = require("node:assert/strict");
 const { spawn } = require("node:child_process");
 const path = require("path");
 const { copyTempDb, removeDb, queryCounts, DEFAULT_DB } = require("./helpers/testDb");
+const { makeDocxBuffer, makePdfBuffer } = require("./helpers/resumeFixtures");
 
 const PORT = process.env.TEST_PORT || "3001";
 const BASE = `http://127.0.0.1:${PORT}`;
@@ -53,6 +54,23 @@ async function api(token, url, options = {}) {
       Authorization: `Bearer ${token}`,
       ...(options.headers || {})
     }
+  });
+  let body = {};
+  try {
+    body = await r.json();
+  } catch {
+    body = {};
+  }
+  return { status: r.status, body };
+}
+
+async function uploadResume(token, buffer, filename, mime) {
+  const form = new FormData();
+  form.append("file", new Blob([buffer], { type: mime }), filename);
+  const r = await fetch(`${BASE}/api/ai/parse-resume-file`, {
+    method: "POST",
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: form
   });
   let body = {};
   try {
@@ -251,6 +269,60 @@ describe("staffing API acceptance", () => {
     assert.equal(r.status, 200);
     assert.equal(r.body.parseSource, "rule");
     assert.ok(r.body.candidate);
+  });
+
+  test("admin and enterprise can upload and parse DOCX/PDF resumes", async () => {
+    const ent = await login("enterprise");
+    const admin = await login("admin");
+    const docx = await makeDocxBuffer(
+      "姓名：张三 北京 Java开发工程师 5年工作经验 本科学历 Java Spring MySQL 计算机二级"
+    );
+    const entResult = await uploadResume(
+      ent.token,
+      docx,
+      "张三简历.docx",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    );
+    assert.equal(entResult.status, 200);
+    assert.equal(entResult.body.fileType, "docx");
+    assert.equal(entResult.body.candidate.jobTitle, "后端开发");
+    assert.equal(entResult.body.candidate.city, "北京");
+    assert.ok(entResult.body.extractedCharCount > 10);
+
+    const pdf = await makePdfBuffer("Resume Alice frontend developer React 4 years experience");
+    const adminResult = await uploadResume(admin.token, pdf, "alice.pdf", "application/pdf");
+    assert.equal(adminResult.status, 200);
+    assert.equal(adminResult.body.fileType, "pdf");
+    assert.ok(adminResult.body.extractedCharCount > 10);
+    assert.equal(adminResult.body.parseSource, "rule");
+  });
+
+  test("resume upload requires login and rejects invalid or oversized files", async () => {
+    const noAuth = await uploadResume(null, Buffer.from("hello"), "resume.pdf", "application/pdf");
+    assert.equal(noAuth.status, 401);
+
+    const ent = await login("enterprise");
+    const mismatch = await uploadResume(ent.token, Buffer.from("not a pdf"), "resume.pdf", "application/pdf");
+    assert.equal(mismatch.status, 400);
+    assert.match(mismatch.body.message, /扩展名不匹配|内容与扩展名不匹配/);
+
+    const unsupported = await uploadResume(
+      ent.token,
+      Buffer.from("legacy word"),
+      "resume.doc",
+      "application/msword"
+    );
+    assert.equal(unsupported.status, 400);
+    assert.match(unsupported.body.message, /仅支持 PDF 和 DOCX/);
+
+    const oversized = await uploadResume(
+      ent.token,
+      Buffer.alloc(5 * 1024 * 1024 + 1, 0x41),
+      "large.pdf",
+      "application/pdf"
+    );
+    assert.equal(oversized.status, 413);
+    assert.match(oversized.body.message, /5MB/);
   });
 
   test("ai match includes parseSource without API key", async () => {

@@ -55,7 +55,7 @@ describe("AI parse service", () => {
       const { parseRequirementWithFallback, PARSE_SOURCE } = require("../lib/ai/parseService");
       const result = await parseRequirementWithFallback("找3名北京Java开发，5年以上经验，下周到岗");
       assert.equal(result.parseSource, PARSE_SOURCE.RULE);
-      assert.equal(result.data.jobTitle, "Java开发");
+      assert.equal(result.data.jobTitle, "后端开发");
     } finally {
       global.fetch = originalFetch;
     }
